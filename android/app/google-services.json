@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "443238716364",
+    "project_id": "nearcard-fa985",
+    "storage_bucket": "nearcard-fa985.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443238716364:android:a57a05000c4eb6b7318369",
+        "android_client_info": {
+          "package_name": "com.company.nearcard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD20E1EMnk8gMUhJJLmKtxj47oj_u66iOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
