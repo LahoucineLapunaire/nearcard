@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
+import 'package:NearCard/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -8,53 +10,25 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String test = "loading...";
-
-  @override
-  void initState() {
-    super.initState();
-    getTestFieldInFirestore();
-  }
-
-  void getTestFieldInFirestore() {
-    try {
-      FirebaseFirestore.instance
-          .collection('test')
-          .doc('NOiviclazv6K7Lxz0zyw')
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          setState(() {
-            test = documentSnapshot.get("test");
-          });
-          print('Document data: $test');
-        } else {
-          print('Document does not exist on the database');
-        }
-      });
-    } catch (e) {
-      print("Error: $e");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Firestore Test'),
-            ),
-            body: Center(
-              child: Text(test),
-            )));
+      title: 'NearCard',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blueGrey,
+      ),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<OnboardingBloc>(
+            create: (context) => OnboardingBloc(),
+          ),
+        ],
+        child: const OnboardingScreen(),
+      ),
+    );
   }
 }
