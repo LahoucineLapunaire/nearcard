@@ -9,6 +9,14 @@ class OnboardingEventChange extends OnboardingEvent {
   OnboardingEventChange(this.page);
 }
 
-class OnboardingEventToSignup extends OnboardingEvent {}
+class OnboardingEventToSignup extends OnboardingEvent {
+  final BuildContext context;
 
-class OnboardingEventToLogin extends OnboardingEvent {}
+  OnboardingEventToSignup(this.context);
+}
+
+class OnboardingEventToLogin extends OnboardingEvent {
+  final BuildContext context;
+
+  OnboardingEventToLogin(this.context);
+}

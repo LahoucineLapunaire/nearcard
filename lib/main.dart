@@ -1,3 +1,4 @@
+import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
 import 'package:NearCard/screens/onboarding.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<OnboardingBloc>(
             create: (context) => OnboardingBloc(),
+          ),
+          BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(),
           ),
         ],
         child: const OnboardingScreen(),
