@@ -1,6 +1,6 @@
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
-import 'package:NearCard/screens/login.dart';
-import 'package:NearCard/screens/signup.dart';
+import 'package:NearCard/screens/auth/login.dart';
+import 'package:NearCard/screens/auth/signup.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

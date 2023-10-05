@@ -1,6 +1,6 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
-import 'package:NearCard/screens/onboarding.dart';
+import 'package:NearCard/screens/onboarding/onboarding.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

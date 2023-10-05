@@ -1,5 +1,5 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
-import 'package:NearCard/screens/login.dart';
+import 'package:NearCard/screens/auth/login.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -177,7 +177,7 @@ class FormSection extends StatelessWidget {
                   color: Colors.red,
                   fontSize: 14,
                   fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             const SizedBox(
@@ -234,7 +234,7 @@ class FormSection extends StatelessWidget {
                   color: Colors.red,
                   fontSize: 14,
                   fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             const SizedBox(

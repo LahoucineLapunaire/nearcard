@@ -1,6 +1,6 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
-import 'package:NearCard/screens/resetPassword.dart';
-import 'package:NearCard/screens/signup.dart';
+import 'package:NearCard/screens/auth/resetPassword.dart';
+import 'package:NearCard/screens/auth/signup.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
