@@ -18,6 +18,8 @@ final class AuthInitial extends AuthState {
   final TextEditingController loginEmailController;
   final TextEditingController loginPasswordController;
 
+  final TextEditingController resetPasswordController;
+
   AuthInitial(
     this.signupEmailController,
     this.signupPasswordController,
@@ -28,6 +30,7 @@ final class AuthInitial extends AuthState {
     this.ispasswordVisible,
     this.loginEmailController,
     this.loginPasswordController,
+    this.resetPasswordController,
   );
 
   AuthInitial copyWith({
@@ -42,6 +45,7 @@ final class AuthInitial extends AuthState {
     TextEditingController? loginEmailController,
     TextEditingController? loginPasswordController,
     String? loginError,
+    TextEditingController? resetPasswordController,
   }) {
     return AuthInitial(
       signupEmailController ?? this.signupEmailController,
@@ -53,6 +57,7 @@ final class AuthInitial extends AuthState {
       ispasswordVisible ?? this.ispasswordVisible,
       loginEmailController ?? this.loginEmailController,
       loginPasswordController ?? this.loginPasswordController,
+      resetPasswordController ?? this.resetPasswordController,
     );
   }
 }

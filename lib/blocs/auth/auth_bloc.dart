@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitial> {
           false,
           TextEditingController(),
           TextEditingController(),
+          TextEditingController(),
         )) {
     on<AuthEvent>((event, emit) async {
       if (event is AuthEventSetTermsAccepted) {
@@ -129,6 +130,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitial> {
         } catch (e) {
           // Gérez toutes les autres exceptions ici
           print("Erreur inattendue : $e");
+          displayError(event.context, e.toString().split('] ')[1]);
+        }
+      }
+
+      if (event is AuthEventResetPassword) {
+        try {
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          await auth.sendPasswordResetEmail(
+              email: state.resetPasswordController.text);
+          displayMessage(event.context,
+              "Un email de réinitialisation de mot de passe vous a été envoyé");
+        } catch (e) {
           displayError(event.context, e.toString().split('] ')[1]);
         }
       }

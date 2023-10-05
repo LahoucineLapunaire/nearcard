@@ -30,3 +30,9 @@ final class AuthEventLogin extends AuthEvent {
 
   AuthEventLogin(this.context);
 }
+
+final class AuthEventResetPassword extends AuthEvent {
+  final BuildContext context;
+
+  AuthEventResetPassword(this.context);
+}

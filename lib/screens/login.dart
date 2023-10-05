@@ -1,4 +1,5 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
+import 'package:NearCard/screens/resetPassword.dart';
 import 'package:NearCard/screens/signup.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:delayed_display/delayed_display.dart';
@@ -248,10 +249,11 @@ class ButtonSection extends StatelessWidget {
             Container(
               child: ElevatedButton(
                   onPressed: () {
+                    print("to reset password");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
+                            builder: (context) => const ResetPasswordScreen()));
                   },
                   style: ButtonStyle(
                     shadowColor:
@@ -263,8 +265,8 @@ class ButtonSection extends StatelessWidget {
                     "Mot de passe oublié ?",
                     style: TextStyle(
                       fontSize: 16,
+                      color: Colors.black,
                       fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
                     ),
                   )),
             ),
