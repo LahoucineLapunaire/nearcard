@@ -1,6 +1,8 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/screens/signup.dart';
 import 'package:NearCard/widgets/alert.dart';
+import 'package:delayed_display/delayed_display.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,23 +15,28 @@ class LoginScreen extends StatelessWidget {
       create: (context) => AuthBloc(),
       child: Scaffold(body: BlocBuilder<AuthBloc, AuthInitial>(
         builder: (context, state) {
-          return SingleChildScrollView(
+          return const SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: const Column(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Column(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 56,
                   ),
-                  const TitleSection(),
-                  const SizedBox(
+                  DelayedDisplay(
+                      delay: Duration(milliseconds: 500),
+                      child: TitleSection()),
+                  SizedBox(
                     height: 24,
                   ),
-                  FormSection(),
-                  const SizedBox(
+                  DelayedDisplay(
+                      delay: Duration(milliseconds: 700), child: FormSection()),
+                  SizedBox(
                     height: 16,
                   ),
-                  ButtonSection(),
+                  DelayedDisplay(
+                      delay: Duration(milliseconds: 500),
+                      child: ButtonSection()),
                 ],
               ),
             ),
@@ -169,99 +176,101 @@ class ButtonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 260,
-          height: 40,
-          child: ElevatedButton(
-              onPressed: () {
-                print("Se connecter");
-                displayError(context, "error test");
-              },
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(const Color(0xff001f3f)),
-              ),
-              child: const Text(
-                'Se connecter',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                ),
-              )),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        Container(
-          child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
-              },
-              style: ButtonStyle(
-                shadowColor:
-                    MaterialStateProperty.all<Color>(Colors.transparent),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.transparent),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Pas de compte ?",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'Montserrat',
-                      color: Colors.black,
-                    ),
+    return BlocBuilder<AuthBloc, AuthInitial>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Container(
+              width: 260,
+              height: 40,
+              child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(AuthEventLogin(context));
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xff001f3f)),
                   ),
-                  SizedBox(width: 5),
-                  Text(
-                    "Inscrivez-vous",
+                  child: const Text(
+                    'Se connecter',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignupScreen()));
+                  },
+                  style: ButtonStyle(
+                    shadowColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Pas de compte ?",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Montserrat',
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "Inscrivez-vous",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Montserrat',
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  )),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Container(
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                  },
+                  style: ButtonStyle(
+                    shadowColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent),
+                  ),
+                  child: const Text(
+                    "Mot de passe oublié ?",
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: 'Montserrat',
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
-                  )
-                ],
-              )),
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Container(
-          child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
-              },
-              style: ButtonStyle(
-                shadowColor:
-                    MaterialStateProperty.all<Color>(Colors.transparent),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.transparent),
-              ),
-              child: const Text(
-                "Mot de passe oublié ?",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                ),
-              )),
-        ),
-      ],
+                  )),
+            ),
+          ],
+        );
+      },
     );
   }
 }

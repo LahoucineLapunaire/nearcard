@@ -1,6 +1,6 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/screens/login.dart';
-import 'package:NearCard/widgets/alert.dart';
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,15 +22,20 @@ class SignupScreen extends StatelessWidget {
                   const SizedBox(
                     height: 56,
                   ),
-                  const TitleSection(),
+                  DelayedDisplay(
+                      delay: Duration(milliseconds: 500),
+                      child: const TitleSection()),
                   const SizedBox(
                     height: 24,
                   ),
-                  FormSection(),
+                  DelayedDisplay(
+                      delay: Duration(milliseconds: 700), child: FormSection()),
                   const SizedBox(
                     height: 16,
                   ),
-                  ButtonSection(),
+                  DelayedDisplay(
+                      delay: Duration(milliseconds: 500),
+                      child: ButtonSection()),
                 ],
               ),
             ),
@@ -134,6 +139,10 @@ class FormSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onChanged: (value) {
+                  context.read<AuthBloc>().add(AuthEventSetIsPasswordSame());
+                  context.read<AuthBloc>().add(AuthEventSetPasswordValidity());
+                },
                 obscureText: !state.ispasswordVisible,
                 controller: state.signupPasswordController,
                 decoration: InputDecoration(
@@ -191,6 +200,9 @@ class FormSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onChanged: (value) {
+                  context.read<AuthBloc>().add(AuthEventSetIsPasswordSame());
+                },
                 obscureText: !state.ispasswordVisible,
                 controller: state.signupConfirmPasswordController,
                 decoration: InputDecoration(
@@ -283,10 +295,7 @@ class ButtonSection extends StatelessWidget {
               child: ElevatedButton(
                   onPressed: () {
                     print("S'inscrire");
-                    print(state.signupEmailController.text);
-                    print(state.signupPasswordController.text);
-                    print(state.signupConfirmPasswordController.text);
-                    displayMessage(context, "confirm message");
+                    context.read<AuthBloc>().add(AuthEventSignup(context));
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(

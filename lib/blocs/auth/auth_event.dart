@@ -9,25 +9,9 @@ final class AuthEventSetTermsAccepted extends AuthEvent {
   AuthEventSetTermsAccepted(this.termsAccepted);
 }
 
-final class AuthEventSetSignupError extends AuthEvent {
-  final String signupError;
-
-  AuthEventSetSignupError(this.signupError);
-}
-
-final class AuthEventSetIsPasswordSame extends AuthEvent {
-  final bool isPasswordSame;
-
-  AuthEventSetIsPasswordSame(this.isPasswordSame);
-}
+final class AuthEventSetIsPasswordSame extends AuthEvent {}
 
 final class AuthEventSetPasswordValidity extends AuthEvent {}
-
-final class AuthEventSetLoginError extends AuthEvent {
-  final String loginError;
-
-  AuthEventSetLoginError(this.loginError);
-}
 
 final class AuthEventSetPasswordVisibility extends AuthEvent {
   final bool ispasswordVisible;
@@ -35,6 +19,14 @@ final class AuthEventSetPasswordVisibility extends AuthEvent {
   AuthEventSetPasswordVisibility(this.ispasswordVisible);
 }
 
-final class AuthEventSignup extends AuthEvent {}
+final class AuthEventSignup extends AuthEvent {
+  final BuildContext context;
 
-final class AuthEventLogin extends AuthEvent {}
+  AuthEventSignup(this.context);
+}
+
+final class AuthEventLogin extends AuthEvent {
+  final BuildContext context;
+
+  AuthEventLogin(this.context);
+}
