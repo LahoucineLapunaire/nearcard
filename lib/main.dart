@@ -18,14 +18,14 @@ void main() async {
     if (user != null) {
       if (user.emailVerified) {
         print("Verified");
-        runApp(Verified());
+        runApp(const Verified());
       } else {
         print("Not verified");
-        runApp(NotVerified());
+        runApp(const NotVerified());
       }
     } else {
       print("Unlogged");
-      runApp(UnLogged());
+      runApp(const UnLogged());
     }
   });
 }
@@ -39,7 +39,7 @@ class Verified extends StatelessWidget {
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: MaterialColor(
+        primarySwatch: const MaterialColor(
           0xff001f3f,
           <int, Color>{
             50: Color(0xffe5f1f4),
@@ -59,12 +59,12 @@ class Verified extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              Text("Verified"),
+              const Text("Verified"),
               ElevatedButton(
                   onPressed: () {
                     auth.signOut();
                   },
-                  child: Text("Sign out")),
+                  child: const Text("Sign out")),
             ],
           ),
         ),
@@ -82,7 +82,7 @@ class NotVerified extends StatelessWidget {
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: MaterialColor(
+        primarySwatch: const MaterialColor(
           0xff001f3f,
           <int, Color>{
             50: Color(0xffe5f1f4),
@@ -119,7 +119,7 @@ class UnLogged extends StatelessWidget {
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: MaterialColor(
+        primarySwatch: const MaterialColor(
           0xff001f3f,
           <int, Color>{
             50: Color(0xffe5f1f4),

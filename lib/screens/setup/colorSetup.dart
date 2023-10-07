@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:NearCard/blocs/setup/setup_bloc.dart';
-import 'package:NearCard/widgets/breadcrumb.dart';
-import 'package:delayed_display/delayed_display.dart';
+import 'package:NearCard/widgets/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ColorSetup extends StatelessWidget {
@@ -12,187 +11,122 @@ class ColorSetup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SetupBloc, SetupInitial>(
-      builder: (context, state) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 56,
-                ),
-                StepperBreadcrumbs(currentStep: state.currentPage),
-                SizedBox(
-                  height: 32,
-                ),
-                DelayedDisplay(
-                    delay: Duration(milliseconds: 500), child: TitleSection()),
-                SizedBox(
-                  height: 24,
-                ),
-                DelayedDisplay(
-                    delay: Duration(milliseconds: 700), child: CardSection()),
-                SizedBox(
-                  height: 16,
-                ),
-                DelayedDisplay(
-                    delay: Duration(milliseconds: 700), child: FormSection()),
-                SizedBox(
-                  height: 16,
-                ),
-                DelayedDisplay(
-                    delay: Duration(milliseconds: 500), child: ButtonSection()),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class TitleSection extends StatelessWidget {
-  const TitleSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 16,
+    return BlocBuilder<SetupBloc, SetupInitial>(builder: (context, state) {
+      return Scaffold(
+        backgroundColor: Color(int.parse(state.bgColor)),
+        body: Column(
+          children: [
+            CardSection(context: context, state: state),
+            ColorSection(context: context, state: state),
+          ],
         ),
-        Text(
-          'Couleurs',
-          style: TextStyle(
-            fontSize: 32,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: 16,
-        ),
-        Text(
-          'Veuillez saisir votre couleur de fond et de texte',
-          style: TextStyle(
-            fontSize: 18,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
-    );
+      );
+    });
   }
 }
 
 class CardSection extends StatelessWidget {
-  const CardSection({super.key});
+  final BuildContext context;
+  final SetupInitial state;
+
+  const CardSection({super.key, required this.context, required this.state});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SetupBloc, SetupInitial>(
-      builder: (context, state) {
-        return Container(
-          color: Colors.black,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
-            child: Row(children: [
-              ImageSection(),
-              SizedBox(
-                width: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state.nameController.text +
-                        " " +
-                        state.prenameController.text,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    state.titleController.text,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    state.companyController.text,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              )
-            ]),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class ImageSection extends StatelessWidget {
-  const ImageSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<SetupBloc, SetupInitial>(
-      builder: (context, state) {
-        return GestureDetector(
-          onTap: () {
-            context.read<SetupBloc>().add(SetupEventTakePicture(context));
-          },
-          child: Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: ClipRRect(
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.6,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Color(int.parse(state.textColor)), width: 2),
                 borderRadius: BorderRadius.circular(100),
-                child: state.picture == ""
-                    ? Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.userPlus,
-                          size: 70,
-                        ),
-                      )
-                    : Image.file(
-                        File(state.picture),
-                        fit: BoxFit.cover,
-                      )),
-          ),
-        );
-      },
+              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: state.picture == ""
+                      ? Center(
+                          child: FaIcon(
+                            FontAwesomeIcons.userPlus,
+                            size: 40,
+                            color: Color(int.parse(state.textColor)),
+                          ),
+                        )
+                      : Image.file(
+                          File(state.picture),
+                          fit: BoxFit.cover,
+                        )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "John Doe",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(int.parse(state.textColor)),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "CEO of Company",
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                color: Color(int.parse(state.textColor)),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Company One",
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w400,
+                color: Color(int.parse(state.textColor)),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class FormSection extends StatelessWidget {
-  const FormSection({super.key});
+class ColorSection extends StatelessWidget {
+  final BuildContext context;
+  final SetupInitial state;
+
+  const ColorSection({super.key, required this.context, required this.state});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SetupBloc, SetupInitial>(
-      builder: (context, state) {
-        return Container(
-          width: 300,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             const Text(
               'Couleur de fond',
               style: TextStyle(
@@ -201,36 +135,56 @@ class FormSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 8,
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFe3e3e3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextField(
-                controller: state.linkedinController,
-                decoration: const InputDecoration(
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.fromLTRB(15, 12, 0, 0),
-                    child: FaIcon(
-                      FontAwesomeIcons.linkedinIn,
-                      size: 22,
-                    ),
-                  ),
-                  hintText: 'LinkedIn',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  border: InputBorder.none,
+            GestureDetector(
+              onTap: () {
+                try {
+                  showDialog(
+                      context: context,
+                      builder: (contextDialog) {
+                        return AlertDialog(
+                          title: const Text(
+                              'Choisissez la couleur de fond de votre carte !'),
+                          content: SingleChildScrollView(
+                            child: ColorPicker(
+                              pickerColor: Color(int.parse(state.textColor)),
+                              onColorChanged: (value) {
+                                print(value.value.toRadixString(16));
+                                context.read<SetupBloc>().add(
+                                    SetupEventChangeBgColor(
+                                        value.value.toRadixString(16)));
+                              },
+                            ),
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: const Text('Sélectionner'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                } catch (e) {
+                  print(e);
+                }
+              },
+              child: Container(
+                width: 120,
+                height: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2),
+                  color: Color(int.parse(state.bgColor)),
+                  borderRadius: BorderRadius.circular(100),
                 ),
+                child: SizedBox(),
               ),
             ),
             SizedBox(
-              height: 16,
+              height: 20,
             ),
             const Text(
               'Couleur de texte',
@@ -240,31 +194,60 @@ class FormSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 8,
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFe3e3e3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextField(
-                controller: state.websiteController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.web),
-                  hintText: 'Email',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  border: InputBorder.none,
+            GestureDetector(
+              onTap: () {
+                try {
+                  showDialog(
+                      context: context,
+                      builder: (contextDialog) {
+                        return AlertDialog(
+                          title: const Text(
+                              'Choisissez la couleur de texte de votre carte !'),
+                          content: SingleChildScrollView(
+                            child: ColorPicker(
+                              pickerColor: Color(int.parse(state.textColor)),
+                              onColorChanged: (value) {
+                                context.read<SetupBloc>().add(
+                                    SetupEventChangeTextColor(
+                                        value.value.toRadixString(16)));
+                              },
+                            ),
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: const Text('Sélectionner'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                } catch (e) {
+                  print(e);
+                }
+              },
+              child: Container(
+                width: 120,
+                height: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2),
+                  color: Color(int.parse(state.textColor)),
+                  borderRadius: BorderRadius.circular(100),
                 ),
+                child: SizedBox(),
               ),
-            )
-          ]),
-        );
-      },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ButtonSection(),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -283,7 +266,7 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+                border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
               ),
               child: ElevatedButton(
                   onPressed: () {
@@ -314,9 +297,9 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               child: ElevatedButton(
                   onPressed: () {
-                    context
-                        .read<SetupBloc>()
-                        .add(SetupEventChange(state.currentPage + 1));
+                    print(state.bgColor);
+                    print(state.textColor);
+                    print(state.currentPage);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(

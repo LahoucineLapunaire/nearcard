@@ -1,6 +1,7 @@
 import 'package:NearCard/screens/setup/colorSetup.dart';
 import 'package:NearCard/screens/setup/companySetup.dart';
 import 'package:NearCard/screens/setup/contactSetup.dart';
+import 'package:NearCard/screens/setup/finishSetup.dart';
 import 'package:NearCard/screens/setup/nameSetup.dart';
 import 'package:NearCard/screens/setup/pictureSetup.dart';
 import 'package:NearCard/screens/setup/socialSetup.dart';
@@ -17,7 +18,7 @@ part 'setup_state.dart';
 class SetupBloc extends Bloc<SetupEvent, SetupInitial> {
   SetupBloc()
       : super(SetupInitial(
-          currentPage: 0,
+          currentPage: 7,
           nameController: TextEditingController(),
           prenameController: TextEditingController(),
           titleController: TextEditingController(),
@@ -27,8 +28,8 @@ class SetupBloc extends Bloc<SetupEvent, SetupInitial> {
           linkedinController: TextEditingController(),
           websiteController: TextEditingController(),
           picture: "",
-          bgColor: "",
-          textColor: "",
+          bgColor: "0xff000000",
+          textColor: "0xffffffff",
         )) {
     on<SetupEvent>((event, emit) async {
       if (event is SetupEventChange) {
@@ -48,6 +49,16 @@ class SetupBloc extends Bloc<SetupEvent, SetupInitial> {
         } else {
           displayError(event.context, "Veuillez choisir une image");
         }
+      }
+      if (event is SetupEventChangeBgColor) {
+        emit(state.copyWith(
+          bgColor: "0x" + event.color,
+        ));
+      }
+      if (event is SetupEventChangeTextColor) {
+        emit(state.copyWith(
+          textColor: "0x" + event.color,
+        ));
       }
     });
   }

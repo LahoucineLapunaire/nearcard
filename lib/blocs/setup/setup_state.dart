@@ -12,6 +12,7 @@ final class SetupInitial extends SetupState {
     SocialSetup(),
     PictureSetup(),
     ColorSetup(),
+    FinishSetup(),
   ];
   int currentPage = 0;
 
@@ -55,6 +56,7 @@ final class SetupInitial extends SetupState {
     String? picture,
     String? bgColor,
     String? textColor,
+    bool? isCardLarge,
   }) {
     return SetupInitial(
       currentPage: currentPage ?? this.currentPage,

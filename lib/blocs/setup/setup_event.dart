@@ -14,3 +14,15 @@ class SetupEventTakePicture extends SetupEvent {
 
   SetupEventTakePicture(this.context);
 }
+
+class SetupEventChangeBgColor extends SetupEvent {
+  final String color;
+
+  SetupEventChangeBgColor(this.color);
+}
+
+class SetupEventChangeTextColor extends SetupEvent {
+  final String color;
+
+  SetupEventChangeTextColor(this.color);
+}
