@@ -1,6 +1,8 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
+import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/screens/onboarding/onboarding.dart';
+import 'package:NearCard/screens/setup/setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +17,14 @@ void main() async {
   auth.authStateChanges().listen((User? user) {
     if (user != null) {
       if (user.emailVerified) {
+        print("Verified");
         runApp(Verified());
       } else {
+        print("Not verified");
         runApp(NotVerified());
       }
     } else {
+      print("Unlogged");
       runApp(UnLogged());
     }
   });
@@ -34,7 +39,21 @@ class Verified extends StatelessWidget {
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: MaterialColor(
+          0xff001f3f,
+          <int, Color>{
+            50: Color(0xffe5f1f4),
+            100: Color(0xffbfe0e7),
+            200: Color(0xff94cdd6),
+            300: Color(0xff68bac5),
+            400: Color(0xff47aeb9),
+            500: Color(0xff27a2ad),
+            600: Color(0xff219b9f),
+            700: Color(0xff1b8c8f),
+            800: Color(0xff177d7f),
+            900: Color(0xff0f5f60),
+          },
+        ),
       ),
       home: Scaffold(
         body: Center(
@@ -63,21 +82,29 @@ class NotVerified extends StatelessWidget {
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              Text("Not Verified"),
-              ElevatedButton(
-                  onPressed: () {
-                    auth.signOut();
-                  },
-                  child: Text("Sign out")),
-            ],
-          ),
+        primarySwatch: MaterialColor(
+          0xff001f3f,
+          <int, Color>{
+            50: Color(0xffe5f1f4),
+            100: Color(0xffbfe0e7),
+            200: Color(0xff94cdd6),
+            300: Color(0xff68bac5),
+            400: Color(0xff47aeb9),
+            500: Color(0xff27a2ad),
+            600: Color(0xff219b9f),
+            700: Color(0xff1b8c8f),
+            800: Color(0xff177d7f),
+            900: Color(0xff0f5f60),
+          },
         ),
+      ),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<SetupBloc>(
+            create: (context) => SetupBloc(),
+          ),
+        ],
+        child: const SetupScreen(),
       ),
     );
   }
@@ -92,7 +119,21 @@ class UnLogged extends StatelessWidget {
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: MaterialColor(
+          0xff001f3f,
+          <int, Color>{
+            50: Color(0xffe5f1f4),
+            100: Color(0xffbfe0e7),
+            200: Color(0xff94cdd6),
+            300: Color(0xff68bac5),
+            400: Color(0xff47aeb9),
+            500: Color(0xff27a2ad),
+            600: Color(0xff219b9f),
+            700: Color(0xff1b8c8f),
+            800: Color(0xff177d7f),
+            900: Color(0xff0f5f60),
+          },
+        ),
       ),
       home: MultiBlocProvider(
         providers: [
