@@ -111,6 +111,13 @@ class FormSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextField(
+                onChanged: (value) {
+                  //set first letter to uppercase
+                  if (value.isNotEmpty) {
+                    value = value[0].toUpperCase() + value.substring(1);
+                  }
+                  state.companyController.text = value;
+                },
                 controller: state.companyController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.business),

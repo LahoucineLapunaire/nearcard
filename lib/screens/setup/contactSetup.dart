@@ -172,7 +172,7 @@ class FormSection extends StatelessWidget {
               height: 16,
             ),
             const Text(
-              'Adresse',
+              'Adresse (optionnel)',
               style: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Montserrat',
@@ -191,7 +191,6 @@ class FormSection extends StatelessWidget {
                 controller: state.addressController,
                 onTap: () async {
                   try {
-                    /* 
                     final predictions = await PlacesAutocomplete.show(
                         region: "fr",
                         offset: 0,
@@ -204,8 +203,7 @@ class FormSection extends StatelessWidget {
                         apiKey: "AIzaSyADw6o3DRaFrF_gdtpEtn_HM6PYhVQnNi8",
                         language: "fr",
                         components: [Component(Component.country, "fr")]);
-                    state.addressController.text = predictions!.description!;*/
-                    print("test");
+                    state.addressController.text = predictions!.description!;
                   } catch (e) {
                     print(e);
                   }

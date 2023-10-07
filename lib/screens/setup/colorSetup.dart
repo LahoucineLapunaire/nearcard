@@ -62,22 +62,22 @@ class CardSection extends StatelessWidget {
                           fit: BoxFit.cover,
                         )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
-              "John Doe",
+              state.nameController.text + " " + state.prenameController.text,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Color(int.parse(state.textColor)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
-              "CEO of Company",
+              state.titleController.text,
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Montserrat',
@@ -85,11 +85,11 @@ class CardSection extends StatelessWidget {
                 color: Color(int.parse(state.textColor)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
-              "Company One",
+              state.companyController.text,
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: 'Montserrat',
@@ -114,12 +114,11 @@ class ColorSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.4,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(width: 2.0, color: Colors.black),
         ),
+        color: Colors.white,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -135,7 +134,7 @@ class ColorSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             GestureDetector(
@@ -180,10 +179,10 @@ class ColorSection extends StatelessWidget {
                   color: Color(int.parse(state.bgColor)),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: SizedBox(),
+                child: const SizedBox(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             const Text(
@@ -194,7 +193,7 @@ class ColorSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             GestureDetector(
@@ -238,13 +237,13 @@ class ColorSection extends StatelessWidget {
                   color: Color(int.parse(state.textColor)),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: SizedBox(),
+                child: const SizedBox(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            ButtonSection(),
+            const ButtonSection(),
           ],
         ),
       ),
@@ -297,9 +296,9 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               child: ElevatedButton(
                   onPressed: () {
-                    print(state.bgColor);
-                    print(state.textColor);
-                    print(state.currentPage);
+                    context
+                        .read<SetupBloc>()
+                        .add(SetupEventChange(state.currentPage + 1));
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(

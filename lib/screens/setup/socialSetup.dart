@@ -97,7 +97,7 @@ class FormSection extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
-              'LinkedIn',
+              'LinkedIn (optionnel)',
               style: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Montserrat',
@@ -136,7 +136,7 @@ class FormSection extends StatelessWidget {
               height: 16,
             ),
             const Text(
-              'Site Web',
+              'Site Web (optionnel)',
               style: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Montserrat',
@@ -155,7 +155,7 @@ class FormSection extends StatelessWidget {
                 controller: state.websiteController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.web),
-                  hintText: 'Email',
+                  hintText: 'Site Web',
                   hintStyle: TextStyle(
                     fontSize: 14,
                     fontFamily: 'Montserrat',
@@ -217,24 +217,20 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
-                  if (state.linkedinController.text.isEmpty ||
-                      state.websiteController.text.isEmpty) {
-                    displayError(context, "Veuillez remplir tous les champs");
-                    return;
-                  }
-                  /*
-                  if (state.linkedinController.text.contains("linkedin.com") ==
-                      false) {
+                  if (state.linkedinController.text.isNotEmpty &&
+                      state.linkedinController.text.contains("linkedin.com") ==
+                          false) {
                     displayError(
                         context, "Veuillez saisir un lien LinkedIn valide");
                     return;
                   }
-                  if (state.websiteController.text.contains("http") == false) {
+                  if (state.websiteController.text.isNotEmpty &&
+                      state.websiteController.text.contains("http") == false) {
                     displayError(
                         context, "Veuillez saisir un lien de site web valide");
                     return;
                   }
-                  */
+
                   context
                       .read<SetupBloc>()
                       .add(SetupEventChange(state.currentPage + 1));

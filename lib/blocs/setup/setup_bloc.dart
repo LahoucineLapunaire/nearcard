@@ -18,7 +18,7 @@ part 'setup_state.dart';
 class SetupBloc extends Bloc<SetupEvent, SetupInitial> {
   SetupBloc()
       : super(SetupInitial(
-          currentPage: 7,
+          currentPage: 0,
           nameController: TextEditingController(),
           prenameController: TextEditingController(),
           titleController: TextEditingController(),

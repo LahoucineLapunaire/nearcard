@@ -1,4 +1,5 @@
 import 'package:NearCard/blocs/setup/setup_bloc.dart';
+import 'package:NearCard/screens/auth/login.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
@@ -104,7 +105,7 @@ class TitleSection extends StatelessWidget {
           height: 40,
         ),
         const Text(
-          'Veuillez vérifier votre adresse email pour pouvoir utiliser NearCard, pour recevoir l\'email, veuillez appuyer sur le bouton ci-dessous.',
+          'Veuillez vérifier votre adresse email pour pouvoir utiliser NearCard.Pour recevoir l\'email, veuillez appuyer sur le bouton ci-dessous et vous reconnecter à votre compte.',
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Montserrat',
@@ -157,7 +158,10 @@ class ButtonSection extends StatelessWidget {
                           state.bgColor,
                           state.textColor);
                       displayMessage(context,
-                          "Email envoyé ! Veuillez vérifier votre boîte mail pour pouvoir utiliser NearCard");
+                          "Email envoyé ! Veuillez vérifier votre boîte mail. Vous allez être déconnecté.");
+                      Future.delayed(Duration(seconds: 2), () {
+                        auth.signOut();
+                      });
                     } catch (e) {
                       displayError(context, e.toString());
                     }
@@ -187,9 +191,12 @@ class ButtonSection extends StatelessWidget {
               ),
               child: ElevatedButton(
                   onPressed: () {
-                    context
-                        .read<SetupBloc>()
-                        .add(SetupEventChange(state.currentPage - 1));
+                    auth.signOut();
+                    Navigator.push(
+                        // New line
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
                   },
                   style: ButtonStyle(
                     shadowColor:
@@ -198,7 +205,7 @@ class ButtonSection extends StatelessWidget {
                         MaterialStateProperty.all<Color>(Colors.transparent),
                   ),
                   child: const Text(
-                    "Retour",
+                    "Se connecter",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
