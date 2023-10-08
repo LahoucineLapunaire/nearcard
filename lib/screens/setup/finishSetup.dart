@@ -11,43 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseAuth auth = FirebaseAuth.instance;
 
-void sendEmailVerification() async {
-  print("Sending email");
-  User? user = auth.currentUser;
-  if (user != null && !user.emailVerified) {
-    await user.sendEmailVerification();
-  }
-}
-
-void firstSetup(
-    BuildContext context,
-    String name,
-    String prename,
-    String title,
-    String company,
-    String number,
-    String address,
-    String linkedin,
-    String website,
-    String picture,
-    String bgColor,
-    String textColor) async {
-  print("First setup");
-  firestore.collection("users").doc(auth.currentUser!.uid).set({
-    "name": name,
-    "prename": prename,
-    "title": title,
-    "company": company,
-    "number": number,
-    "address": address,
-    "linkedin": linkedin,
-    "website": website,
-    "picture": picture,
-    "bgColor": bgColor,
-    "textColor": textColor,
-  });
-}
-
 class FinishSetup extends StatelessWidget {
   const FinishSetup({super.key});
 
@@ -142,9 +105,7 @@ class ButtonSection extends StatelessWidget {
                         displayError(
                             context, "Veuillez vériifer vos informations");
                       }
-
-                      sendEmailVerification();
-                      firstSetup(
+                      context.read<SetupBloc>().add(SetupEventFirstSetup(
                           context,
                           state.nameController.text,
                           state.prenameController.text,
@@ -156,12 +117,9 @@ class ButtonSection extends StatelessWidget {
                           state.websiteController.text,
                           state.picture,
                           state.bgColor,
-                          state.textColor);
+                          state.textColor));
                       displayMessage(context,
-                          "Email envoyé ! Veuillez vérifier votre boîte mail. Vous allez être déconnecté.");
-                      Future.delayed(Duration(seconds: 2), () {
-                        auth.signOut();
-                      });
+                          "Email envoyé ! Veuillez vérifier votre boîte mail");
                     } catch (e) {
                       displayError(context, e.toString());
                     }
@@ -205,7 +163,7 @@ class ButtonSection extends StatelessWidget {
                         MaterialStateProperty.all<Color>(Colors.transparent),
                   ),
                   child: const Text(
-                    "Se connecter",
+                    "J'ai vérifier mon Email",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,

@@ -1,6 +1,8 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
+import 'package:NearCard/blocs/router/router_bloc.dart';
 import 'package:NearCard/blocs/setup/setup_bloc.dart';
+import 'package:NearCard/screens/app/router.dart';
 import 'package:NearCard/screens/onboarding/onboarding.dart';
 import 'package:NearCard/screens/setup/setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,40 +38,33 @@ class Verified extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'NearCard',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: const MaterialColor(
-          0xff001f3f,
-          <int, Color>{
-            50: Color(0xffe5f1f4),
-            100: Color(0xffbfe0e7),
-            200: Color(0xff94cdd6),
-            300: Color(0xff68bac5),
-            400: Color(0xff47aeb9),
-            500: Color(0xff27a2ad),
-            600: Color(0xff219b9f),
-            700: Color(0xff1b8c8f),
-            800: Color(0xff177d7f),
-            900: Color(0xff0f5f60),
-          },
-        ),
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              const Text("Verified"),
-              ElevatedButton(
-                  onPressed: () {
-                    auth.signOut();
-                  },
-                  child: const Text("Sign out")),
-            ],
+        title: 'NearCard',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: const MaterialColor(
+            0xff001f3f,
+            <int, Color>{
+              50: Color(0xffe5f1f4),
+              100: Color(0xffbfe0e7),
+              200: Color(0xff94cdd6),
+              300: Color(0xff68bac5),
+              400: Color(0xff47aeb9),
+              500: Color(0xff27a2ad),
+              600: Color(0xff219b9f),
+              700: Color(0xff1b8c8f),
+              800: Color(0xff177d7f),
+              900: Color(0xff0f5f60),
+            },
           ),
         ),
-      ),
-    );
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider<RouterBloc>(
+              create: (context) => RouterBloc(),
+            ),
+          ],
+          child: const RouterScreen(),
+        ));
   }
 }
 

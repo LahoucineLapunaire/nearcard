@@ -26,3 +26,32 @@ class SetupEventChangeTextColor extends SetupEvent {
 
   SetupEventChangeTextColor(this.color);
 }
+
+class SetupEventFirstSetup extends SetupEvent {
+  final BuildContext context;
+  final String name;
+  final String prename;
+  final String title;
+  final String company;
+  final String number;
+  final String address;
+  final String linkedin;
+  final String website;
+  final String picture;
+  final String bgColor;
+  final String textColor;
+
+  SetupEventFirstSetup(
+      this.context,
+      this.name,
+      this.prename,
+      this.title,
+      this.company,
+      this.number,
+      this.address,
+      this.linkedin,
+      this.website,
+      this.picture,
+      this.bgColor,
+      this.textColor);
+}
