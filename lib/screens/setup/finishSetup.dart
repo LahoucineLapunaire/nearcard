@@ -163,7 +163,7 @@ class ButtonSection extends StatelessWidget {
                         MaterialStateProperty.all<Color>(Colors.transparent),
                   ),
                   child: const Text(
-                    "J'ai vérifier mon Email",
+                    "J'ai vérifié mon Email",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,

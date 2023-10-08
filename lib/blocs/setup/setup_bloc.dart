@@ -88,6 +88,7 @@ void firstSetup(
     "picture": downloadURL,
     "bgColor": bgColor,
     "textColor": textColor,
+    "cardShare": false,
   });
 }
 

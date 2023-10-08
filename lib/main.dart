@@ -1,4 +1,5 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
+import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
 import 'package:NearCard/blocs/router/router_bloc.dart';
 import 'package:NearCard/blocs/setup/setup_bloc.dart';
@@ -62,6 +63,7 @@ class Verified extends StatelessWidget {
             BlocProvider<RouterBloc>(
               create: (context) => RouterBloc(),
             ),
+            BlocProvider(create: (context) => CurrentUserBloc()),
           ],
           child: const RouterScreen(),
         ));

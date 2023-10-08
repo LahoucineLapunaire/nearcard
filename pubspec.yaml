@@ -45,6 +45,7 @@ dependencies:
   intl_phone_number_input: ^0.7.3+1
   image_picker: ^1.0.4
   flutter_colorpicker: ^1.0.3
+  equatable: ^2.0.5
   
 
   
