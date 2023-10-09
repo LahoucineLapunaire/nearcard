@@ -2,6 +2,7 @@ import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
 import 'package:NearCard/blocs/router/router_bloc.dart';
+import 'package:NearCard/blocs/settings/settings_bloc.dart';
 import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/screens/app/router.dart';
 import 'package:NearCard/screens/onboarding/onboarding.dart';
@@ -11,12 +12,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setSharedPreferences();
   auth.authStateChanges().listen((User? user) {
     if (user != null) {
       if (user.emailVerified) {
@@ -31,6 +34,13 @@ void main() async {
       runApp(const UnLogged());
     }
   });
+}
+
+void setSharedPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool('notification') == null) {
+    prefs.setBool('notification', true);
+  }
 }
 
 class Verified extends StatelessWidget {
@@ -63,7 +73,11 @@ class Verified extends StatelessWidget {
             BlocProvider<RouterBloc>(
               create: (context) => RouterBloc(),
             ),
-            BlocProvider(create: (context) => CurrentUserBloc()),
+            BlocProvider<CurrentUserBloc>(
+                create: (context) => CurrentUserBloc()),
+            BlocProvider<SettingsBloc>(
+              create: (context) => SettingsBloc(),
+            ),
           ],
           child: const RouterScreen(),
         ));

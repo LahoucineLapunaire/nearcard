@@ -49,8 +49,7 @@ class ProfileScreen extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.settings),
                         onPressed: () {
-                          print("Settings");
-                          Navigator.pop(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
@@ -64,25 +63,23 @@ class ProfileScreen extends StatelessWidget {
                   )
                 ],
               ),
-              floatingActionButton: state.currentUser.cardShare
-                  ? FloatingActionButton(
-                      backgroundColor: Colors.red,
-                      onPressed: () {
-                        context.read<CurrentUserBloc>().add(
-                            CurrentUserShareCard(
-                                share: !state.currentUser.cardShare));
-                      },
-                      child: const Icon(Icons.stop),
-                    )
-                  : FloatingActionButton(
-                      backgroundColor: Colors.green,
-                      onPressed: () {
-                        context.read<CurrentUserBloc>().add(
-                            CurrentUserShareCard(
-                                share: !state.currentUser.cardShare));
-                      },
-                      child: const Icon(Icons.share),
-                    ),
+              floatingActionButton: FloatingActionButton(
+                backgroundColor:
+                    state.currentUser.cardShare ? Colors.red : Colors.green,
+                onPressed: () {
+                  CardShareModal.show(
+                      context,
+                      state.currentUser.cardShare,
+                      (value) => {
+                            context
+                                .read<CurrentUserBloc>()
+                                .add(CurrentUserShareCard(share: value))
+                          });
+                },
+                child: state.currentUser.cardShare
+                    ? Icon(Icons.stop)
+                    : Icon(Icons.share),
+              ),
               body: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Center(

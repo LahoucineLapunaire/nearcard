@@ -1,3 +1,4 @@
+import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -56,6 +57,157 @@ class QRCodeModal extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               child: Text("Fermer"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CardShareModal extends StatelessWidget {
+  final bool cardShare;
+  final Function(bool) onConfirm;
+
+  CardShareModal({required this.cardShare, required this.onConfirm});
+
+  static void show(
+      BuildContext context, bool cardShare, Function(bool) onConfirm) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CardShareModal(cardShare: cardShare, onConfirm: onConfirm);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              cardShare
+                  ? "Désactiver le partage NearCard ?"
+                  : "Activer le partage de NearCard ?",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              cardShare
+                  ? "Voulez-vous désactiver le partage de carte et arrêter de partager votre carte avec les personnes proches ?"
+                  : "Voulez-vous activer le partage de carte et commencer à partager votre carte avec les personnes proches ?",
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Annuler"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    onConfirm(!cardShare);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(cardShare ? "Désactiver" : "Activer"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LogoutModal extends StatelessWidget {
+  LogoutModal({super.key});
+
+  static void show(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return LogoutModal();
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Voulez vous vraiment vous déconnecter ?",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Voulez-vous vraiment vous déconnecter de votre compte ? vous pourrez vous reconnecter plus tard en utilisant votre adresse e-mail et votre mot de passe.",
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      foregroundColor: MaterialStateProperty.all(Colors.black),
+                      shadowColor:
+                          MaterialStateProperty.all(Colors.transparent)),
+                  child: Text("Annuler"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    auth.signOut();
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                    foregroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  child: Text("Se déconnecter"),
+                ),
+              ],
             ),
           ],
         ),

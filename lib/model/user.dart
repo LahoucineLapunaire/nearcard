@@ -44,6 +44,47 @@ class CurrentUser {
     );
   }
 
+  //function that set a particular field to a certain value
+  void setField(String field, String value) {
+    switch (field) {
+      case 'name':
+        name = value;
+        break;
+      case 'prename':
+        prename = value;
+        break;
+      case 'title':
+        title = value;
+        break;
+      case 'company':
+        company = value;
+        break;
+      case 'number':
+        number = value;
+        break;
+      case 'address':
+        address = value;
+        break;
+      case 'linkedin':
+        linkedin = value;
+        break;
+      case 'website':
+        website = value;
+        break;
+      case 'picture':
+        picture = value;
+        break;
+      case 'bgColor':
+        bgColor = value;
+        break;
+      case 'textColor':
+        textColor = value;
+        break;
+      default:
+        break;
+    }
+  }
+
   Map<String, dynamic> toJson() => {
         'name': name,
         'prename': prename,
