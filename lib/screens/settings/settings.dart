@@ -29,7 +29,10 @@ class SettingsScreen extends StatelessWidget {
                       title: state.currentUser.title,
                     ),
                     const SizedBox(height: 16),
-                    const UserInfoSettingsSection(),
+                    UserInfoSettingsSection(
+                      context: context,
+                      state: state,
+                    ),
                     Divider(
                       color: Colors.grey[400],
                       height: 16,
@@ -142,7 +145,11 @@ class ImageSection extends StatelessWidget {
 }
 
 class UserInfoSettingsSection extends StatelessWidget {
-  const UserInfoSettingsSection({super.key});
+  final BuildContext context;
+  final SettingsLoaded state;
+
+  const UserInfoSettingsSection(
+      {super.key, required this.context, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +158,10 @@ class UserInfoSettingsSection extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const UserInfoSettingsScreen(),
+            builder: (context) => UserInfoSettingsScreen(
+              context: context,
+              state: state,
+            ),
           ),
         );
       },
