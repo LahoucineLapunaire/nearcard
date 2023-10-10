@@ -1,6 +1,10 @@
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
+import 'package:NearCard/widgets/geolocation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class QRCodeModal extends StatelessWidget {
   final String link;
@@ -68,8 +72,10 @@ class QRCodeModal extends StatelessWidget {
 class CardShareModal extends StatelessWidget {
   final bool cardShare;
   final Function(bool) onConfirm;
+  final BuildContext? widgetContext;
 
-  CardShareModal({required this.cardShare, required this.onConfirm});
+  CardShareModal(
+      {required this.cardShare, required this.onConfirm, this.widgetContext});
 
   static void show(
       BuildContext context, bool cardShare, Function(bool) onConfirm) {
@@ -127,6 +133,7 @@ class CardShareModal extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     onConfirm(!cardShare);
+                    manageCardSharing();
                     Navigator.of(context).pop();
                   },
                   child: Text(cardShare ? "Désactiver" : "Activer"),

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -20,6 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   setSharedPreferences();
+  requestLocationPermission();
   auth.authStateChanges().listen((User? user) {
     if (user != null) {
       if (user.emailVerified) {
@@ -34,6 +36,17 @@ void main() async {
       runApp(const UnLogged());
     }
   });
+}
+
+Future<void> requestLocationPermission() async {
+  final PermissionStatus status = await Permission.location.request();
+  if (status == PermissionStatus.granted) {
+    // Permission granted
+  } else if (status == PermissionStatus.denied) {
+    // Permission denied
+  } else if (status == PermissionStatus.permanentlyDenied) {
+    // Permission permanently denied
+  }
 }
 
 void setSharedPreferences() async {

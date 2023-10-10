@@ -88,7 +88,10 @@ void firstSetup(
     "picture": downloadURL,
     "bgColor": bgColor,
     "textColor": textColor,
+    "location": GeoPoint(0, 0),
     "cardShare": false,
+    "carSent": [],
+    "cardReceived": [],
   });
 }
 
