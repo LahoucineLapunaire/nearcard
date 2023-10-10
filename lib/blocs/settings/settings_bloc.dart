@@ -53,6 +53,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         emit(settingsState);
       }
       if (event is SettingsEventChangeUserinfo) {
+        print(event.field);
+        print(event.value);
         try {
           if (event.field == "picture") {
             String downloadURL = "";

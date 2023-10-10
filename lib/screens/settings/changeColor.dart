@@ -57,13 +57,18 @@ class CardSection extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: state.picture == ""
-                      ? Center(
-                          child: FaIcon(
-                            FontAwesomeIcons.userPlus,
-                            size: 40,
-                            color: Color(int.parse(state.textColor)),
-                          ),
-                        )
+                      ? state.currentUser.picture == ""
+                          ? Center(
+                              child: FaIcon(
+                                FontAwesomeIcons.userPlus,
+                                size: 40,
+                                color: Color(int.parse(state.textColor)),
+                              ),
+                            )
+                          : Image.network(
+                              state.currentUser.picture,
+                              fit: BoxFit.cover,
+                            )
                       : Image.file(
                           File(state.picture),
                           fit: BoxFit.cover,
@@ -73,9 +78,10 @@ class CardSection extends StatelessWidget {
               height: 20,
             ),
             Text(
-              state.nameController.text + " " + state.prenameController.text,
+              state.currentUser.name + " " + state.currentUser.prename,
               style: TextStyle(
                 fontSize: 24,
+                fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold,
                 color: Color(int.parse(state.textColor)),
               ),
@@ -84,7 +90,7 @@ class CardSection extends StatelessWidget {
               height: 20,
             ),
             Text(
-              state.titleController.text,
+              state.currentUser.title,
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Montserrat',
@@ -96,7 +102,7 @@ class CardSection extends StatelessWidget {
               height: 20,
             ),
             Text(
-              state.companyController.text,
+              state.currentUser.company,
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: 'Montserrat',
@@ -157,7 +163,6 @@ class ColorSection extends StatelessWidget {
                             child: ColorPicker(
                               pickerColor: Color(int.parse(state.textColor)),
                               onColorChanged: (value) {
-                                print(value.value.toRadixString(16));
                                 context.read<SettingsBloc>().add(
                                     SettingsEventChangeBgColor(
                                         value.value.toRadixString(16)));

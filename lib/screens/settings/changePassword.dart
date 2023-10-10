@@ -195,6 +195,9 @@ class ButtonSection extends StatelessWidget {
                   return;
                 }
                 auth.sendPasswordResetEmail(email: state.emailController.text);
+                displayMessage(context,
+                    "Un email vous a été envoyé pour changer votre mot de passe.");
+                Navigator.of(context).pop();
               },
               style: ButtonStyle(
                 backgroundColor:

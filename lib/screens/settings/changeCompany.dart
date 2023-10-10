@@ -1,7 +1,5 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
-import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/widgets/breadcrumb.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,32 +14,36 @@ class ChangeCompanyScreen extends StatelessWidget {
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
           if (state is SettingsLoaded) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 56,
-                    ),
-                    DelayedDisplay(
-                        delay: Duration(milliseconds: 500),
-                        child: TitleSection()),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    DelayedDisplay(
-                        delay: Duration(milliseconds: 700),
-                        child: FormSection(
-                            context: context, state: state as SettingsLoaded)),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    DelayedDisplay(
-                        delay: Duration(milliseconds: 500),
-                        child: ButtonSection(
-                            context: context, state: state as SettingsLoaded)),
-                  ],
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 56,
+                      ),
+                      DelayedDisplay(
+                          delay: Duration(milliseconds: 500),
+                          child: TitleSection()),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      DelayedDisplay(
+                          delay: Duration(milliseconds: 700),
+                          child: FormSection(
+                              context: context,
+                              state: state as SettingsLoaded)),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      DelayedDisplay(
+                          delay: Duration(milliseconds: 500),
+                          child: ButtonSection(
+                              context: context,
+                              state: state as SettingsLoaded)),
+                    ],
+                  ),
                 ),
               ),
             );

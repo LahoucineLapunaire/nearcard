@@ -1,7 +1,4 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
-import 'package:NearCard/blocs/setup/setup_bloc.dart';
-import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/widgets/breadcrumb.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -278,18 +275,20 @@ class ButtonSection extends StatelessWidget {
           height: 40,
           child: ElevatedButton(
               onPressed: () {
-                if (state.numberController.text.isNotEmpty &&
-                    state.addressController.text.isNotEmpty) {
-                  SettingsEventChangeUserinfo(
+                print("salut");
+                print(state.numberController.text);
+                print(state.addressController.text);
+                if (state.numberController.text.isNotEmpty) {
+                  context.read<SettingsBloc>().add(SettingsEventChangeUserinfo(
                       context: context,
                       field: "number",
-                      value: state.numberController.text);
-                  SettingsEventChangeUserinfo(
+                      value: state.numberController.text));
+                }
+                if (state.addressController.text.isNotEmpty) {
+                  context.read<SettingsBloc>().add(SettingsEventChangeUserinfo(
                       context: context,
                       field: "address",
-                      value: state.addressController.text);
-                } else {
-                  displayError(context, "Veuillez remplir tous les champs");
+                      value: state.addressController.text));
                 }
               },
               style: ButtonStyle(

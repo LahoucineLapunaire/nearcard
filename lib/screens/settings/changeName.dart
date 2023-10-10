@@ -1,7 +1,5 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
-import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -239,12 +237,12 @@ class ButtonSection extends StatelessWidget {
                           context, "Veuillez saisir votre nom et prénom");
                       return;
                     }
-                    blocContext.read<SettingsBloc>().add(
+                    context.read<SettingsBloc>().add(
                         SettingsEventChangeUserinfo(
                             field: "prename",
                             value: blocState.prenameController.text,
                             context: blocContext));
-                    blocContext.read<SettingsBloc>().add(
+                    context.read<SettingsBloc>().add(
                         SettingsEventChangeUserinfo(
                             field: "name",
                             value: blocState.nameController.text,

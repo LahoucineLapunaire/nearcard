@@ -1,7 +1,5 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
-import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/widgets/breadcrumb.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,36 +14,39 @@ class ChangeSocialScreen extends StatelessWidget {
       create: (context) => SettingsBloc(),
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
-          return Scaffold(
-              body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 56,
-                  ),
-                  DelayedDisplay(
-                      delay: Duration(milliseconds: 500),
-                      child: TitleSection()),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  DelayedDisplay(
-                      delay: Duration(milliseconds: 700),
-                      child: FormSection(
-                          context: context, state: state as SettingsLoaded)),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  DelayedDisplay(
-                      delay: Duration(milliseconds: 500),
-                      child: ButtonSection(
-                          context: context, state: state as SettingsLoaded)),
-                ],
+          if (state is SettingsLoaded) {
+            return Scaffold(
+                body: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 56,
+                    ),
+                    DelayedDisplay(
+                        delay: Duration(milliseconds: 500),
+                        child: TitleSection()),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    DelayedDisplay(
+                        delay: Duration(milliseconds: 700),
+                        child: FormSection(
+                            context: context, state: state as SettingsLoaded)),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    DelayedDisplay(
+                        delay: Duration(milliseconds: 500),
+                        child: ButtonSection(
+                            context: context, state: state as SettingsLoaded)),
+                  ],
+                ),
               ),
-            ),
-          ));
+            ));
+          }
+          return Container();
         },
       ),
     );
@@ -99,84 +100,79 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SetupBloc, SetupInitial>(
-      builder: (context, state) {
-        return Container(
-          width: 300,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text(
-              'LinkedIn (optionnel)',
-              style: TextStyle(
+    return Container(
+      width: 300,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text(
+          'LinkedIn (optionnel)',
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFe3e3e3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: TextField(
+            controller: state.linkedinController,
+            decoration: const InputDecoration(
+              prefixIcon: const Padding(
+                padding: EdgeInsets.fromLTRB(15, 12, 0, 0),
+                child: FaIcon(
+                  FontAwesomeIcons.linkedinIn,
+                  size: 22,
+                ),
+              ),
+              hintText: 'LinkedIn',
+              hintStyle: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
               ),
+              border: InputBorder.none,
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFe3e3e3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextField(
-                controller: state.linkedinController,
-                decoration: const InputDecoration(
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.fromLTRB(15, 12, 0, 0),
-                    child: FaIcon(
-                      FontAwesomeIcons.linkedinIn,
-                      size: 22,
-                    ),
-                  ),
-                  hintText: 'LinkedIn',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            const Text(
-              'Site Web (optionnel)',
-              style: TextStyle(
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        const Text(
+          'Site Web (optionnel)',
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFe3e3e3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: TextField(
+            controller: state.websiteController,
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.web),
+              hintText: 'Site Web',
+              hintStyle: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
               ),
+              border: InputBorder.none,
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFe3e3e3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextField(
-                controller: state.websiteController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.web),
-                  hintText: 'Site Web',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  border: InputBorder.none,
-                ),
-              ),
-            )
-          ]),
-        );
-      },
+          ),
+        )
+      ]),
     );
   }
 }

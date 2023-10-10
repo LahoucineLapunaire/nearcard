@@ -1,8 +1,5 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
-import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/widgets/breadcrumb.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,33 +14,42 @@ class ChangeTitleScreen extends StatelessWidget {
       create: (context) => SettingsBloc(),
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 56,
+          if (state is SettingsLoaded) {
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 56,
+                      ),
+                      DelayedDisplay(
+                          delay: Duration(milliseconds: 500),
+                          child: TitleSection()),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      DelayedDisplay(
+                          delay: Duration(milliseconds: 700),
+                          child: FormSection(
+                              context: context,
+                              state: state as SettingsLoaded)),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      DelayedDisplay(
+                          delay: Duration(milliseconds: 500),
+                          child: ButtonSection(
+                              context: context,
+                              state: state as SettingsLoaded)),
+                    ],
                   ),
-                  DelayedDisplay(
-                      delay: Duration(milliseconds: 500),
-                      child: TitleSection()),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  DelayedDisplay(
-                      delay: Duration(milliseconds: 700), child: FormSection()),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  DelayedDisplay(
-                      delay: Duration(milliseconds: 500),
-                      child: ButtonSection(
-                          context: context, state: state as SettingsLoaded)),
-                ],
+                ),
               ),
-            ),
-          );
+            );
+          }
+          return Container();
         },
       ),
     );
@@ -90,56 +96,54 @@ class TitleSection extends StatelessWidget {
 }
 
 class FormSection extends StatelessWidget {
-  const FormSection({super.key});
+  final BuildContext context;
+  final SettingsLoaded state;
+
+  const FormSection({super.key, required this.context, required this.state});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SetupBloc, SetupInitial>(
-      builder: (context, state) {
-        return Container(
-          width: 300,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text(
-              'Titre',
-              style: TextStyle(
+    return Container(
+      width: 300,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text(
+          'Titre',
+          style: TextStyle(
+            fontSize: 14,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFe3e3e3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: TextField(
+            onChanged: (value) {
+              //set first letter to uppercase
+              if (value.isNotEmpty) {
+                value = value[0].toUpperCase() + value.substring(1);
+              }
+              state.titleController.text = value;
+            },
+            controller: state.titleController,
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.work),
+              hintText: 'Titre',
+              hintStyle: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.w400,
               ),
+              border: InputBorder.none,
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFe3e3e3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextField(
-                onChanged: (value) {
-                  //set first letter to uppercase
-                  if (value.isNotEmpty) {
-                    value = value[0].toUpperCase() + value.substring(1);
-                  }
-                  state.titleController.text = value;
-                },
-                controller: state.titleController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.work),
-                  hintText: 'Titre',
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  border: InputBorder.none,
-                ),
-              ),
-            )
-          ]),
-        );
-      },
+          ),
+        )
+      ]),
     );
   }
 }

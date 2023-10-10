@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/screens/settings/settings.dart';
+import 'package:NearCard/widgets/alert.dart';
 import 'package:NearCard/widgets/modal.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
@@ -327,7 +328,12 @@ class SocialSection extends StatelessWidget {
         IconButton(
           onPressed: () {
             // Redirigez vers le profil LinkedIn lorsque cet IconButton est pressé.
-            launchUrl(Uri.parse(linkedin));
+            if (linkedin != "") {
+              launchUrl(Uri.parse(linkedin));
+            } else {
+              displayError(
+                  context, "Aucun profil LinkedIn n'est associé à ce compte");
+            }
           },
           icon: FaIcon(
             FontAwesomeIcons.linkedin,
@@ -336,7 +342,11 @@ class SocialSection extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            launchUrl(Uri.parse(website));
+            if (website != "") {
+              launchUrl(Uri.parse(website));
+            } else {
+              displayError(context, "Aucun site web n'est associé à ce compte");
+            }
           },
           icon: FaIcon(
             FontAwesomeIcons.globe,
