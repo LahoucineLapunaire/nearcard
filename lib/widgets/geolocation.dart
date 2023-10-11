@@ -55,9 +55,6 @@ void manageCardSharing() async {
     List<QueryDocumentSnapshot<Object?>> peopleNearby =
         await getPeopleNearby(position);
 
-    print("people Nearby : ");
-    print(peopleNearby[0].id);
-
     // send card to people nearby if cardShare is true
     sendPeopleNearby(peopleNearby, position);
   } catch (e) {
@@ -116,13 +113,13 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
     Position position) async {
   try {
     print("start getPeopleNearby");
-    double radiusMeters = 100.0; // Rayon en mètres (10 kilomètres)
+    double radiusMeters = 100.0;
     double latitude = position.latitude;
     double longitude = position.longitude;
 
     // Créez les bornes pour la requête géospatiale
-    GeoPoint lowerBound = GeoPoint(latitude - 0.001, longitude - 0.001);
-    GeoPoint upperBound = GeoPoint(latitude + 0.001, longitude + 0.001);
+    GeoPoint lowerBound = GeoPoint(latitude - 0.01, longitude - 0.01);
+    GeoPoint upperBound = GeoPoint(latitude + 0.01, longitude + 0.01);
 
     // Utilisez les bornes pour effectuer la requête Firestore
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -143,24 +140,24 @@ void sendPeopleNearby(
   try {
     print("start sendPeopleNearby");
 
-    Map<String, dynamic> data = {};
-    peopleNearby.map((doc) {
-      print("in map");
-      data = {
+    for (QueryDocumentSnapshot<Object?> doc in peopleNearby) {
+      if (doc.id == auth.currentUser?.uid) {
+        continue;
+      }
+      Map<String, dynamic> data = {
         "sender": auth.currentUser?.uid,
         "receiver": doc.id,
         "date": DateTime.now(),
         "location": GeoPoint(position.latitude, position.longitude),
       };
-      print("data : ");
-      print(data);
       firestore.collection('users').doc(auth.currentUser?.uid).update({
         "cardSent": FieldValue.arrayUnion([data]), // add doc.id to array
       });
       firestore.collection('users').doc(doc.id).update({
         "cardReceived": FieldValue.arrayUnion([data]),
       });
-    });
+    }
+
     print("finish");
   } catch (e) {
     print(e.toString());

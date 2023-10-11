@@ -72,6 +72,7 @@ class ProfileScreen extends StatelessWidget {
                 backgroundColor:
                     state.currentUser.cardShare ? Colors.red : Colors.green,
                 onPressed: () {
+                  /*
                   CardShareModal.show(
                       context,
                       state.currentUser.cardShare,
@@ -80,6 +81,8 @@ class ProfileScreen extends StatelessWidget {
                                 .read<CurrentUserBloc>()
                                 .add(CurrentUserShareCard(share: value))
                           });
+                          */
+                  manageCardSharing();
                 },
                 child: state.currentUser.cardShare
                     ? Icon(Icons.stop)
