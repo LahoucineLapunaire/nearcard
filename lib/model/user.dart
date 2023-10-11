@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CurrentUser {
   String name;
   String prename;
@@ -10,6 +12,9 @@ class CurrentUser {
   String picture;
   String bgColor;
   String textColor;
+  GeoPoint location;
+  List<dynamic> cardSent;
+  List<dynamic> cardReceived;
   bool cardShare;
 
   CurrentUser({
@@ -24,6 +29,9 @@ class CurrentUser {
     required this.picture,
     required this.bgColor,
     required this.textColor,
+    required this.location,
+    required this.cardSent,
+    required this.cardReceived,
     required this.cardShare,
   });
 
@@ -40,6 +48,9 @@ class CurrentUser {
       picture: json['picture'],
       bgColor: json['bgColor'],
       textColor: json['textColor'],
+      location: json['location'],
+      cardSent: json['cardSent'],
+      cardReceived: json['cardReceived'],
       cardShare: json['cardShare'],
     );
   }
@@ -80,6 +91,15 @@ class CurrentUser {
       case 'textColor':
         textColor = value;
         break;
+      case 'location':
+        location = value as GeoPoint;
+        break;
+      case 'cardSent':
+        cardSent = value as List<Map<String, dynamic>>;
+        break;
+      case 'cardReceived':
+        cardReceived = value as List<Map<String, dynamic>>;
+        break;
       default:
         break;
     }
@@ -97,6 +117,9 @@ class CurrentUser {
         'picture': picture,
         'bgColor': bgColor,
         'textColor': textColor,
+        'location': location,
+        'cardSent': cardSent,
+        'cardReceived': cardReceived,
         'cardShare': cardShare,
       };
 }

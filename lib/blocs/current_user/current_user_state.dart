@@ -6,17 +6,14 @@ class CurrentUserInitial extends CurrentUserState {}
 
 class CurrentUserLoaded extends CurrentUserState {
   final CurrentUser currentUser;
-  final bool recto;
 
-  CurrentUserLoaded(this.currentUser, this.recto);
+  CurrentUserLoaded(this.currentUser);
 
   CurrentUserLoaded copyWith({
     CurrentUser? currentUser,
-    bool? recto,
   }) {
     return CurrentUserLoaded(
       currentUser ?? this.currentUser,
-      recto ?? this.recto,
     );
   }
 }

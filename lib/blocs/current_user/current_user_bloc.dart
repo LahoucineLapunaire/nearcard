@@ -29,7 +29,7 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
         final currentUser = CurrentUser.fromJson(userData);
 
         // Émettre un nouvel état avec les données de l'utilisateur courant
-        emit(CurrentUserLoaded(currentUser, true));
+        emit(CurrentUserLoaded(currentUser));
       } else {
         // Le document n'existe pas (l'utilisateur n'a peut-être pas encore été créé)
         // Vous pouvez choisir de gérer cela différemment selon votre logique
