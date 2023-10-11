@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:NearCard/model/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,11 +12,12 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class VisitedUserBloc extends Bloc<VisitedUserEvent, VisitedUserState> {
   final String visitedUserId;
+  StreamSubscription<DocumentSnapshot>? _subscription;
 
   VisitedUserBloc(this.visitedUserId)
       : super(VisitedUserInitial(visitedUserId)) {
     // Écouter les changements dans le document Firestore de l'utilisateur courant
-    firestore
+    _subscription = firestore
         .collection("users")
         .doc(visitedUserId)
         .snapshots()
@@ -25,15 +28,22 @@ class VisitedUserBloc extends Bloc<VisitedUserEvent, VisitedUserState> {
         final visitedUser = VisitedUser.fromJson(userData);
 
         // Émettre un nouvel état avec les données de l'utilisateur courant
-        emit(VisitedUserLoaded(visitedUser));
+        if (!isClosed) {
+          emit(VisitedUserLoaded(visitedUser));
+        }
       } else {
         // Le document n'existe pas (l'utilisateur n'a peut-être pas encore été créé)
         // Vous pouvez choisir de gérer cela différemment selon votre logique
-        emit(VisitedUserNotFound());
+        if (!isClosed) {
+          emit(VisitedUserNotFound());
+        }
       }
     });
-    on<VisitedUserEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
   }
 }

@@ -40,17 +40,11 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
     on<CurrentUserEvent>((event, emit) {
       // Le reste de votre gestion d'événements
 
-      if (event is CurrentUserShareCard) {
-        // Récupérer l'utilisateur courant
-        final CurrentUserLoaded currentUserState = state as CurrentUserLoaded;
-        final CurrentUser currentUser = currentUserState.currentUser;
-
-        // Mettre à jour le champ cardShare
-        firestore
-            .collection("users")
-            .doc(auth.currentUser?.uid)
-            .update({"cardShare": event.share});
-        emit(currentUserState.copyWith(currentUser: currentUser));
+      if (event is CurrentUserChangeShare) {
+        CurrentUserLoaded state = this.state as CurrentUserLoaded;
+        final currentUser = state.currentUser;
+        currentUser.cardShare = event.share;
+        emit(CurrentUserLoaded(currentUser));
       }
     });
   }

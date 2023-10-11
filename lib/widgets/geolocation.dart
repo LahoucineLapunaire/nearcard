@@ -1,46 +1,30 @@
-import 'package:NearCard/widgets/alert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:background_fetch/background_fetch.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-void scheduleBackgroundTask() async {
-  // Configure the background task
-  BackgroundFetch.configure(
-    BackgroundFetchConfig(
-      minimumFetchInterval: 1, // Run every minute
-      stopOnTerminate: false,
-      enableHeadless: true,
-      startOnBoot: true,
-      requiresBatteryNotLow: false,
-      requiresCharging: false,
-      requiresStorageNotLow: false,
-      requiresDeviceIdle: false,
-      requiredNetworkType: NetworkType.NONE,
-    ),
-    (String taskId) async {
-      print("here");
-      // Run the manageCardSharing function
+void sceduleCardSharing() async {
+  try {
+    print("start sceduleCardSharing");
+    final cron = Cron();
+    DateTime startedTime = DateTime.now();
+    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
       manageCardSharing();
-      print("[BackgroundFetch] Event received $taskId");
-      print("[BackgroundFetch] Location updated");
-      // Stop the task after 30 minutes
-      if (DateTime.now().difference(DateTime.now()).inMinutes >= 30) {
-        BackgroundFetch.stop(taskId);
+      final DateTime currentTime = DateTime.now();
+      final Duration elapsed = currentTime.difference(startedTime);
+      if (elapsed.inMinutes >= 30) {
         stopCardShare();
+        cron.close();
+        return;
       }
-
-      // Return the result
-      BackgroundFetch.finish(taskId);
-    },
-  );
-
-  // Start the background task
-  await BackgroundFetch.start();
+    });
+  } catch (e) {
+    print(e.toString());
+  }
 }
 
 void manageCardSharing() async {
@@ -68,7 +52,6 @@ void stopCardShare() async {
     firestore.collection('users').doc(auth.currentUser?.uid).update({
       'cardShare': false,
     });
-    await BackgroundFetch.stop();
   } catch (e) {
     print(e.toString());
   }
@@ -88,6 +71,23 @@ void sendLocation(Position position) async {
 
 Future<Position> getPosition() async {
   try {
+    final PermissionStatus status = await Permission.location.request();
+    if (status == PermissionStatus.denied ||
+        status == PermissionStatus.restricted ||
+        status == PermissionStatus.permanentlyDenied) {
+      print("Permission denied");
+      return Position(
+          longitude: 0,
+          latitude: 0,
+          timestamp: DateTime.now(),
+          accuracy: 0,
+          altitude: 0,
+          altitudeAccuracy: 0,
+          heading: 0,
+          headingAccuracy: 0,
+          speed: 0,
+          speedAccuracy: 0);
+    }
     print("start getPosition");
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -113,21 +113,20 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
     Position position) async {
   try {
     print("start getPeopleNearby");
-    double radiusMeters = 100.0;
     double latitude = position.latitude;
     double longitude = position.longitude;
 
     // Créez les bornes pour la requête géospatiale
     GeoPoint lowerBound = GeoPoint(latitude - 0.01, longitude - 0.01);
     GeoPoint upperBound = GeoPoint(latitude + 0.01, longitude + 0.01);
-
+    print("before querySnapshot");
     // Utilisez les bornes pour effectuer la requête Firestore
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('location', isGreaterThanOrEqualTo: lowerBound)
         .where('location', isLessThanOrEqualTo: upperBound)
         .get();
-
+    print("after querySnapshot");
     return querySnapshot.docs;
   } catch (e) {
     print(e.toString());
@@ -141,9 +140,6 @@ void sendPeopleNearby(
     print("start sendPeopleNearby");
 
     for (QueryDocumentSnapshot<Object?> doc in peopleNearby) {
-      if (doc.id == auth.currentUser?.uid) {
-        continue;
-      }
       Map<String, dynamic> data = {
         "sender": auth.currentUser?.uid,
         "receiver": doc.id,

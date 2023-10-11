@@ -70,19 +70,15 @@ class QRCodeModal extends StatelessWidget {
 }
 
 class CardShareModal extends StatelessWidget {
-  final bool cardShare;
-  final Function(bool) onConfirm;
   final BuildContext? widgetContext;
 
-  CardShareModal(
-      {required this.cardShare, required this.onConfirm, this.widgetContext});
+  CardShareModal({this.widgetContext});
 
-  static void show(
-      BuildContext context, bool cardShare, Function(bool) onConfirm) {
+  static void show(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CardShareModal(cardShare: cardShare, onConfirm: onConfirm);
+        return CardShareModal();
       },
     );
   }
@@ -105,9 +101,7 @@ class CardShareModal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              cardShare
-                  ? "Désactiver le partage NearCard ?"
-                  : "Activer le partage de NearCard ?",
+              "Activer le partage de NearCard ?",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -115,9 +109,7 @@ class CardShareModal extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              cardShare
-                  ? "Voulez-vous désactiver le partage de carte et arrêter de partager votre carte avec les personnes proches ?"
-                  : "Voulez-vous activer le partage de carte et commencer à partager votre carte avec les personnes proches ?",
+              "Voulez-vous activer le partage de carte et commencer à partager votre carte avec les personnes proches ? Vous aller partager votre carte de visite pendant 30 minutes.",
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
@@ -132,11 +124,10 @@ class CardShareModal extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    onConfirm(!cardShare);
-                    manageCardSharing();
+                    sceduleCardSharing();
                     Navigator.of(context).pop();
                   },
-                  child: Text(cardShare ? "Désactiver" : "Activer"),
+                  child: Text("Activer"),
                 ),
               ],
             ),

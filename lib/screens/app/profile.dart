@@ -5,6 +5,7 @@ import 'package:NearCard/screens/settings/settings.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:NearCard/widgets/geolocation.dart';
 import 'package:NearCard/widgets/modal.dart';
+import 'package:cron/cron.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -69,24 +70,11 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor:
-                    state.currentUser.cardShare ? Colors.red : Colors.green,
+                backgroundColor: Colors.green,
                 onPressed: () {
-                  /*
-                  CardShareModal.show(
-                      context,
-                      state.currentUser.cardShare,
-                      (value) => {
-                            context
-                                .read<CurrentUserBloc>()
-                                .add(CurrentUserShareCard(share: value))
-                          });
-                          */
-                  manageCardSharing();
+                  CardShareModal.show(context);
                 },
-                child: state.currentUser.cardShare
-                    ? Icon(Icons.stop)
-                    : Icon(Icons.share),
+                child: Icon(Icons.share),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(10.0),

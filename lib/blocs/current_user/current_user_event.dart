@@ -7,8 +7,11 @@ sealed class CurrentUserEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CurrentUserShareCard extends CurrentUserEvent {
-  bool share;
+class CurrentUserChangeShare extends CurrentUserEvent {
+  final bool share;
 
-  CurrentUserShareCard({required this.share});
+  CurrentUserChangeShare({required this.share});
+
+  @override
+  List<Object> get props => [share];
 }
