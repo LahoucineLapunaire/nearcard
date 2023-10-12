@@ -125,6 +125,8 @@ class CurrentUser {
 }
 
 class VisitedUser {
+  String uid;
+  String email;
   String name;
   String prename;
   String title;
@@ -138,6 +140,8 @@ class VisitedUser {
   String textColor;
 
   VisitedUser({
+    required this.uid,
+    required this.email,
     required this.name,
     required this.prename,
     required this.title,
@@ -153,6 +157,8 @@ class VisitedUser {
 
   factory VisitedUser.fromJson(Map<String, dynamic> json) {
     return VisitedUser(
+      uid: json['uid'],
+      email: json['email'],
       name: json['name'],
       prename: json['prename'],
       title: json['title'],
@@ -168,6 +174,8 @@ class VisitedUser {
   }
 
   Map<String, dynamic> toJson() => {
+        'uid': uid,
+        'email': email,
         'name': name,
         'prename': prename,
         'title': title,

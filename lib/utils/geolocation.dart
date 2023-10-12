@@ -1,11 +1,40 @@
+import 'package:NearCard/model/user.dart';
+import 'package:NearCard/utils/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:background_fetch/background_fetch.dart';
+import 'package:workmanager/workmanager.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+Future<CurrentUser> currentUser = firestore
+    .collection("users")
+    .doc(auth.currentUser?.uid)
+    .get()
+    .then((value) {
+  return CurrentUser.fromJson(value.data()!);
+});
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+    print("Tâche en arrière-plan exécutée : $task");
+    manageCardSharing();
+    return Future.value(true);
+  });
+}
+
+void callCronOnBackground() {
+  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  Workmanager().registerPeriodicTask(
+    'cardSharing', // Nom unique de la tâche
+    'sendCard', // Nom de la tâche à exécuter
+    frequency: Duration(minutes: 1), // Fréquence d'exécution
+    initialDelay: Duration(minutes: 15), // Délai initial
+  );
+}
 
 void sceduleCardSharing() async {
   try {
@@ -16,7 +45,7 @@ void sceduleCardSharing() async {
       manageCardSharing();
       final DateTime currentTime = DateTime.now();
       final Duration elapsed = currentTime.difference(startedTime);
-      if (elapsed.inMinutes >= 30) {
+      if (elapsed.inMinutes >= 15) {
         stopCardShare();
         cron.close();
         return;
@@ -119,14 +148,12 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
     // Créez les bornes pour la requête géospatiale
     GeoPoint lowerBound = GeoPoint(latitude - 0.01, longitude - 0.01);
     GeoPoint upperBound = GeoPoint(latitude + 0.01, longitude + 0.01);
-    print("before querySnapshot");
     // Utilisez les bornes pour effectuer la requête Firestore
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('location', isGreaterThanOrEqualTo: lowerBound)
         .where('location', isLessThanOrEqualTo: upperBound)
         .get();
-    print("after querySnapshot");
     return querySnapshot.docs;
   } catch (e) {
     print(e.toString());
@@ -134,8 +161,8 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
   }
 }
 
-void sendPeopleNearby(
-    List<QueryDocumentSnapshot<Object?>> peopleNearby, Position position) {
+void sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
+    Position position) async {
   try {
     print("start sendPeopleNearby");
 
@@ -146,6 +173,17 @@ void sendPeopleNearby(
         "date": DateTime.now(),
         "location": GeoPoint(position.latitude, position.longitude),
       };
+      CurrentUser user = await currentUser;
+      sendNotificationToTopic(
+          doc.id,
+          "Carte de visite reçue !",
+          "${user.name} ${user.prename} vous a envoyé sa carte de visite !",
+          user.picture, {
+        "sender": auth.currentUser!.uid,
+        "receiver": doc.id,
+        "type": "card",
+        "click_action": "FLUTTER_card_CLICK",
+      });
       firestore.collection('users').doc(auth.currentUser?.uid).update({
         "cardSent": FieldValue.arrayUnion([data]), // add doc.id to array
       });

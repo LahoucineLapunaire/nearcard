@@ -1,11 +1,7 @@
-import 'dart:io';
-
-import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
-import 'package:NearCard/screens/settings/settings.dart';
+import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
+import 'package:NearCard/model/user.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/utils/geolocation.dart';
 import 'package:NearCard/widgets/modal.dart';
-import 'package:cron/cron.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,127 +12,97 @@ import 'package:url_launcher/url_launcher.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class VisitedUserScreen extends StatelessWidget {
+  final VisitedUser visitedUser;
+
+  const VisitedUserScreen({super.key, required this.visitedUser});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CurrentUserBloc, CurrentUserState>(
-      builder: (context, state) {
-        if (state is CurrentUserInitial) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (state is CurrentUserNotFound) {
-          return const Center(child: Text("Utilisateur non trouvé"));
-        }
-        if (state is CurrentUserLoaded) {
-          return Scaffold(
-              backgroundColor: Color(int.parse(state.currentUser.bgColor)),
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                actions: [
-                  Container(
-                    width: 100,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: Color(0xff001f3f), // Background color
-                    ),
-                    child: Row(children: [
-                      IconButton(
-                        icon: const Icon(Icons.share),
-                        onPressed: () {
-                          print("Share");
-                          Share.share(
-                            'https://nearcard.com/users/${auth.currentUser!.uid}',
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.settings),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SettingsScreen()));
-                        },
-                      ),
-                    ]),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  )
-                ],
+    return Scaffold(
+        backgroundColor: Color(int.parse(visitedUser.bgColor)),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            Container(
+              width: 55,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                color: Color(0xff001f3f), // Background color
               ),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.green,
-                onPressed: () {
-                  CardShareModal.show(context);
-                },
-                child: Icon(Icons.share),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 500),
-                        child: ImageSection(
-                            picture: state.currentUser.picture,
-                            textColor: state.currentUser.textColor),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 600),
-                        child: UserInfoSection(
-                            name: state.currentUser.name,
-                            prename: state.currentUser.prename,
-                            title: state.currentUser.title,
-                            textColor: state.currentUser.textColor,
-                            company: state.currentUser.company),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 700),
-                        child: ContactInfoSection(
-                            textColor: state.currentUser.textColor,
-                            phone: state.currentUser.number,
-                            email: auth.currentUser!.email ?? "",
-                            address: state.currentUser.address),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 800),
-                        child: SocialSection(
-                            textColor: state.currentUser.textColor,
-                            linkedin: state.currentUser.linkedin,
-                            website: state.currentUser.website),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 900),
-                        child: QrCodeSection(
-                          textColor: state.currentUser.textColor,
-                        ),
-                      ),
-                    ],
+              child: Row(children: [
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: () {
+                    print("Share");
+                    Share.share(
+                      'https://nearcard.com/users/${visitedUser.uid}',
+                    );
+                  },
+                ),
+              ]),
+            ),
+            const SizedBox(
+              width: 10,
+            )
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Center(
+            child: Column(
+              children: [
+                ImageSection(
+                    picture: visitedUser.picture,
+                    textColor: visitedUser.textColor),
+                const SizedBox(
+                  height: 40,
+                ),
+                DelayedDisplay(
+                  delay: const Duration(milliseconds: 300),
+                  child: UserInfoSection(
+                      name: visitedUser.name,
+                      prename: visitedUser.prename,
+                      title: visitedUser.title,
+                      textColor: visitedUser.textColor,
+                      company: visitedUser.company),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                DelayedDisplay(
+                  delay: const Duration(milliseconds: 400),
+                  child: ContactInfoSection(
+                      textColor: visitedUser.textColor,
+                      phone: visitedUser.number,
+                      email: visitedUser.email ?? "",
+                      address: visitedUser.address),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                DelayedDisplay(
+                  delay: const Duration(milliseconds: 500),
+                  child: SocialSection(
+                      textColor: visitedUser.textColor,
+                      linkedin: visitedUser.linkedin,
+                      website: visitedUser.website),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                DelayedDisplay(
+                  delay: const Duration(milliseconds: 600),
+                  child: QrCodeSection(
+                    textColor: visitedUser.textColor,
+                    visitedUserId: visitedUser.uid,
                   ),
                 ),
-              ));
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -155,20 +121,23 @@ class ImageSection extends StatelessWidget {
         border: Border.all(color: Color(int.parse(textColor)), width: 2),
         borderRadius: BorderRadius.circular(100),
       ),
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: picture == ""
-              ? Center(
-                  child: FaIcon(
-                    FontAwesomeIcons.userPlus,
-                    size: 40,
-                    color: Color(int.parse(textColor)),
-                  ),
-                )
-              : Image.network(
-                  picture,
-                  fit: BoxFit.cover,
-                )),
+      child: Hero(
+        tag: "profilePicture",
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: picture == ""
+                ? Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.userPlus,
+                      size: 40,
+                      color: Color(int.parse(textColor)),
+                    ),
+                  )
+                : Image.network(
+                    picture,
+                    fit: BoxFit.cover,
+                  )),
+      ),
     );
   }
 }
@@ -354,16 +323,18 @@ class SocialSection extends StatelessWidget {
 }
 
 class QrCodeSection extends StatelessWidget {
+  final String visitedUserId;
   final String textColor;
 
-  const QrCodeSection({super.key, required this.textColor});
+  const QrCodeSection(
+      {super.key, required this.textColor, required this.visitedUserId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           QRCodeModal.show(
-              context, 'https://nearcard.com/users/${auth.currentUser!.uid}');
+              context, 'https://nearcard.com/users/${visitedUserId}');
         },
         child: Center(
           child: Text(

@@ -1,5 +1,5 @@
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
-import 'package:NearCard/widgets/geolocation.dart';
+import 'package:NearCard/utils/geolocation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -124,7 +124,7 @@ class CardShareModal extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    sceduleCardSharing();
+                    manageCardSharing();
                     Navigator.of(context).pop();
                   },
                   child: Text("Activer"),

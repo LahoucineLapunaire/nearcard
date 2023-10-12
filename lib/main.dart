@@ -9,6 +9,8 @@ import 'package:NearCard/screens/onboarding/onboarding.dart';
 import 'package:NearCard/screens/setup/setup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,14 +19,21 @@ import 'package:permission_handler/permission_handler.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   setSharedPreferences();
   requestLocationPermission();
+  getKeysFromRemoteConfig();
   auth.authStateChanges().listen((User? user) {
     if (user != null) {
       if (user.emailVerified) {
+        initNotification();
+        FirebaseMessaging.onBackgroundMessage(
+            firebaseMessagingBackgroundHandler);
+
         print("Verified");
         runApp(const Verified());
       } else {
@@ -39,20 +48,102 @@ void main() async {
 }
 
 Future<void> requestLocationPermission() async {
-  final PermissionStatus status = await Permission.location.request();
-  if (status == PermissionStatus.granted) {
+  final PermissionStatus locationStatus = await Permission.location.request();
+  if (locationStatus == PermissionStatus.granted) {
     // Permission granted
-  } else if (status == PermissionStatus.denied) {
+  } else if (locationStatus == PermissionStatus.denied) {
     // Permission denied
-  } else if (status == PermissionStatus.permanentlyDenied) {
+  } else if (locationStatus == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied
   }
+  final PermissionStatus notificationStatus =
+      await Permission.notification.request();
+  if (notificationStatus == PermissionStatus.granted) {
+    // Permission granted
+  } else if (notificationStatus == PermissionStatus.denied) {
+    // Permission denied
+  } else if (notificationStatus == PermissionStatus.permanentlyDenied) {
+    // Permission permanently denied
+  }
+}
+
+// Function to initialize Firebase Cloud Messaging (FCM) for notifications
+void initNotification() async {
+  try {
+    // Create an instance of FirebaseMessaging
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    // Subscribe to the "general" topic for receiving notifications
+    messaging.subscribeToTopic("general");
+    messaging.subscribeToTopic(auth.currentUser!.uid);
+
+    // Request notification permissions from the user
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true, // Allow displaying alerts
+      announcement: false, // Do not allow announcements
+      badge: true, // Show badges on app icon
+      carPlay: false, // Disable CarPlay notifications
+      criticalAlert: false, // Do not allow critical alerts
+      provisional: false, // Notifications are not provisional
+      sound: true, // Allow playing notification sounds
+    );
+
+    // Print the user's permission status for notifications
+    print('User granted permission: ${settings.authorizationStatus}');
+    print("Notification initialization completed");
+
+    // Listen for incoming FCM messages when the app is in the foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("You received a message");
+      print("onMessage: ${message.notification?.body}");
+      print("onMessage: ${message.data}");
+    });
+  } catch (e) {
+    print("error : ${e.toString()}");
+  }
+}
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("You received a Background message");
+  print("onMessage: ${message.notification?.body}");
+  print("onMessage: ${message.data}");
+  return;
 }
 
 void setSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getBool('notification') == null) {
     prefs.setBool('notification', true);
+  }
+}
+
+Future<void> getKeysFromRemoteConfig() async {
+  try {
+    // Check if a user is currently authenticated.
+    if (FirebaseAuth.instance.currentUser != null) {
+      // Initialize Firebase Remote Config.
+      final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+      await remoteConfig.fetchAndActivate();
+
+      // Get the secret keys from Firebase Remote Config.
+      final secretKeyId = remoteConfig.getString('private_key_id');
+      final secretKey = remoteConfig.getString('private_key');
+      //final smtpKey = remoteConfig.getString('smtp_key');
+
+      // Create a SharedPreferences instance to store the keys.
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      // Save the keys to SharedPreferences for future use.
+      prefs.setString("private_key_id", secretKeyId);
+      prefs.setString("private_key", secretKey);
+      //prefs.setString("smtp_key", smtpKey);
+
+      // Print a message to confirm that the keys have been saved.
+      print("Keys saved to shared preferences");
+    }
+  } catch (e) {
+    // Handle any errors that occur during the process.
+    print("Error getting keys: ${e.toString()}");
   }
 }
 

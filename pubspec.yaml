@@ -53,6 +53,11 @@ dependencies:
   permission_handler: ^11.0.1
   geocoding: ^2.1.1
   cron: ^0.5.1
+  background_fetch: ^1.2.1
+  firebase_messaging: ^14.6.9
+  workmanager: ^0.5.2
+  googleapis_auth: ^1.4.1
+  firebase_remote_config: ^4.2.7
 
 dev_dependencies:
   flutter_test:
