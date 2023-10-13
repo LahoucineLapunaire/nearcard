@@ -58,6 +58,7 @@ dependencies:
   workmanager: ^0.5.2
   googleapis_auth: ^1.4.1
   firebase_remote_config: ^4.2.7
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   flutter_test:

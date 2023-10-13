@@ -3,14 +3,16 @@ import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
 import 'package:NearCard/screens/app/visitedUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:share_plus/share_plus.dart';
 
 final auth = firebase_auth.FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -53,16 +55,10 @@ class HomeScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return DelayedDisplay(
                           delay: Duration(milliseconds: 100 + (index * 100)),
-                          child: Dismissible(
-                            key: Key(receivedCards[index]['sender']),
-                            onDismissed: (direction) {
-                              print(direction);
-                            },
-                            child: BusinessCard(
-                              visitedUserId: receivedCards[index]['sender'],
-                              date: receivedCards[index]['date'],
-                              location: receivedCards[index]['location'],
-                            ),
+                          child: BusinessCard(
+                            visitedUserId: receivedCards[index]['sender'],
+                            date: receivedCards[index]['date'],
+                            location: receivedCards[index]['location'],
                           ),
                         );
                       },
@@ -151,157 +147,211 @@ class BusinessCard extends StatelessWidget {
               },
               child: Container(
                 margin: EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
-                      spreadRadius: 0.1,
-                      blurRadius: 2,
-                      offset: Offset(0, 3), // changes position of shadow
+                child: Slidable(
+                  // Specify a key if the Slidable is dismissible.
+                  key: const ValueKey(0),
+
+                  // The start action pane is the one at the left or the top side.
+                  startActionPane: ActionPane(
+                    // A motion is a widget used to control how the pane animates.
+                    motion: const ScrollMotion(),
+                    // A pane can dismiss the Slidable.
+                    dismissible: DismissiblePane(
+                      onDismissed: () {
+                        print("Dismissed");
+                      },
                     ),
-                  ],
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color(int.parse(state.visitedUser.bgColor)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+
+                    // All actions are defined in the children parameter.
                     children: [
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                                  Color(int.parse(state.visitedUser.textColor)),
-                              width: 2),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Hero(
-                          tag: "profilePicture",
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: state.visitedUser.picture == ""
-                                  ? Center(
-                                      child: FaIcon(
-                                        FontAwesomeIcons.userPlus,
-                                        size: 40,
-                                        color: Color(int.parse(
-                                            state.visitedUser.textColor)),
-                                      ),
-                                    )
-                                  : Image.network(
-                                      state.visitedUser.picture,
-                                      fit: BoxFit.cover,
-                                    )),
-                        ),
+                      // A SlidableAction can have an icon and/or a label.
+                      SlidableAction(
+                        onPressed: (context) {
+                          print("Delete");
+                          firestore
+                              .collection('users')
+                              .doc(auth.currentUser?.uid)
+                              .update({
+                            'cardReceived': FieldValue.arrayRemove([
+                              {
+                                'sender': visitedUserId,
+                                'receiver': auth.currentUser?.uid,
+                                'date': date,
+                                'location': location
+                              }
+                            ])
+                          });
+                        },
+                        backgroundColor: Color(0xFFFE4A49),
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Delete',
                       ),
-                      const SizedBox(
-                        width: 10,
+                      SlidableAction(
+                        onPressed: (context) {
+                          Share.share(
+                            'https://nearcard.com/users/${visitedUserId}',
+                          );
+                        },
+                        backgroundColor: Color(0xFF21B7CA),
+                        foregroundColor: Colors.white,
+                        icon: Icons.share,
+                        label: 'Share',
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 120,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${state.visitedUser.name} ${state.visitedUser.prename}",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(
-                                    int.parse(state.visitedUser.textColor)),
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              state.visitedUser.title,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(
-                                    int.parse(state.visitedUser.textColor)),
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              state.visitedUser.company,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(
-                                    int.parse(state.visitedUser.textColor)),
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    FaIcon(FontAwesomeIcons.locationDot,
-                                        size: 14,
-                                        color: Color(int.parse(
-                                            state.visitedUser.textColor))),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    FutureBuilder<String?>(
-                                      future: getCityFromGeoPoint(location),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          // Pendant que la future est en cours de chargement, affichez un indicateur de chargement par exemple.
-                                          return CircularProgressIndicator();
-                                        } else if (snapshot.hasError) {
-                                          // En cas d'erreur, affichez un message d'erreur.
-                                          return Text(
-                                              'Erreur: ${snapshot.error}');
-                                        } else if (snapshot.hasData) {
-                                          // Si la future a renvoyé des données, affichez la ville dans le Text.
-                                          return Text(
-                                            snapshot.data ??
-                                                'Ville inconnue', // Gestion de la valeur nulle
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color(int.parse(
-                                                  state.visitedUser.textColor)),
-                                              fontFamily: 'Montserrat',
-                                            ),
-                                          );
-                                        } else {
-                                          // Si aucun des cas ci-dessus n'est rempli, affichez un message générique.
-                                          return Text('Chargement...');
-                                        }
-                                      },
-                                    )
-                                  ],
-                                ),
-                                Text(formatTimestamp(date),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                      color: Color(int.parse(
-                                          state.visitedUser.textColor)),
-                                      fontFamily: 'Montserrat',
-                                    )),
-                              ],
-                            )
-                          ],
-                        ),
-                      )
                     ],
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 0.1,
+                          blurRadius: 2,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(int.parse(state.visitedUser.bgColor)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(
+                                      int.parse(state.visitedUser.textColor)),
+                                  width: 2),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: state.visitedUser.picture == ""
+                                    ? Center(
+                                        child: FaIcon(
+                                          FontAwesomeIcons.userPlus,
+                                          size: 40,
+                                          color: Color(int.parse(
+                                              state.visitedUser.textColor)),
+                                        ),
+                                      )
+                                    : Image.network(
+                                        state.visitedUser.picture,
+                                        fit: BoxFit.cover,
+                                      )),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 120,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${state.visitedUser.name} ${state.visitedUser.prename}",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(
+                                        int.parse(state.visitedUser.textColor)),
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  state.visitedUser.title,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Color(
+                                        int.parse(state.visitedUser.textColor)),
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  state.visitedUser.company,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(
+                                        int.parse(state.visitedUser.textColor)),
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.locationDot,
+                                            size: 14,
+                                            color: Color(int.parse(
+                                                state.visitedUser.textColor))),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        FutureBuilder<String?>(
+                                          future: getCityFromGeoPoint(location),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              // Pendant que la future est en cours de chargement, affichez un indicateur de chargement par exemple.
+                                              return CircularProgressIndicator();
+                                            } else if (snapshot.hasError) {
+                                              // En cas d'erreur, affichez un message d'erreur.
+                                              return Text(
+                                                  'Erreur: ${snapshot.error}');
+                                            } else if (snapshot.hasData) {
+                                              // Si la future a renvoyé des données, affichez la ville dans le Text.
+                                              return Text(
+                                                snapshot.data ??
+                                                    'Ville inconnue', // Gestion de la valeur nulle
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(int.parse(state
+                                                      .visitedUser.textColor)),
+                                                  fontFamily: 'Montserrat',
+                                                ),
+                                              );
+                                            } else {
+                                              // Si aucun des cas ci-dessus n'est rempli, affichez un message générique.
+                                              return Text('Chargement...');
+                                            }
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                    Text(formatTimestamp(date),
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(int.parse(
+                                              state.visitedUser.textColor)),
+                                          fontFamily: 'Montserrat',
+                                        )),
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

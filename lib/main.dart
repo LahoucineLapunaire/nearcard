@@ -65,6 +65,15 @@ Future<void> requestLocationPermission() async {
   } else if (notificationStatus == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied
   }
+  final PermissionStatus backgroundStatus =
+      await Permission.systemAlertWindow.request();
+  if (backgroundStatus == PermissionStatus.granted) {
+    // Permission granted
+  } else if (backgroundStatus == PermissionStatus.denied) {
+    // Permission denied
+  } else if (backgroundStatus == PermissionStatus.permanentlyDenied) {
+    // Permission permanently denied
+  }
 }
 
 // Function to initialize Firebase Cloud Messaging (FCM) for notifications
@@ -124,7 +133,6 @@ Future<void> getKeysFromRemoteConfig() async {
       // Initialize Firebase Remote Config.
       final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
       await remoteConfig.fetchAndActivate();
-
       // Get the secret keys from Firebase Remote Config.
       final secretKeyId = remoteConfig.getString('private_key_id');
       final secretKey = remoteConfig.getString('private_key');

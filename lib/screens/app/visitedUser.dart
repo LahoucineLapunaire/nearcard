@@ -121,23 +121,20 @@ class ImageSection extends StatelessWidget {
         border: Border.all(color: Color(int.parse(textColor)), width: 2),
         borderRadius: BorderRadius.circular(100),
       ),
-      child: Hero(
-        tag: "profilePicture",
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: picture == ""
-                ? Center(
-                    child: FaIcon(
-                      FontAwesomeIcons.userPlus,
-                      size: 40,
-                      color: Color(int.parse(textColor)),
-                    ),
-                  )
-                : Image.network(
-                    picture,
-                    fit: BoxFit.cover,
-                  )),
-      ),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: picture == ""
+              ? Center(
+                  child: FaIcon(
+                    FontAwesomeIcons.userPlus,
+                    size: 40,
+                    color: Color(int.parse(textColor)),
+                  ),
+                )
+              : Image.network(
+                  picture,
+                  fit: BoxFit.cover,
+                )),
     );
   }
 }

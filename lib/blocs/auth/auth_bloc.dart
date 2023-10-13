@@ -117,23 +117,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitial> {
             return;
           }
           FirebaseAuth auth = FirebaseAuth.instance;
-          await auth
-              .signInWithEmailAndPassword(
+          await auth.signInWithEmailAndPassword(
             email: state.loginEmailController.text,
             password: state.loginPasswordController.text,
-          )
-              .catchError((e) {
-            print("Erreur de connexion : ${e.message}");
-          });
+          );
           // La connexion a réussi, continuez ici
           displayMessage(event.context, "Connexion réussie");
         } catch (e) {
-          // Gérez toutes les autres exceptions ici
-          print("Erreur inattendue : $e");
-          displayError(event.context, e.toString().split('] ')[1]);
+          if (e.toString().contains("INVALID_LOGIN_CREDENTIALS")) {
+            displayError(event.context, "Email ou mot de passe incorrect");
+          }
+          if (e.toString().contains("badly formatted")) {
+            displayError(event.context, "Veuillez saisir un email valide");
+          } else {
+            // Gérez toutes les autres exceptions ici
+            print("Erreur inattendue : $e");
+            displayError(event.context, e.toString().split('] ')[1]);
+          }
         }
       }
-
       if (event is AuthEventResetPassword) {
         try {
           final FirebaseAuth auth = FirebaseAuth.instance;

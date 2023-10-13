@@ -124,7 +124,7 @@ class CardShareModal extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    manageCardSharing();
+                    startWorkManager();
                     Navigator.of(context).pop();
                   },
                   child: Text("Activer"),

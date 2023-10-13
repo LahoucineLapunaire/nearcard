@@ -1,11 +1,12 @@
 import 'package:NearCard/model/user.dart';
 import 'package:NearCard/utils/notification.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:workmanager/workmanager.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,22 +19,90 @@ Future<CurrentUser> currentUser = firestore
   return CurrentUser.fromJson(value.data()!);
 });
 
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-    print("Tâche en arrière-plan exécutée : $task");
-    manageCardSharing();
-    return Future.value(true);
-  });
+void callbackDispatcherWorkManager() {
+  try {
+    Workmanager().executeTask((task, inputData) {
+      print("Tâche en arrière-plan exécutée : $task");
+      manageCardSharing();
+      return Future.value(true);
+    });
+  } catch (e) {
+    print("error : " + e.toString());
+  }
 }
 
-void callCronOnBackground() {
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
-  Workmanager().registerPeriodicTask(
-    'cardSharing', // Nom unique de la tâche
-    'sendCard', // Nom de la tâche à exécuter
-    frequency: Duration(minutes: 1), // Fréquence d'exécution
-    initialDelay: Duration(minutes: 15), // Délai initial
-  );
+void startWorkManager() {
+  try {
+    manageCardSharing();
+    Workmanager()
+        .initialize(callbackDispatcherWorkManager, isInDebugMode: true);
+    Workmanager()
+        .registerPeriodicTask(
+          'cardSharing', // Nom unique de la tâche
+          'sendCard', // Nom de la tâche à exécuter
+          frequency: Duration(minutes: 15), // Fréquence d'exécution
+          initialDelay: Duration(seconds: 0), // Délai d'attente initial
+        )
+        .then((value) => print("Work Manager started"));
+  } catch (e) {
+    print("error : " + e.toString());
+  }
+}
+
+void stopWorkManager() {
+  Workmanager().cancelAll();
+}
+
+void backgroundFetchHeadlessTask(HeadlessTask task) async {
+  String taskId = task.taskId;
+  bool isTimeout = task.timeout;
+  manageCardSharing();
+  if (isTimeout) {
+    // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+    print("[BackgroundFetch] Headless task timed-out: $taskId");
+    BackgroundFetch.finish(taskId);
+    return;
+  }
+  print("[BackgroundFetch] Headless event received: $taskId");
+  BackgroundFetch.finish(taskId);
+}
+
+void callbackDispatcher(String taskId) {
+  print('Background fetch event received');
+  BackgroundFetch.finish(taskId);
+}
+
+void startBackgroundFetch() {
+  BackgroundFetch.configure(
+    BackgroundFetchConfig(
+      minimumFetchInterval: 15, // Minimum fetch interval in minutes
+      stopOnTerminate: false,
+      startOnBoot: true,
+      enableHeadless: true,
+      requiresBatteryNotLow: false,
+      requiresCharging: false,
+      requiresStorageNotLow: false,
+      requiresDeviceIdle: false,
+    ),
+    callbackDispatcher,
+  ).then((status) {
+    print('[BackgroundFetch] configure success: $status');
+  }).catchError((e) {
+    print('[BackgroundFetch] configure ERROR: $e');
+  });
+  BackgroundFetch.start() // Start the Flutter background service.
+      .then((value) => print('[BackgroundFetch] start success'));
+  manageCardSharing();
+}
+
+void startHeadlessTask() {
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+}
+
+void stopBackgroundFetch() {
+  BackgroundFetch.stop().then((status) {
+    print('[BackgroundFetch] stop success: $status');
+  });
 }
 
 void sceduleCardSharing() async {
@@ -58,6 +127,7 @@ void sceduleCardSharing() async {
 
 void manageCardSharing() async {
   try {
+    Firebase.initializeApp();
     //get position
     Position position = await getPosition();
 
