@@ -1,4 +1,3 @@
-import 'package:NearCard/main.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

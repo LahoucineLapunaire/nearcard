@@ -6,10 +6,12 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
@@ -47,6 +49,21 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       // Le reste de votre gestion d'événements
 
       if (event is SettingsEventChangeNotification) {
+        //set shared preferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool("notification", event.notification);
+
+        //set subscription
+
+        FirebaseMessaging messaging = FirebaseMessaging.instance;
+        if (event.notification) {
+          messaging.subscribeToTopic("general");
+          messaging.subscribeToTopic(auth.currentUser!.uid);
+        } else {
+          messaging.unsubscribeFromTopic("general");
+          messaging.unsubscribeFromTopic(auth.currentUser!.uid);
+        }
+
         SettingsLoaded settingsState = state as SettingsLoaded;
         settingsState =
             settingsState.copyWith(notification: event.notification);

@@ -222,7 +222,6 @@ class NotificationSection extends StatelessWidget {
             activeColor: const Color(0xff001f3f),
             value: state.notification,
             onChanged: (value) {
-              print(state.notification);
               context.read<SettingsBloc>().add(
                     SettingsEventChangeNotification(
                       notification: value,

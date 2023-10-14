@@ -4,9 +4,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -42,6 +40,7 @@ void startWorkManager() {
           'sendCard', // Nom de la tâche à exécuter
           frequency: Duration(minutes: 15), // Fréquence d'exécution
           initialDelay: Duration(seconds: 0), // Délai d'attente initial
+          existingWorkPolicy: ExistingWorkPolicy.replace,
         )
         .then((value) => print("Work Manager started"));
   } catch (e) {
@@ -127,9 +126,10 @@ void sceduleCardSharing() async {
 
 void manageCardSharing() async {
   try {
-    Firebase.initializeApp();
     //get position
     Position position = await getPosition();
+
+    print("position : " + position.toString());
 
     // set position in firestore
     sendLocation(position);
@@ -152,7 +152,7 @@ void stopCardShare() async {
       'cardShare': false,
     });
   } catch (e) {
-    print(e.toString());
+    print("Error stopCardShare" + e.toString());
   }
 }
 
@@ -163,36 +163,20 @@ void sendLocation(Position position) async {
       'cardShare': true,
       'location': GeoPoint(position.latitude, position.longitude),
     });
+    print("finish sendLocation");
   } catch (e) {
-    print(e.toString());
+    print("Error sendLocation : " + e.toString());
   }
 }
 
 Future<Position> getPosition() async {
   try {
-    final PermissionStatus status = await Permission.location.request();
-    if (status == PermissionStatus.denied ||
-        status == PermissionStatus.restricted ||
-        status == PermissionStatus.permanentlyDenied) {
-      print("Permission denied");
-      return Position(
-          longitude: 0,
-          latitude: 0,
-          timestamp: DateTime.now(),
-          accuracy: 0,
-          altitude: 0,
-          altitudeAccuracy: 0,
-          heading: 0,
-          headingAccuracy: 0,
-          speed: 0,
-          speedAccuracy: 0);
-    }
     print("start getPosition");
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return position;
   } catch (e) {
-    print(e.toString());
+    print("Error getPosition :" + e.toString());
     return Position(
         longitude: 0,
         latitude: 0,
@@ -224,9 +208,10 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
         .where('location', isGreaterThanOrEqualTo: lowerBound)
         .where('location', isLessThanOrEqualTo: upperBound)
         .get();
+    print("finish getPeopleNearby");
     return querySnapshot.docs;
   } catch (e) {
-    print(e.toString());
+    print("Erro getPeopleNearby : " + e.toString());
     return [];
   }
 }
@@ -261,9 +246,8 @@ void sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
         "cardReceived": FieldValue.arrayUnion([data]),
       });
     }
-
     print("finish");
   } catch (e) {
-    print(e.toString());
+    print("Error sendPeopleNearby : " + e.toString());
   }
 }

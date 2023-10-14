@@ -7,10 +7,12 @@ import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/screens/app/router.dart';
 import 'package:NearCard/screens/onboarding/onboarding.dart';
 import 'package:NearCard/screens/setup/setup.dart';
+import 'package:NearCard/web/webPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,31 +25,44 @@ FirebaseMessaging messaging = FirebaseMessaging.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  setSharedPreferences();
-  requestLocationPermission();
-  getKeysFromRemoteConfig();
-  auth.authStateChanges().listen((User? user) {
-    if (user != null) {
-      if (user.emailVerified) {
-        initNotification();
-        FirebaseMessaging.onBackgroundMessage(
-            firebaseMessagingBackgroundHandler);
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyCqIGjuW3NsWcr1QxfQ3Lsw9vOY2WSGA_s",
+        appId: "1:443238716364:web:e8a415ee168927fe318369",
+        messagingSenderId: "443238716364",
+        projectId: "nearcard-fa985",
+        storageBucket: "nearcard-fa985.appspot.com",
+      ),
+    );
+    runApp(WebScreen());
+  } else {
+    await Firebase.initializeApp();
+    setSharedPreferences();
+    requestPermission();
+    getKeysFromRemoteConfig();
+    auth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        if (user.emailVerified) {
+          initNotification();
+          FirebaseMessaging.onBackgroundMessage(
+              firebaseMessagingBackgroundHandler);
 
-        print("Verified");
-        runApp(const Verified());
+          print("Verified");
+          runApp(const Verified());
+        } else {
+          print("Not verified");
+          runApp(const NotVerified());
+        }
       } else {
-        print("Not verified");
-        runApp(const NotVerified());
+        print("Unlogged");
+        runApp(const UnLogged());
       }
-    } else {
-      print("Unlogged");
-      runApp(const UnLogged());
-    }
-  });
+    });
+  }
 }
 
-Future<void> requestLocationPermission() async {
+Future<void> requestPermission() async {
   final PermissionStatus locationStatus = await Permission.location.request();
   if (locationStatus == PermissionStatus.granted) {
     // Permission granted
@@ -56,6 +71,26 @@ Future<void> requestLocationPermission() async {
   } else if (locationStatus == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied
   }
+  final PermissionStatus locationAlwaysStatus =
+      await Permission.locationAlways.request();
+  if (locationAlwaysStatus == PermissionStatus.granted) {
+    // Permission granted
+  } else if (locationAlwaysStatus == PermissionStatus.denied) {
+    // Permission denied
+  } else if (locationAlwaysStatus == PermissionStatus.permanentlyDenied) {
+    // Permission permanently denied
+  }
+
+  final PermissionStatus mediaLocatiosStatus =
+      await Permission.accessMediaLocation.request();
+  if (mediaLocatiosStatus == PermissionStatus.granted) {
+    // Permission granted
+  } else if (mediaLocatiosStatus == PermissionStatus.denied) {
+    // Permission denied
+  } else if (mediaLocatiosStatus == PermissionStatus.permanentlyDenied) {
+    // Permission permanently denied
+  }
+
   final PermissionStatus notificationStatus =
       await Permission.notification.request();
   if (notificationStatus == PermissionStatus.granted) {
