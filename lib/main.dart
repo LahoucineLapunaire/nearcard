@@ -35,7 +35,7 @@ void main() async {
         storageBucket: "nearcard-fa985.appspot.com",
       ),
     );
-    runApp(WebScreen());
+    runApp(WebPage());
   } else {
     await Firebase.initializeApp();
     setSharedPreferences();

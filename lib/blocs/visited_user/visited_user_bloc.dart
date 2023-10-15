@@ -1,17 +1,20 @@
 import 'dart:async';
-
 import 'package:NearCard/model/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter/foundation.dart';
 part 'visited_user_event.dart';
 part 'visited_user_state.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseFunctions functions =
+    FirebaseFunctions.instanceFor(region: 'europe-west3');
 
-Future<String?> getEmailFromUID(String uid) async {
+Future<String?> getEmailFromUid(String uid) async {
   try {
     User? user = await FirebaseAuth.instance
         .userChanges()
@@ -24,6 +27,18 @@ Future<String?> getEmailFromUID(String uid) async {
     }
   } catch (e) {
     print("Erreur lors de la récupération de l'email : $e");
+    return null;
+  }
+}
+
+Future<String?> getEmailFromUidWeb(String uid) async {
+  try {
+    final dynamic result =
+        await functions.httpsCallable('getEmailFromUid').call({"uid": uid});
+    final Map<String, dynamic> jsonData = result.data as Map<String, dynamic>;
+    return jsonData["email"]["email"];
+  } catch (e) {
+    print("Error getEmailFromUid : $e");
     return null;
   }
 }
@@ -41,9 +56,14 @@ class VisitedUserBloc extends Bloc<VisitedUserEvent, VisitedUserState> {
         .snapshots()
         .listen((event) async {
       if (event.exists) {
-        // Le document existe, donc nous pouvons le traiter
+        String email = "";
+        if (kIsWeb) {
+          email = await getEmailFromUidWeb(visitedUserId) ?? "";
+        } else {
+          email = await getEmailFromUid(visitedUserId) ?? "";
+        }
         final userData = event.data() as Map<String, dynamic>;
-        userData['email'] = await getEmailFromUID(visitedUserId);
+        userData['email'] = email;
         userData['uid'] = visitedUserId;
         final visitedUser = VisitedUser.fromJson(userData);
 
