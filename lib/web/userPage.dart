@@ -15,11 +15,17 @@ class UserPage extends StatelessWidget {
         builder: (context, state) {
           if (state is VisitedUserInitial) {
             return Scaffold(
-              appBar: AppBar(
-                title: const Text('NearCard'),
-              ),
+              backgroundColor: const Color(0xFF001F3F),
               body: Center(
-                child: Text("Chargement de l'utilisateur..."),
+                child: Text(
+                  "Chargement de l'utilisateur...",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             );
           }

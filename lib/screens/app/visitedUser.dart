@@ -4,6 +4,7 @@ import 'package:NearCard/widgets/alert.dart';
 import 'package:NearCard/widgets/modal.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -52,6 +53,8 @@ class VisitedUserScreen extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
+              mainAxisAlignment:
+                  kIsWeb ? MainAxisAlignment.center : MainAxisAlignment.start,
               children: [
                 ImageSection(
                     picture: visitedUser.picture,
@@ -210,6 +213,8 @@ class ContactInfoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Row(
+        mainAxisAlignment:
+            kIsWeb ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           FaIcon(FontAwesomeIcons.solidEnvelope,
               color: Color(int.parse(textColor))),
@@ -230,6 +235,8 @@ class ContactInfoSection extends StatelessWidget {
         height: 8,
       ),
       Row(
+        mainAxisAlignment:
+            kIsWeb ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           FaIcon(FontAwesomeIcons.phone, color: Color(int.parse(textColor))),
           SizedBox(
@@ -249,6 +256,8 @@ class ContactInfoSection extends StatelessWidget {
         height: 8,
       ),
       Row(
+        mainAxisAlignment:
+            kIsWeb ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           FaIcon(FontAwesomeIcons.locationDot,
               color: Color(int.parse(textColor))),

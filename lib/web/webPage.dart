@@ -1,31 +1,41 @@
-import 'dart:js_interop';
-
 import 'package:NearCard/web/homePage.dart';
 import 'package:NearCard/web/userPage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
 import 'package:cloud_functions/cloud_functions.dart';
 
 FirebaseFunctions functions =
     FirebaseFunctions.instanceFor(region: 'europe-west3');
-final uri = Uri.parse(html.window.location.href);
-final parameterValue = uri.queryParameters['userId'];
+
+String getParameterValue() {
+  try {
+    String parameterValue = "";
+    if (kIsWeb) {
+      parameterValue = Uri.base.queryParameters['userId'] ?? "";
+    }
+    return parameterValue;
+  } catch (e) {
+    print(e.toString());
+    return "";
+  }
+}
 
 class WebPage extends StatelessWidget {
   const WebPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String userId = getParameterValue();
     return MaterialApp(
       title: 'NearCard',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: parameterValue == null || parameterValue == ''
+      home: userId == ''
           ? HomePage()
           : UserPage(
-              visitedUserId: parameterValue ?? "",
+              visitedUserId: userId,
             ),
     );
   }
