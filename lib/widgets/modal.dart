@@ -1,6 +1,8 @@
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
+import 'package:NearCard/utils/email.dart';
 import 'package:NearCard/utils/geolocation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -207,6 +209,115 @@ class LogoutModal extends StatelessWidget {
                 ),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SupportModal extends StatefulWidget {
+  final String name;
+  final String prename;
+
+  SupportModal({Key? key, required this.name, required this.prename})
+      : super(key: key);
+
+  @override
+  _SupportModalState createState() => _SupportModalState(name, prename);
+}
+
+class _SupportModalState extends State<SupportModal> {
+  final String name;
+  final String prename;
+  TextEditingController objectController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+
+  _SupportModalState(this.name, this.prename);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+        height: 500,
+        child: Column(
+          children: [
+            Divider(
+              color: Colors.black,
+              height: 20,
+              thickness: 3,
+              indent: 20,
+              endIndent: 20,
+            ),
+            if (kIsWeb)
+              const Text(
+                "Si vous utilisez la version web de NearCard, veuillez nous contacter à l'adresse suivante : moderation.ilili@gmail.com",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 18,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            if (kIsWeb) const SizedBox(height: 10),
+            const Text(
+              "Contactez l'assistance, faites-nous part de vos questions.",
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 15),
+            TextField(
+              controller: objectController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Objet',
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              height: 200,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: TextField(
+                maxLines: null,
+                controller: messageController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Écrivez votre message ici...',
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () {
+                sendSupportMessage(context, name, prename,
+                    objectController.text, messageController.text);
+              },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  fixedSize: const Size(
+                      180, 35), // Set the width and height of the button
+                  backgroundColor: Color(
+                      0xff001f3f) // Set the background color of the button
+                  ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.send),
+                  SizedBox(width: 10),
+                  Text("Envoyer")
+                ],
+              ),
+            )
           ],
         ),
       ),

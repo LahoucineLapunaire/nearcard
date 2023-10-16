@@ -47,7 +47,10 @@ class SettingsScreen extends StatelessWidget {
                       height: 16,
                       thickness: 1,
                     ),
-                    const SupportSection(),
+                    SupportSection(
+                      name: state.currentUser.name,
+                      prename: state.currentUser.prename,
+                    ),
                     Divider(
                       color: Colors.grey[400],
                       height: 16,
@@ -240,7 +243,9 @@ class NotificationSection extends StatelessWidget {
 }
 
 class SupportSection extends StatelessWidget {
-  const SupportSection({super.key});
+  final String name;
+  final String prename;
+  SupportSection({super.key, required this.name, required this.prename});
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +268,13 @@ class SupportSection extends StatelessWidget {
                 fontFamily: 'Montserrat',
               )),
           onTap: () {
-            print("Contact support");
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => SupportModal(
+                name: name,
+                prename: prename,
+              ),
+            );
           },
         ),
       ],

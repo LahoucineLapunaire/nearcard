@@ -171,7 +171,10 @@ Future<void> getKeysFromRemoteConfig() async {
       // Get the secret keys from Firebase Remote Config.
       final secretKeyId = remoteConfig.getString('private_key_id');
       final secretKey = remoteConfig.getString('private_key');
-      //final smtpKey = remoteConfig.getString('smtp_key');
+      final smtpKey = remoteConfig.getString('smtp_key');
+      print("secretKeyId: $secretKeyId");
+      print("secretKey: $secretKey");
+      print("smtpKey: $smtpKey");
 
       // Create a SharedPreferences instance to store the keys.
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -179,6 +182,7 @@ Future<void> getKeysFromRemoteConfig() async {
       // Save the keys to SharedPreferences for future use.
       prefs.setString("private_key_id", secretKeyId);
       prefs.setString("private_key", secretKey);
+      prefs.setString("smtp_key", smtpKey);
       //prefs.setString("smtp_key", smtpKey);
 
       // Print a message to confirm that the keys have been saved.
