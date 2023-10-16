@@ -18,16 +18,22 @@ class RouterScreen extends StatelessWidget {
                   selectedItemColor: const Color(0xff001f3f),
                   currentIndex: state.currentPage,
                   onTap: (index) {
-                    context.read<RouterBloc>().add(RouterChangePage(index));
+                    context
+                        .read<RouterBloc>()
+                        .add(RouterChangePage(context, index));
                   },
                   items: const [
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),
-                      label: 'Home',
+                      label: 'Accueil',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search),
+                      label: 'Recherche',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.person),
-                      label: 'Profile',
+                      label: 'Profil',
                     ),
                   ],
                 )
