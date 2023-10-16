@@ -1,4 +1,7 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
+import 'package:NearCard/screens/legal/legalNotice.dart';
+import 'package:NearCard/screens/legal/privacyPolicy.dart';
+import 'package:NearCard/screens/legal/termsOfServices.dart';
 import 'package:NearCard/screens/settings/userInfo.dart';
 import 'package:NearCard/widgets/modal.dart';
 import 'package:flutter/material.dart';
@@ -287,30 +290,35 @@ class LegalSection extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text("Legal Notice",
+          title: Text("Mentions Légales",
               style: TextStyle(
                 fontFamily: 'Montserrat',
               )),
           onTap: () {
-            print("Legal Notice");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LegalNoticeScreen()));
           },
         ),
         ListTile(
-          title: Text("Terms of Service",
+          title: Text("Conditions d\'utilisation",
               style: TextStyle(
                 fontFamily: 'Montserrat',
               )),
           onTap: () {
-            print("Terms of Service");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TermsOfServicesScreen()));
           },
         ),
         ListTile(
-          title: Text("Privacy Policy",
+          title: Text("Politique de Confidentialité",
               style: TextStyle(
                 fontFamily: 'Montserrat',
               )),
           onTap: () {
-            print("Privacy Policy");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()));
           },
         ),
       ],
