@@ -71,7 +71,6 @@ class HomeScreen extends StatelessWidget {
                           child: BusinessCard(
                             visitedUserId: receivedCards[index]['sender'],
                             date: receivedCards[index]['date'],
-                            location: receivedCards[index]['location'],
                           ),
                         );
                       },
@@ -91,13 +90,12 @@ class HomeScreen extends StatelessWidget {
 class BusinessCard extends StatelessWidget {
   final String visitedUserId;
   final Timestamp date;
-  final GeoPoint location;
 
-  const BusinessCard(
-      {super.key,
-      required this.visitedUserId,
-      required this.date,
-      required this.location});
+  const BusinessCard({
+    super.key,
+    required this.visitedUserId,
+    required this.date,
+  });
 
   String formatTimestamp(Timestamp timestamp) {
     if (timestamp == null) {
@@ -180,7 +178,6 @@ class BusinessCard extends StatelessWidget {
                               'sender': visitedUserId,
                               'receiver': auth.currentUser?.uid,
                               'date': date,
-                              'location': location
                             }
                           ])
                         });
@@ -201,7 +198,6 @@ class BusinessCard extends StatelessWidget {
                                 'sender': visitedUserId,
                                 'receiver': auth.currentUser?.uid,
                                 'date': date,
-                                'location': location
                               }
                             ])
                           });
@@ -302,16 +298,6 @@ class BusinessCard extends StatelessWidget {
                                 const SizedBox(
                                   height: 8,
                                 ),
-                                Text(
-                                  state.visitedUser.company,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(
-                                        int.parse(state.visitedUser.textColor)),
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
                                 const SizedBox(
                                   height: 8,
                                 ),
@@ -321,43 +307,19 @@ class BusinessCard extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        FaIcon(FontAwesomeIcons.locationDot,
-                                            size: 14,
+                                        Text(
+                                          state.visitedUser.company,
+                                          style: TextStyle(
+                                            fontSize: 12,
                                             color: Color(int.parse(
-                                                state.visitedUser.textColor))),
+                                                state.visitedUser.textColor)),
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                         SizedBox(
                                           width: 8,
                                         ),
-                                        FutureBuilder<String?>(
-                                          future: getCityFromGeoPoint(location),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              // Pendant que la future est en cours de chargement, affichez un indicateur de chargement par exemple.
-                                              return CircularProgressIndicator();
-                                            } else if (snapshot.hasError) {
-                                              // En cas d'erreur, affichez un message d'erreur.
-                                              return Text(
-                                                  'Erreur: ${snapshot.error}');
-                                            } else if (snapshot.hasData) {
-                                              // Si la future a renvoyé des données, affichez la ville dans le Text.
-                                              return Text(
-                                                snapshot.data ??
-                                                    'Ville inconnue', // Gestion de la valeur nulle
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color(int.parse(state
-                                                      .visitedUser.textColor)),
-                                                  fontFamily: 'Montserrat',
-                                                ),
-                                              );
-                                            } else {
-                                              // Si aucun des cas ci-dessus n'est rempli, affichez un message générique.
-                                              return Text('Chargement...');
-                                            }
-                                          },
-                                        )
                                       ],
                                     ),
                                     Text(formatTimestamp(date),

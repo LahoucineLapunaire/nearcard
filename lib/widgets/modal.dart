@@ -33,7 +33,7 @@ class QRCodeModal extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -41,30 +41,30 @@ class QRCodeModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               "QR Code",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             QrImageView(
               data: userId,
               version: QrVersions.auto,
               size: 200.0,
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "Scannez le QR code pour accéder au lien.",
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Fermer"),
+              child: const Text("Fermer"),
             ),
           ],
         ),
@@ -96,7 +96,7 @@ class CardShareModal extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -104,19 +104,19 @@ class CardShareModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               "Activer le partage de NearCard ?",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "Voulez-vous activer le partage de carte et commencer à partager votre carte avec les personnes proches ? Vous aller partager votre carte de visite pendant 30 minutes.",
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -124,14 +124,14 @@ class CardShareModal extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("Annuler"),
+                  child: const Text("Annuler"),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     setupCardSharing();
                     Navigator.of(context).pop();
                   },
-                  child: Text("Activer"),
+                  child: const Text("Activer"),
                 ),
               ],
             ),
@@ -163,7 +163,7 @@ class LogoutModal extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -171,19 +171,19 @@ class LogoutModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               "Voulez vous vraiment vous déconnecter ?",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "Voulez-vous vraiment vous déconnecter de votre compte ? vous pourrez vous reconnecter plus tard en utilisant votre adresse e-mail et votre mot de passe.",
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -197,7 +197,7 @@ class LogoutModal extends StatelessWidget {
                       foregroundColor: MaterialStateProperty.all(Colors.black),
                       shadowColor:
                           MaterialStateProperty.all(Colors.transparent)),
-                  child: Text("Annuler"),
+                  child: const Text("Annuler"),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -207,7 +207,7 @@ class LogoutModal extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all(Colors.red),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
                   ),
-                  child: Text("Se déconnecter"),
+                  child: const Text("Se déconnecter"),
                 ),
               ],
             ),
@@ -245,7 +245,7 @@ class _SupportModalState extends State<SupportModal> {
         height: 500,
         child: Column(
           children: [
-            Divider(
+            const Divider(
               color: Colors.black,
               height: 20,
               thickness: 3,
@@ -308,7 +308,7 @@ class _SupportModalState extends State<SupportModal> {
                   ),
                   fixedSize: const Size(
                       180, 35), // Set the width and height of the button
-                  backgroundColor: Color(
+                  backgroundColor: const Color(
                       0xff001f3f) // Set the background color of the button
                   ),
               child: const Row(
@@ -322,90 +322,6 @@ class _SupportModalState extends State<SupportModal> {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ShareModal extends StatefulWidget {
-  @override
-  _ShareModalState createState() => _ShareModalState();
-}
-
-class _ShareModalState extends State<ShareModal> {
-  List<String> selectedUsers = []; // Liste des utilisateurs sélectionnés
-  List<String> allUsers = []; // Liste de tous les utilisateurs
-
-  @override
-  void initState() {
-    super.initState();
-    fetchAllUsers();
-  }
-
-  // Fonction pour récupérer la liste de tous les utilisateurs depuis Firestore
-  void fetchAllUsers() async {
-    final QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('users').get();
-    final users = snapshot.docs.map((doc) => doc.id).toList();
-    setState(() {
-      allUsers = users;
-    });
-  }
-
-  // Fondition pour sélectionner/désélectionner un utilisateur
-  void toggleUserSelection(String userId) {
-    setState(() {
-      if (selectedUsers.contains(userId)) {
-        selectedUsers.remove(userId);
-      } else {
-        selectedUsers.add(userId);
-      }
-    });
-  }
-
-  // Fonction pour partager la carte
-  void shareCard() {
-    print("Partage de la carte avec les utilisateurs sélectionnés");
-    print(selectedUsers);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sélection d\'utilisateurs'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: allUsers.length,
-              itemBuilder: (context, index) {
-                final userId = allUsers[index];
-                final isSelected = selectedUsers.contains(userId);
-
-                return ListTile(
-                  title: Text(userId),
-                  trailing: Icon(
-                    isSelected
-                        ? Icons.check_circle
-                        : Icons.radio_button_unchecked,
-                    color: isSelected ? Colors.blue : Colors.grey,
-                  ),
-                  onTap: () {
-                    toggleUserSelection(userId);
-                  },
-                );
-              },
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              shareCard();
-            },
-            child: Text('Partager la carte'),
-          ),
-        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
+import 'package:NearCard/screens/app/sendCard.dart';
 import 'package:NearCard/screens/settings/settings.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:NearCard/widgets/modal.dart';
@@ -67,11 +68,9 @@ class ProfileScreen extends StatelessWidget {
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  showModalBottomSheet(
+                  showSearch(
                     context: context,
-                    builder: (BuildContext context) {
-                      return ShareModal();
-                    },
+                    delegate: SearchSendWidget(),
                   );
                 },
                 child: Icon(Icons.send),
