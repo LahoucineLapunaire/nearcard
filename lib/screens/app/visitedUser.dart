@@ -1,7 +1,10 @@
+import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
 import 'package:NearCard/model/user.dart';
+import 'package:NearCard/screens/app/home.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:NearCard/widgets/modal.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +16,53 @@ import 'package:url_launcher/url_launcher.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+Future<bool> isCardAlreadySent() async {
+  bool isCardSent = false;
+  await firestore
+      .collection('users')
+      .doc(auth.currentUser!.uid)
+      .get()
+      .then((value) {
+    if (value.data()!['cardReceived'] != null) {
+      value.data()!['cardReceived'].forEach((element) {
+        if (element['receiver'] == auth.currentUser!.uid) {
+          isCardSent = true;
+        }
+      });
+    }
+  });
+  return isCardSent;
+}
+
+void sendCardToUser(String uid, BuildContext context) async {
+  try {
+    if (await isCardAlreadySent()) {
+      displayError(context, "La carte a déjà été envoyée");
+      return;
+    }
+    await firestore.collection('users').doc(auth.currentUser!.uid).update({
+      'cardReceived': FieldValue.arrayUnion([
+        {
+          'sender': uid,
+          'receiver': auth.currentUser!.uid,
+          'date': DateTime.now(),
+        }
+      ])
+    });
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  create: (context) => CurrentUserBloc(),
+                  child: HomeScreen(),
+                )));
+    displayMessage(context, "La carte a été scanée avec succès");
+  } catch (e) {
+    print(e);
+  }
+}
+
 class VisitedUserScreen extends StatelessWidget {
   final VisitedUser visitedUser;
 
@@ -22,6 +72,12 @@ class VisitedUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(int.parse(visitedUser.bgColor)),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            sendCardToUser(visitedUser.uid, context);
+          },
+          child: const Icon(Icons.add),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
