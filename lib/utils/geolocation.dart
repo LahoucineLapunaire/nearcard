@@ -1,11 +1,10 @@
+import 'dart:async';
 import 'package:NearCard/model/user.dart';
 import 'package:NearCard/utils/notification.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:location/location.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -17,45 +16,60 @@ Future<CurrentUser> currentUser = firestore
   return CurrentUser.fromJson(value.data()!);
 });
 
-void callbackDispatcherWorkManager() {
-  try {
-    Workmanager().executeTask((task, inputData) {
-      print("Tâche en arrière-plan exécutée : $task");
-      manageCardSharing();
-      return Future.value(true);
-    });
-  } catch (e) {
-    print("error : " + e.toString());
-  }
+//--------------------------------------------------------------
+
+void setupCardSharing() {
+  BackgroundFetch.stop();
+  Location location = new Location();
+  location.enableBackgroundMode(enable: true);
+  var config = BackgroundFetchConfig(
+    minimumFetchInterval: 15, // Intervalle minimum en minutes
+    stopOnTerminate:
+        false, // Pour continuer à s'exécuter après la fermeture de l'application
+    enableHeadless: true, // Activer le traitement en arrière-plan
+    forceAlarmManager:
+        true, // Utiliser AlarmManager sur Android pour une précision maximale
+  );
+
+  BackgroundFetch.configure(config, (String taskId) async {
+    if (taskId == 'flutter_background_fetch') {
+      // Appel de votre fonction de partage de carte ici
+      // Exécutez votre code ici en arrière-plan
+      // N'oubliez pas d'appeler manageCardSharingWithPosition
+      // lorsque vous recevez une nouvelle position.
+      try {
+        print("Trigger Background Fetch Task");
+      } catch (e) {
+        print("Error setupCardSharing : " + e.toString());
+      }
+    }
+  });
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  BackgroundFetch.scheduleTask(
+    TaskConfig(
+      taskId: 'flutter_background_fetch',
+      delay: 2 * 60 * 1000, // Délai en millisecondes (15 minutes)
+      periodic: true, // Tâche périodique
+      stopOnTerminate:
+          false, // Continuer à s'exécuter après la fermeture de l'application
+      enableHeadless: true, // Activer le traitement en arrière-plan
+      forceAlarmManager:
+          true, // Utiliser AlarmManager sur Android pour une précision maximale
+    ),
+  );
 }
 
-void startWorkManager() {
-  try {
-    manageCardSharing();
-    Workmanager()
-        .initialize(callbackDispatcherWorkManager, isInDebugMode: true);
-    Workmanager()
-        .registerPeriodicTask(
-          'cardSharing', // Nom unique de la tâche
-          'sendCard', // Nom de la tâche à exécuter
-          frequency: Duration(minutes: 15), // Fréquence d'exécution
-          initialDelay: Duration(seconds: 0), // Délai d'attente initial
-          existingWorkPolicy: ExistingWorkPolicy.replace,
-        )
-        .then((value) => print("Work Manager started"));
-  } catch (e) {
-    print("error : " + e.toString());
-  }
-}
-
-void stopWorkManager() {
-  Workmanager().cancelAll();
-}
-
+@pragma('vm:entry-point')
 void backgroundFetchHeadlessTask(HeadlessTask task) async {
   String taskId = task.taskId;
   bool isTimeout = task.timeout;
-  manageCardSharing();
+  if (taskId == 'flutter_background_fetch') {
+    // Appel de votre fonction de partage de carte ici
+    // Exécutez votre code ici en arrière-plan
+    // N'oubliez pas d'appeler manageCardSharingWithPosition
+    // lorsque vous recevez une nouvelle position.
+    await scheduleCardSharing();
+  }
   if (isTimeout) {
     // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
     print("[BackgroundFetch] Headless task timed-out: $taskId");
@@ -66,71 +80,46 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
   BackgroundFetch.finish(taskId);
 }
 
-void callbackDispatcher(String taskId) {
-  print('Background fetch event received');
-  BackgroundFetch.finish(taskId);
-}
-
-void startBackgroundFetch() {
-  BackgroundFetch.configure(
-    BackgroundFetchConfig(
-      minimumFetchInterval: 15, // Minimum fetch interval in minutes
-      stopOnTerminate: false,
-      startOnBoot: true,
-      enableHeadless: true,
-      requiresBatteryNotLow: false,
-      requiresCharging: false,
-      requiresStorageNotLow: false,
-      requiresDeviceIdle: false,
-    ),
-    callbackDispatcher,
-  ).then((status) {
-    print('[BackgroundFetch] configure success: $status');
-  }).catchError((e) {
-    print('[BackgroundFetch] configure ERROR: $e');
-  });
-  BackgroundFetch.start() // Start the Flutter background service.
-      .then((value) => print('[BackgroundFetch] start success'));
-  manageCardSharing();
-}
-
-void startHeadlessTask() {
-  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
-}
-
 void stopBackgroundFetch() {
-  BackgroundFetch.stop().then((status) {
-    print('[BackgroundFetch] stop success: $status');
-  });
+  BackgroundFetch.stop();
 }
 
-void sceduleCardSharing() async {
+Future<void> scheduleCardSharing() async {
   try {
-    print("start sceduleCardSharing");
-    final cron = Cron();
-    DateTime startedTime = DateTime.now();
-    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
-      manageCardSharing();
-      final DateTime currentTime = DateTime.now();
-      final Duration elapsed = currentTime.difference(startedTime);
-      if (elapsed.inMinutes >= 15) {
-        stopCardShare();
-        cron.close();
-        return;
-      }
+    //get position
+    print("start setupCardSharing");
+    /*
+    
+     */
+    /*
+    geo.Position position = await geo.Geolocator.getCurrentPosition(
+            forceAndroidLocationManager: false,
+            desiredAccuracy: geo.LocationAccuracy.high)
+        .then((value) {
+      print("then : " + value.toString());
+      return value;
+    }).catchError((error) {
+      print("catchError : " + error.toString());
+      return null;
     });
+    LocationData locationData = LocationData.fromMap({
+      "latitude": position.latitude,
+      "longitude": position.longitude,
+    });
+    print("position : " + position.toString());
+    */
+    Location location = new Location();
+
+    location.enableBackgroundMode(enable: true);
+    LocationData position = await location.getLocation();
+    manageCardSharingWithPosition(position);
   } catch (e) {
     print(e.toString());
   }
 }
 
-void manageCardSharing() async {
+Future<void> manageCardSharingWithPosition(LocationData position) async {
   try {
-    //get position
-    Position position = await getPosition();
-
-    print("position : " + position.toString());
-
     // set position in firestore
     sendLocation(position);
 
@@ -145,7 +134,7 @@ void manageCardSharing() async {
   }
 }
 
-void stopCardShare() async {
+Future<void> stopCardShare() async {
   try {
     print("start stopCardShare");
     firestore.collection('users').doc(auth.currentUser?.uid).update({
@@ -156,12 +145,12 @@ void stopCardShare() async {
   }
 }
 
-void sendLocation(Position position) async {
+Future<void> sendLocation(LocationData position) async {
   try {
     print("start sendLocation");
     firestore.collection('users').doc(auth.currentUser?.uid).update({
       'cardShare': true,
-      'location': GeoPoint(position.latitude, position.longitude),
+      'location': GeoPoint(position.latitude ?? 0, position.longitude ?? 0),
     });
     print("finish sendLocation");
   } catch (e) {
@@ -169,35 +158,13 @@ void sendLocation(Position position) async {
   }
 }
 
-Future<Position> getPosition() async {
-  try {
-    print("start getPosition");
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    return position;
-  } catch (e) {
-    print("Error getPosition :" + e.toString());
-    return Position(
-        longitude: 0,
-        latitude: 0,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0);
-  }
-}
-
 // Future<Position> getPosition()
 Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
-    Position position) async {
+    LocationData position) async {
   try {
     print("start getPeopleNearby");
-    double latitude = position.latitude;
-    double longitude = position.longitude;
+    double latitude = position.latitude ?? 0;
+    double longitude = position.longitude ?? 0;
 
     // Créez les bornes pour la requête géospatiale
     GeoPoint lowerBound = GeoPoint(latitude - 0.01, longitude - 0.01);
@@ -216,8 +183,8 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
   }
 }
 
-void sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
-    Position position) async {
+Future<void> sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
+    LocationData position) async {
   try {
     print("start sendPeopleNearby");
 
@@ -226,9 +193,23 @@ void sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
         "sender": auth.currentUser?.uid,
         "receiver": doc.id,
         "date": DateTime.now(),
-        "location": GeoPoint(position.latitude, position.longitude),
+        "location": GeoPoint(position.latitude ?? 0, position.longitude ?? 0),
       };
       CurrentUser user = await currentUser;
+      /* Verification
+      if (doc.id == auth.currentUser?.uid) {
+        continue;
+      }
+      if (user.cardShare == false) {
+        continue;
+      }
+      List<Map<String, dynamic>> cardReceived = doc.get("cardReceived");
+      bool alreadyReceived =
+          cardReceived.any((map) => map['sender'] == auth.currentUser?.uid);
+      if (alreadyReceived) {
+        continue;
+      }
+    */
       sendNotificationToTopic(
           doc.id,
           "Carte de visite reçue !",
@@ -246,6 +227,7 @@ void sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
         "cardReceived": FieldValue.arrayUnion([data]),
       });
     }
+    BackgroundFetch.finish("");
     print("finish");
   } catch (e) {
     print("Error sendPeopleNearby : " + e.toString());

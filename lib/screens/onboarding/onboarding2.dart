@@ -2,6 +2,7 @@ import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Onboarding2 extends StatelessWidget {
   const Onboarding2({super.key});
@@ -16,40 +17,37 @@ class Onboarding2 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DelayedDisplay(
-                delay: Duration(milliseconds: 500),
-                child: SizedBox(
-                    width: 250,
-                    height: 250,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
+              SizedBox(
+                  width: 250,
+                  height: 250,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
                           ),
-                          child: Center(
-                            child: Icon(
-                              Icons.location_on,
-                              size: 100,
-                              color: Colors.white,
-                            ),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            FontAwesomeIcons.qrcode,
+                            size: 100,
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                    )),
-              ),
+                    ),
+                  )),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,31 +69,25 @@ class Onboarding2 extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              DelayedDisplay(
-                delay: Duration(milliseconds: 800),
-                child: const Text(
-                  'Géolocalisation',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                  ),
+              const Text(
+                'Qr Code',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              DelayedDisplay(
-                delay: Duration(milliseconds: 800),
-                child: const Text(
-                  'Grâce à la géolocalisation, vous pouvez envoyer et recevoir les cartes de visite autour de vous quand vous le souhaitez !',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                  ),
+              const Text(
+                'Grâce à votre Qr Code, vous pouvez partager vos informations de contact avec vos proches et vos clients.',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
                 ),
-              )
+              ),
             ],
           ),
         ));

@@ -90,7 +90,7 @@ void firstSetup(
     "textColor": textColor,
     "location": GeoPoint(0, 0),
     "cardShare": false,
-    "carSent": [],
+    "cardSent": [],
     "cardReceived": [],
   });
 }

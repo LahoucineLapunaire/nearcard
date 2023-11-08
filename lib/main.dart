@@ -47,8 +47,8 @@ void main() async {
           initNotification();
           FirebaseMessaging.onBackgroundMessage(
               firebaseMessagingBackgroundHandler);
-
           print("Verified");
+
           runApp(const Verified());
         } else {
           print("Not verified");
@@ -63,6 +63,7 @@ void main() async {
 }
 
 Future<void> requestPermission() async {
+  /*
   final PermissionStatus locationStatus = await Permission.location.request();
   if (locationStatus == PermissionStatus.granted) {
     // Permission granted
@@ -71,6 +72,7 @@ Future<void> requestPermission() async {
   } else if (locationStatus == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied
   }
+
   final PermissionStatus locationAlwaysStatus =
       await Permission.locationAlways.request();
   if (locationAlwaysStatus == PermissionStatus.granted) {
@@ -78,16 +80,6 @@ Future<void> requestPermission() async {
   } else if (locationAlwaysStatus == PermissionStatus.denied) {
     // Permission denied
   } else if (locationAlwaysStatus == PermissionStatus.permanentlyDenied) {
-    // Permission permanently denied
-  }
-
-  final PermissionStatus mediaLocatiosStatus =
-      await Permission.accessMediaLocation.request();
-  if (mediaLocatiosStatus == PermissionStatus.granted) {
-    // Permission granted
-  } else if (mediaLocatiosStatus == PermissionStatus.denied) {
-    // Permission denied
-  } else if (mediaLocatiosStatus == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied
   }
 
@@ -100,6 +92,7 @@ Future<void> requestPermission() async {
   } else if (notificationStatus == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied
   }
+  */
   final PermissionStatus backgroundStatus =
       await Permission.systemAlertWindow.request();
   if (backgroundStatus == PermissionStatus.granted) {
@@ -133,7 +126,6 @@ void initNotification() async {
     );
 
     // Print the user's permission status for notifications
-    print('User granted permission: ${settings.authorizationStatus}');
     print("Notification initialization completed");
 
     // Listen for incoming FCM messages when the app is in the foreground
@@ -172,10 +164,6 @@ Future<void> getKeysFromRemoteConfig() async {
       final secretKeyId = remoteConfig.getString('private_key_id');
       final secretKey = remoteConfig.getString('private_key');
       final smtpKey = remoteConfig.getString('smtp_key');
-      print("secretKeyId: $secretKeyId");
-      print("secretKey: $secretKey");
-      print("smtpKey: $smtpKey");
-
       // Create a SharedPreferences instance to store the keys.
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 

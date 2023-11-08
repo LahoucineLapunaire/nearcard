@@ -1,6 +1,7 @@
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
 import 'package:NearCard/screens/app/visitedUser.dart';
+import 'package:NearCard/utils/QrCode.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,18 @@ class HomeScreen extends StatelessWidget {
         }
         if (state is CurrentUserLoaded) {
           return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          QRCodeScreen()), // Navigate to the QR code screen
+                );
+              },
+              child: Icon(FontAwesomeIcons
+                  .qrcode), // Utilisez l'icône QR Code de font_awesome_flutter
+            ),
             appBar: AppBar(
               backgroundColor: Color(0xff001f3f),
               title: Text("Cartes reçues"),
@@ -158,7 +171,19 @@ class BusinessCard extends StatelessWidget {
                     // A pane can dismiss the Slidable.
                     dismissible: DismissiblePane(
                       onDismissed: () {
-                        print("Dismissed");
+                        firestore
+                            .collection('users')
+                            .doc(auth.currentUser?.uid)
+                            .update({
+                          'cardReceived': FieldValue.arrayRemove([
+                            {
+                              'sender': visitedUserId,
+                              'receiver': auth.currentUser?.uid,
+                              'date': date,
+                              'location': location
+                            }
+                          ])
+                        });
                       },
                     ),
 
@@ -167,7 +192,6 @@ class BusinessCard extends StatelessWidget {
                       // A SlidableAction can have an icon and/or a label.
                       SlidableAction(
                         onPressed: (context) {
-                          print("Delete");
                           firestore
                               .collection('users')
                               .doc(auth.currentUser?.uid)

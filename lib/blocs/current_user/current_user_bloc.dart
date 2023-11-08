@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:NearCard/model/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +25,6 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
         // Le document existe, donc nous pouvons le traiter
         final userData = event.data() as Map<String, dynamic>;
         final currentUser = CurrentUser.fromJson(userData);
-
         // Émettre un nouvel état avec les données de l'utilisateur courant
         emit(CurrentUserLoaded(currentUser));
       } else {

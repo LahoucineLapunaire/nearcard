@@ -15,10 +15,8 @@ void sendSupportMessage(BuildContext context, String name, String prename,
     final prefs = await SharedPreferences.getInstance();
     // Retrieve SMTP key from preferences or use an empty string as default
     var smtpkey = prefs.getString('smtp_key') ?? '';
-    print("smtpkey: $smtpkey");
     // Define the SMTP server using Gmail
     final smtpServer = gmail('moderation.ilili@gmail.com', smtpkey);
-    print("smtpServer: $smtpServer");
     // Create a message
     final message = Message()
       ..from =
@@ -59,12 +57,10 @@ void sendSupportMessage(BuildContext context, String name, String prename,
 </body>
 </html>
 '''; // HTML content of the email
-    print("message: $message");
     // Send the email using the specified SMTP server
     final sendReport = await send(message, smtpServer);
-    print("sendReport: $sendReport");
     // Show a success message
-    displayMessage(context, "l'émail a été envoyé avec succès");
+    displayMessage(context, "L'émail a été envoyé avec succès");
 
     // Print a confirmation message to the console
     print('Message sent: ${sendReport.toString()}');

@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/screens/settings/settings.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/utils/geolocation.dart';
 import 'package:NearCard/widgets/modal.dart';
-import 'package:cron/cron.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -70,11 +66,15 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.green,
                 onPressed: () {
-                  CardShareModal.show(context);
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ShareModal();
+                    },
+                  );
                 },
-                child: Icon(Icons.share),
+                child: Icon(Icons.send),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -126,6 +126,7 @@ class ProfileScreen extends StatelessWidget {
                       DelayedDisplay(
                         delay: const Duration(milliseconds: 900),
                         child: QrCodeSection(
+                          userId: auth.currentUser!.uid,
                           textColor: state.currentUser.textColor,
                         ),
                       ),
@@ -354,16 +355,17 @@ class SocialSection extends StatelessWidget {
 }
 
 class QrCodeSection extends StatelessWidget {
+  final String userId;
   final String textColor;
 
-  const QrCodeSection({super.key, required this.textColor});
+  const QrCodeSection(
+      {super.key, required this.textColor, required this.userId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          QRCodeModal.show(
-              context, 'https://nearcard.com/users/${auth.currentUser!.uid}');
+          QRCodeModal.show(context, userId);
         },
         child: Center(
           child: Text(

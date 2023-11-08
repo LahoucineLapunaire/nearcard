@@ -41,6 +41,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -49,5 +55,7 @@
 <string>Votre message d'autorisation en cours d'utilisation</string>
 <key>NSLocationAlwaysUsageDescription</key>
 <string>Votre message d'autorisation en arrière-plan</string>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>Votre message d'autorisation en cours et en arriere-plan</string>
 </dict>
 </plist>
