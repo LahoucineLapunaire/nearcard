@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 56,
                     ),
                     AccountSection(
@@ -171,10 +171,10 @@ class UserInfoSettingsSection extends StatelessWidget {
           ),
         );
       },
-      leading: Icon(
+      leading: const Icon(
         Icons.person,
       ),
-      title: Text(
+      title: const Text(
         'Modifier mes informations',
         style: TextStyle(
           color: Colors.black,
@@ -201,8 +201,8 @@ class NotificationSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          leading: const Icon(Icons.notifications), // Icon on the left side
+        const ListTile(
+          leading: Icon(Icons.notifications), // Icon on the left side
           title: Text(
             'Notifications', // Text for the title
             style: TextStyle(
@@ -213,13 +213,13 @@ class NotificationSection extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(
+          title: const Text(
             "Activer/désactiver les notifications",
             style: TextStyle(
               fontFamily: 'Montserrat',
             ),
           ),
-          subtitle: Text(
+          subtitle: const Text(
               "Activer/désactiver les notifications concernant les cartes de visite reçues",
               style: TextStyle(
                 fontFamily: 'Montserrat',
@@ -233,7 +233,6 @@ class NotificationSection extends StatelessWidget {
                       notification: value,
                     ),
                   );
-              print(state.notification);
             },
           ),
         ),
@@ -245,14 +244,14 @@ class NotificationSection extends StatelessWidget {
 class SupportSection extends StatelessWidget {
   final String name;
   final String prename;
-  SupportSection({super.key, required this.name, required this.prename});
+  const SupportSection({super.key, required this.name, required this.prename});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          leading: const Icon(Icons.help_rounded), // Icon on the left side
+        const ListTile(
+          leading: Icon(Icons.help_rounded), // Icon on the left side
           title: Text(
             'Help and Support', // Text for the title
             style: TextStyle(
@@ -263,7 +262,7 @@ class SupportSection extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text("Contact support",
+          title: const Text("Contact support",
               style: TextStyle(
                 fontFamily: 'Montserrat',
               )),
@@ -289,8 +288,8 @@ class LegalSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          leading: const Icon(Icons.info), // Icon on the left side
+        const ListTile(
+          leading: Icon(Icons.info), // Icon on the left side
           title: Text(
             'About and Legal', // Text for the title
             style: TextStyle(
@@ -301,17 +300,7 @@ class LegalSection extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text("Mentions Légales",
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-              )),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LegalNoticeScreen()));
-          },
-        ),
-        ListTile(
-          title: Text("Conditions d\'utilisation",
+          title: const Text("Mentions Légales",
               style: TextStyle(
                 fontFamily: 'Montserrat',
               )),
@@ -319,17 +308,31 @@ class LegalSection extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TermsOfServicesScreen()));
+                    builder: (context) => const LegalNoticeScreen()));
           },
         ),
         ListTile(
-          title: Text("Politique de Confidentialité",
+          title: const Text("Conditions d'utilisation",
               style: TextStyle(
                 fontFamily: 'Montserrat',
               )),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TermsOfServicesScreen()));
+          },
+        ),
+        ListTile(
+          title: const Text("Politique de Confidentialité",
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+              )),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PrivacyPolicyScreen()));
           },
         ),
       ],

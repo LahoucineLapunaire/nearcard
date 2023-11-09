@@ -1,18 +1,17 @@
 part of 'setup_bloc.dart';
 
-@immutable
 sealed class SetupState {}
 
 final class SetupInitial extends SetupState {
   List<Widget> pages = [
-    NameSetup(),
-    TitleSetup(),
-    CompanySetup(),
-    ContactSetup(),
-    SocialSetup(),
-    PictureSetup(),
-    ColorSetup(),
-    FinishSetup(),
+    const NameSetup(),
+    const TitleSetup(),
+    const CompanySetup(),
+    const ContactSetup(),
+    const SocialSetup(),
+    const PictureSetup(),
+    const ColorSetup(),
+    const FinishSetup(),
   ];
   int currentPage = 0;
 

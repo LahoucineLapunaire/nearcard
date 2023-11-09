@@ -15,12 +15,11 @@ class SetupScreen extends StatelessWidget {
             return KeyedSubtree(
               key: ValueKey(state.currentPage),
               child: PageView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: PageController(
                   initialPage: state.currentPage,
                 ),
                 onPageChanged: (int page) {
-                  print("onPageChanged");
                   context.read<SetupBloc>().add(SetupEventChange(page));
                 },
                 children: state.pages,

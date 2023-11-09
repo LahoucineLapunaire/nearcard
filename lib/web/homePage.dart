@@ -19,21 +19,20 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-        child: Column(
+        child: const Column(
           children: [
-            const DelayedDisplay(
+            DelayedDisplay(
                 delay: Duration(milliseconds: 600),
                 child: PresentationSection()),
-            const SizedBox(height: 50),
+            SizedBox(height: 50),
             DelayedDisplay(
-                delay: const Duration(milliseconds: 800),
-                child: BulletedList()),
-            const SizedBox(height: 50),
+                delay: Duration(milliseconds: 800), child: BulletedList()),
+            SizedBox(height: 50),
             DelayedDisplay(
-                delay: const Duration(milliseconds: 1000), child: CtaSection()),
-            const SizedBox(height: 50),
+                delay: Duration(milliseconds: 1000), child: CtaSection()),
+            SizedBox(height: 50),
             DelayedDisplay(
-                delay: const Duration(milliseconds: 1200),
+                delay: Duration(milliseconds: 1200),
                 child: ContactSection(email: "LahoucineL.freelance@gmail.com")),
             FooterSection(),
           ],
@@ -100,15 +99,17 @@ class PresentationSection extends StatelessWidget {
 }
 
 class BulletedList extends StatelessWidget {
+  const BulletedList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(16),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             "Fonctionnalités",
             style: TextStyle(
               color: Colors.white,
@@ -117,7 +118,7 @@ class BulletedList extends StatelessWidget {
               fontFamily: 'Montserrat',
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           BulletPoint(
             "Partage de Carte de Visite en un Clic :",
             "NearCard vous permet d'échanger des cartes de visite électroniques avec vos collègues, partenaires et prospects en un seul clic. Plus besoin de fouiller dans votre portefeuille à la recherche de cartes en papier, tout est accessible instantanément depuis votre appareil.",
@@ -148,7 +149,7 @@ class BulletPoint extends StatelessWidget {
   final String title;
   final String text;
 
-  BulletPoint(this.title, this.text);
+  const BulletPoint(this.title, this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +208,8 @@ class ScreenSection extends StatelessWidget {
 }
 
 class CtaSection extends StatelessWidget {
+  const CtaSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -214,8 +217,8 @@ class CtaSection extends StatelessWidget {
         // Vous pouvez ajouter ici l'action à effectuer lors du clic sur le bouton CTA.
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.green, // Couleur de fond du bouton
-        onPrimary: Colors.white, // Couleur du texte du bouton
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.green, // Couleur du texte du bouton
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -245,7 +248,7 @@ class CtaSection extends StatelessWidget {
 class ContactSection extends StatelessWidget {
   final String email;
 
-  ContactSection({required this.email});
+  const ContactSection({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -287,6 +290,8 @@ class ContactSection extends StatelessWidget {
 }
 
 class FooterSection extends StatelessWidget {
+  const FooterSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

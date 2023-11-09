@@ -15,7 +15,6 @@ String getParameterValue() {
     }
     return parameterValue;
   } catch (e) {
-    print(e.toString());
     return "";
   }
 }
@@ -33,7 +32,7 @@ class WebPage extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: userId == ''
-          ? HomePage()
+          ? const HomePage()
           : UserPage(
               visitedUserId: userId,
             ),

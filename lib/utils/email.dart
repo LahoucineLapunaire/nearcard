@@ -10,7 +10,6 @@ FirebaseAuth auth = FirebaseAuth.instance;
 void sendSupportMessage(BuildContext context, String name, String prename,
     String object, String emailContent) async {
   try {
-    print("sendSupportMessage");
     // Get user preferences
     final prefs = await SharedPreferences.getInstance();
     // Retrieve SMTP key from preferences or use an empty string as default
@@ -51,25 +50,23 @@ void sendSupportMessage(BuildContext context, String name, String prename,
 </style>
 </head>
 <body>
-<h1>Support message from ${name + " " + prename} (uid: ${auth.currentUser?.uid}) (email: ${auth.currentUser?.email})</h1>
+<h1>Support message from ${"$name $prename"} (uid: ${auth.currentUser?.uid}) (email: ${auth.currentUser?.email})</h1>
 <h2>Object: $object</h2>
 <p>$emailContent</p>
 </body>
 </html>
 '''; // HTML content of the email
     // Send the email using the specified SMTP server
-    final sendReport = await send(message, smtpServer);
+    await send(message, smtpServer);
     // Show a success message
     displayMessage(context, "L'émail a été envoyé avec succès");
 
     // Print a confirmation message to the console
-    print('Message sent: ${sendReport.toString()}');
 
     // Close the current screen or navigate back
     Navigator.pop(context);
   } catch (e) {
     // Handle any errors that occur during the email sending process
     displayError(context, "l'émail n'a pas pu être envoyé");
-    print('Error sending email: $e');
   }
 }

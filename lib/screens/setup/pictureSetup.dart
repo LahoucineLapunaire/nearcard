@@ -16,27 +16,27 @@ class PictureSetup extends StatelessWidget {
       builder: (context, state) {
         return SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 56,
                 ),
                 StepperBreadcrumbs(currentStep: state.currentPage),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 500), child: TitleSection()),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 700), child: ImageSection()),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 500), child: ButtonSection()),
               ],
             ),
@@ -52,7 +52,7 @@ class TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -100,7 +100,7 @@ class ImageSection extends StatelessWidget {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child: state.picture == ""
-                    ? Center(
+                    ? const Center(
                         child: FaIcon(
                           FontAwesomeIcons.userPlus,
                           size: 70,
@@ -131,7 +131,7 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+                border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
               ),
               child: ElevatedButton(
                   onPressed: () {
@@ -158,7 +158,7 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               width: 50,
             ),
-            Container(
+            SizedBox(
               height: 40,
               child: ElevatedButton(
                   onPressed: () {

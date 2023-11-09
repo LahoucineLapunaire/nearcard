@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:NearCard/model/user.dart';
-import 'package:NearCard/utils/notification.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:location/location.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -16,11 +13,12 @@ Future<CurrentUser> currentUser = firestore
   return CurrentUser.fromJson(value.data()!);
 });
 
+/*
 //--------------------------------------------------------------
 
 void setupCardSharing() {
   BackgroundFetch.stop();
-  Location location = new Location();
+  Location location = Location();
   location.enableBackgroundMode(enable: true);
   var config = BackgroundFetchConfig(
     minimumFetchInterval: 15, // Intervalle minimum en minutes
@@ -31,19 +29,7 @@ void setupCardSharing() {
         true, // Utiliser AlarmManager sur Android pour une précision maximale
   );
 
-  BackgroundFetch.configure(config, (String taskId) async {
-    if (taskId == 'flutter_background_fetch') {
-      // Appel de votre fonction de partage de carte ici
-      // Exécutez votre code ici en arrière-plan
-      // N'oubliez pas d'appeler manageCardSharingWithPosition
-      // lorsque vous recevez une nouvelle position.
-      try {
-        print("Trigger Background Fetch Task");
-      } catch (e) {
-        print("Error setupCardSharing : " + e.toString());
-      }
-    }
-  });
+  BackgroundFetch.configure(config, (String taskId) async {});
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
   BackgroundFetch.scheduleTask(
     TaskConfig(
@@ -72,11 +58,9 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
   }
   if (isTimeout) {
     // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
-    print("[BackgroundFetch] Headless task timed-out: $taskId");
     BackgroundFetch.finish(taskId);
     return;
   }
-  print("[BackgroundFetch] Headless event received: $taskId");
   BackgroundFetch.finish(taskId);
 }
 
@@ -87,7 +71,6 @@ void stopBackgroundFetch() {
 Future<void> scheduleCardSharing() async {
   try {
     //get position
-    print("start setupCardSharing");
     /*
     
      */
@@ -108,14 +91,12 @@ Future<void> scheduleCardSharing() async {
     });
     print("position : " + position.toString());
     */
-    Location location = new Location();
+    Location location = Location();
 
     location.enableBackgroundMode(enable: true);
     LocationData position = await location.getLocation();
     manageCardSharingWithPosition(position);
-  } catch (e) {
-    print(e.toString());
-  }
+  } catch (e) {}
 }
 
 Future<void> manageCardSharingWithPosition(LocationData position) async {
@@ -129,40 +110,30 @@ Future<void> manageCardSharingWithPosition(LocationData position) async {
 
     // send card to people nearby if cardShare is true
     sendPeopleNearby(peopleNearby, position);
-  } catch (e) {
-    print(e.toString());
-  }
+  } catch (e) {}
 }
 
 Future<void> stopCardShare() async {
   try {
-    print("start stopCardShare");
     firestore.collection('users').doc(auth.currentUser?.uid).update({
       'cardShare': false,
     });
-  } catch (e) {
-    print("Error stopCardShare" + e.toString());
-  }
+  } catch (e) {}
 }
 
 Future<void> sendLocation(LocationData position) async {
   try {
-    print("start sendLocation");
     firestore.collection('users').doc(auth.currentUser?.uid).update({
       'cardShare': true,
       'location': GeoPoint(position.latitude ?? 0, position.longitude ?? 0),
     });
-    print("finish sendLocation");
-  } catch (e) {
-    print("Error sendLocation : " + e.toString());
-  }
+  } catch (e) {}
 }
 
 // Future<Position> getPosition()
 Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
     LocationData position) async {
   try {
-    print("start getPeopleNearby");
     double latitude = position.latitude ?? 0;
     double longitude = position.longitude ?? 0;
 
@@ -175,10 +146,8 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
         .where('location', isGreaterThanOrEqualTo: lowerBound)
         .where('location', isLessThanOrEqualTo: upperBound)
         .get();
-    print("finish getPeopleNearby");
     return querySnapshot.docs;
   } catch (e) {
-    print("Erro getPeopleNearby : " + e.toString());
     return [];
   }
 }
@@ -186,8 +155,6 @@ Future<List<QueryDocumentSnapshot<Object?>>> getPeopleNearby(
 Future<void> sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
     LocationData position) async {
   try {
-    print("start sendPeopleNearby");
-
     for (QueryDocumentSnapshot<Object?> doc in peopleNearby) {
       Map<String, dynamic> data = {
         "sender": auth.currentUser?.uid,
@@ -228,8 +195,6 @@ Future<void> sendPeopleNearby(List<QueryDocumentSnapshot<Object?>> peopleNearby,
       });
     }
     BackgroundFetch.finish("");
-    print("finish");
-  } catch (e) {
-    print("Error sendPeopleNearby : " + e.toString());
-  }
+  } catch (e) {}
 }
+*/

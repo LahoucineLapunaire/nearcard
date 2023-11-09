@@ -14,8 +14,8 @@ class UserPage extends StatelessWidget {
       child: BlocBuilder<VisitedUserBloc, VisitedUserState>(
         builder: (context, state) {
           if (state is VisitedUserInitial) {
-            return Scaffold(
-              backgroundColor: const Color(0xFF001F3F),
+            return const Scaffold(
+              backgroundColor: Color(0xFF001F3F),
               body: Center(
                 child: Text(
                   "Chargement de l'utilisateur...",
@@ -34,7 +34,7 @@ class UserPage extends StatelessWidget {
               appBar: AppBar(
                 title: const Text('NearCard'),
               ),
-              body: Center(
+              body: const Center(
                 child: Text("L'utilisateur n'a pas été trouvé"),
               ),
             );
@@ -47,7 +47,7 @@ class UserPage extends StatelessWidget {
             appBar: AppBar(
               title: const Text('NearCard'),
             ),
-            body: Center(
+            body: const Center(
               child: Text("L'utilisateur n'a pas été trouvé"),
             ),
           );

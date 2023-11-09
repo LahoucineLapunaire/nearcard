@@ -3,7 +3,6 @@ import 'package:NearCard/model/user.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 part 'visited_user_event.dart';
@@ -26,7 +25,6 @@ Future<String?> getEmailFromUid(String uid) async {
       return null;
     }
   } catch (e) {
-    print("Erreur lors de la récupération de l'email : $e");
     return null;
   }
 }
@@ -38,7 +36,6 @@ Future<String?> getEmailFromUidWeb(String uid) async {
     final Map<String, dynamic> jsonData = result.data as Map<String, dynamic>;
     return jsonData["email"]["email"];
   } catch (e) {
-    print("Error getEmailFromUid : $e");
     return null;
   }
 }

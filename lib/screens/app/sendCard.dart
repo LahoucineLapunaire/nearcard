@@ -1,11 +1,9 @@
 import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
 import 'package:NearCard/model/user.dart';
-import 'package:NearCard/screens/app/home.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -31,39 +29,33 @@ Future<bool> isCardAlreadySent() async {
 }
 
 void sendCardToUser(String uid, BuildContext context) async {
-  try {
-    if (await isCardAlreadySent()) {
-      displayError(context, "La carte a déjà été envoyée");
-      return;
-    }
-    await firestore.collection('users').doc(auth.currentUser!.uid).update({
-      'cardSent': FieldValue.arrayUnion([
-        {
-          'sender': auth.currentUser!.uid,
-          'receiver': uid,
-          'date': DateTime.now(),
-        }
-      ])
-    });
-    await firestore.collection('users').doc(uid).update({
-      'cardReceived': FieldValue.arrayUnion([
-        {
-          'sender': auth.currentUser!.uid,
-          'receiver': uid,
-          'date': DateTime.now(),
-        }
-      ])
-    });
-    Navigator.pop(context);
-    displayMessage(context, "La carte a été envoyée avec succès");
-  } catch (e) {
-    print(e);
+  if (await isCardAlreadySent()) {
+    displayError(context, "La carte a déjà été envoyée");
+    return;
   }
+  await firestore.collection('users').doc(auth.currentUser!.uid).update({
+    'cardSent': FieldValue.arrayUnion([
+      {
+        'sender': auth.currentUser!.uid,
+        'receiver': uid,
+        'date': DateTime.now(),
+      }
+    ])
+  });
+  await firestore.collection('users').doc(uid).update({
+    'cardReceived': FieldValue.arrayUnion([
+      {
+        'sender': auth.currentUser!.uid,
+        'receiver': uid,
+        'date': DateTime.now(),
+      }
+    ])
+  });
+  Navigator.pop(context);
+  displayMessage(context, "La carte a été envoyée avec succès");
 }
 
 Future<VisitedUser> getVisitedUser(String uid) async {
-  print("start getVisitedUser");
-  print(uid);
   Map<String, dynamic>? result = await usersCollectionRef.doc(uid).get().then(
     (value) {
       return value.data();
@@ -71,7 +63,6 @@ Future<VisitedUser> getVisitedUser(String uid) async {
   );
   result!['uid'] = uid;
   result['email'] = await getEmailFromUidWeb(uid) ?? "";
-  print(result);
   return VisitedUser.fromJson(result);
 }
 
@@ -175,7 +166,7 @@ class SearchSendWidget extends SearchDelegate {
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(user.profilePicture),
                 ),
-                title: Text(user.name + ' ' + user.prename),
+                title: Text('${user.name} ${user.prename}'),
                 onTap: () async {
                   sendCardToUser(user.userId, context);
                 },

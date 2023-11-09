@@ -1,8 +1,6 @@
-import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
 import 'package:NearCard/utils/email.dart';
+// ignore: unused_import
 import 'package:NearCard/utils/geolocation.dart';
-import 'package:background_fetch/background_fetch.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +11,7 @@ FirebaseAuth auth = FirebaseAuth.instance;
 class QRCodeModal extends StatelessWidget {
   final String userId;
 
-  QRCodeModal({required this.userId});
+  const QRCodeModal({super.key, required this.userId});
 
   static void show(BuildContext context, String userId) {
     showDialog(
@@ -76,13 +74,13 @@ class QRCodeModal extends StatelessWidget {
 class CardShareModal extends StatelessWidget {
   final BuildContext? widgetContext;
 
-  CardShareModal({this.widgetContext});
+  const CardShareModal({super.key, this.widgetContext});
 
   static void show(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CardShareModal();
+        return const CardShareModal();
       },
     );
   }
@@ -128,7 +126,7 @@ class CardShareModal extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    setupCardSharing();
+                    //setupCardSharing();
                     Navigator.of(context).pop();
                   },
                   child: const Text("Activer"),
@@ -143,13 +141,13 @@ class CardShareModal extends StatelessWidget {
 }
 
 class LogoutModal extends StatelessWidget {
-  LogoutModal({super.key});
+  const LogoutModal({super.key});
 
   static void show(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return LogoutModal();
+        return const LogoutModal();
       },
     );
   }
@@ -222,7 +220,7 @@ class SupportModal extends StatefulWidget {
   final String name;
   final String prename;
 
-  SupportModal({Key? key, required this.name, required this.prename})
+  const SupportModal({Key? key, required this.name, required this.prename})
       : super(key: key);
 
   @override

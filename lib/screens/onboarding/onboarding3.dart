@@ -1,7 +1,6 @@
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
 import 'package:NearCard/screens/auth/login.dart';
 import 'package:NearCard/screens/auth/signup.dart';
-import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +17,7 @@ class Onboarding3 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 250,
                 height: 250,
                 child: Center(
@@ -43,7 +42,7 @@ class Onboarding3 extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Text(
+              const Text(
                 'Partagez votre carte de visite en un clic',
                 style: TextStyle(
                   color: Colors.white,
@@ -53,7 +52,7 @@ class Onboarding3 extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 'Partagez votre carte de visite en un clic avec vos clients et vos partenaires via un lien',
                 style: TextStyle(
                   color: Colors.white,
@@ -63,19 +62,15 @@ class Onboarding3 extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Container(
+              SizedBox(
                 width: 300,
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      try {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignupScreen()));
-                      } catch (e) {
-                        print(e);
-                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignupScreen()));
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
@@ -92,34 +87,28 @@ class Onboarding3 extends StatelessWidget {
                     )),
               ),
               const SizedBox(height: 8),
-              Container(
-                child: ElevatedButton(
-                    onPressed: () {
-                      try {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                    style: ButtonStyle(
-                      shadowColor:
-                          MaterialStateProperty.all<Color>(Colors.transparent),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.transparent),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                  },
+                  style: ButtonStyle(
+                    shadowColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.transparent),
+                  ),
+                  child: const Text(
+                    "Dèjà inscrit ? se connecter",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w600,
                     ),
-                    child: const Text(
-                      "Dèjà inscrit ? se connecter",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )),
-              ),
+                  )),
             ],
           ),
         ));

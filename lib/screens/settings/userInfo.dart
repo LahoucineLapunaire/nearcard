@@ -2,7 +2,6 @@ import 'package:NearCard/blocs/settings/settings_bloc.dart';
 import 'package:NearCard/screens/settings/changeColor.dart';
 import 'package:NearCard/screens/settings/changeCompany.dart';
 import 'package:NearCard/screens/settings/changeContact.dart';
-import 'package:NearCard/screens/settings/changeEmail.dart';
 import 'package:NearCard/screens/settings/changeName.dart';
 import 'package:NearCard/screens/settings/changePassword.dart';
 import 'package:NearCard/screens/settings/changePicture.dart';
@@ -62,7 +61,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangeNameScreen()));
+                        builder: (context) => const ChangeNameScreen()));
               },
             ),
             ListTile(
@@ -75,7 +74,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangePasswordScreen()));
+                        builder: (context) => const ChangePasswordScreen()));
               },
             ),
             ListTile(
@@ -88,7 +87,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangeTitleScreen()));
+                        builder: (context) => const ChangeTitleScreen()));
               },
             ),
             ListTile(
@@ -101,7 +100,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangeCompanyScreen()));
+                        builder: (context) => const ChangeCompanyScreen()));
               },
             ),
             ListTile(
@@ -114,7 +113,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangeContactScreen()));
+                        builder: (context) => const ChangeContactScreen()));
               },
             ),
             ListTile(
@@ -127,7 +126,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangeSocialScreen()));
+                        builder: (context) => const ChangeSocialScreen()));
               },
             ),
             ListTile(
@@ -140,7 +139,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangePictureScreen()));
+                        builder: (context) => const ChangePictureScreen()));
               },
             ),
             ListTile(
@@ -153,7 +152,7 @@ class UserInfoSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangeColorScreen()));
+                        builder: (context) => const ChangeColorScreen()));
               },
             ),
           ],

@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:NearCard/model/user.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -70,8 +68,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         emit(settingsState);
       }
       if (event is SettingsEventChangeUserinfo) {
-        print(event.field);
-        print(event.value);
         try {
           if (event.field == "picture") {
             String downloadURL = "";
@@ -149,12 +145,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       }
       if (event is SettingsEventChangeBgColor) {
         SettingsLoaded settingsState = state as SettingsLoaded;
-        settingsState = settingsState.copyWith(bgColor: "0x" + event.color);
+        settingsState = settingsState.copyWith(bgColor: "0x${event.color}");
         emit(settingsState);
       }
       if (event is SettingsEventChangeTextColor) {
         SettingsLoaded settingsState = state as SettingsLoaded;
-        settingsState = settingsState.copyWith(textColor: "0x" + event.color);
+        settingsState = settingsState.copyWith(textColor: "0x${event.color}");
         emit(settingsState);
       }
     });

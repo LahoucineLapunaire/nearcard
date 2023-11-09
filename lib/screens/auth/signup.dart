@@ -13,24 +13,24 @@ class SignupScreen extends StatelessWidget {
       create: (context) => AuthBloc(),
       child: Scaffold(body: BlocBuilder<AuthBloc, AuthInitial>(
         builder: (context, state) {
-          return SingleChildScrollView(
+          return const SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 56,
                   ),
                   DelayedDisplay(
                       delay: Duration(milliseconds: 500),
-                      child: const TitleSection()),
-                  const SizedBox(
+                      child: TitleSection()),
+                  SizedBox(
                     height: 24,
                   ),
                   DelayedDisplay(
                       delay: Duration(milliseconds: 700), child: FormSection()),
-                  const SizedBox(
+                  SizedBox(
                     height: 16,
                   ),
                   DelayedDisplay(
@@ -51,10 +51,10 @@ class TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Créer un compte',
           style: TextStyle(
             fontSize: 32,
@@ -62,10 +62,10 @@ class TitleSection extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(
+        SizedBox(
           height: 16,
         ),
-        const Text(
+        Text(
           'créer un compte et commencer à partager vos cartes de visite !',
           style: TextStyle(
             fontSize: 18,
@@ -85,7 +85,7 @@ class FormSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthInitial>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           width: 300,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -97,7 +97,7 @@ class FormSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Container(
@@ -130,7 +130,7 @@ class FormSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Container(
@@ -167,7 +167,7 @@ class FormSection extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             if (state.passwordValidity != "")
@@ -191,7 +191,7 @@ class FormSection extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Container(
@@ -206,7 +206,7 @@ class FormSection extends StatelessWidget {
                 obscureText: !state.ispasswordVisible,
                 controller: state.signupConfirmPasswordController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.password),
+                  prefixIcon: const Icon(Icons.password),
                   suffixIcon: IconButton(
                     onPressed: () {
                       context.read<AuthBloc>().add(
@@ -218,7 +218,7 @@ class FormSection extends StatelessWidget {
                         : Icons.visibility_off),
                   ),
                   hintText: 'Confirmer le mot de passe',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 14,
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.w400,
@@ -247,7 +247,6 @@ class FormSection extends StatelessWidget {
                   checkColor: Colors.white,
                   value: state.termsAccepted,
                   onChanged: (value) {
-                    print("Terms of Use");
                     context
                         .read<AuthBloc>()
                         .add(AuthEventSetTermsAccepted(value ?? false));
@@ -256,7 +255,6 @@ class FormSection extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      print("Terms of Use");
                       context
                           .read<AuthBloc>()
                           .add(AuthEventSetTermsAccepted(!state.termsAccepted));
@@ -289,12 +287,11 @@ class ButtonSection extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            Container(
+            SizedBox(
               width: 260,
               height: 40,
               child: ElevatedButton(
                   onPressed: () {
-                    print("S'inscrire");
                     context.read<AuthBloc>().add(AuthEventSignup(context));
                   },
                   style: ButtonStyle(
@@ -313,44 +310,42 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            Container(
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
-                  },
-                  style: ButtonStyle(
-                    shadowColor:
-                        MaterialStateProperty.all<Color>(Colors.transparent),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.transparent),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Déja inscrit ?",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Montserrat',
-                          color: Colors.black,
-                        ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()));
+                },
+                style: ButtonStyle(
+                  shadowColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Déja inscrit ?",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Montserrat',
+                        color: Colors.black,
                       ),
-                      SizedBox(width: 5),
-                      Text(
-                        "Connectez-vous",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Montserrat',
-                          color: const Color(0xFF001F3F),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  )),
-            ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Connectez-vous",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFF001F3F),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                )),
           ],
         );
       },

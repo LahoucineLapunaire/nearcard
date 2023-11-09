@@ -8,7 +8,7 @@ class LegalNoticeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mentions Légales"),
-        backgroundColor: Color(0xff001f3f),
+        backgroundColor: const Color(0xff001f3f),
       ),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -83,6 +83,5 @@ class LegalNoticeScreen extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

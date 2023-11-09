@@ -16,8 +16,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
-
 part 'setup_event.dart';
 part 'setup_state.dart';
 
@@ -26,8 +24,6 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
 
 void sendEmailVerification() async {
-  print("Sending email");
-
   User? user = auth.currentUser;
   if (user != null && !user.emailVerified) {
     await user.sendEmailVerification();
@@ -88,7 +84,7 @@ void firstSetup(
     "picture": downloadURL,
     "bgColor": bgColor,
     "textColor": textColor,
-    "location": GeoPoint(0, 0),
+    "location": const GeoPoint(0, 0),
     "cardShare": false,
     "cardSent": [],
     "cardReceived": [],
@@ -132,12 +128,12 @@ class SetupBloc extends Bloc<SetupEvent, SetupInitial> {
       }
       if (event is SetupEventChangeBgColor) {
         emit(state.copyWith(
-          bgColor: "0x" + event.color,
+          bgColor: "0x${event.color}",
         ));
       }
       if (event is SetupEventChangeTextColor) {
         emit(state.copyWith(
-          textColor: "0x" + event.color,
+          textColor: "0x${event.color}",
         ));
       }
       if (event is SetupEventFirstSetup) {

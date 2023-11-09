@@ -13,7 +13,7 @@ class OnboardingScreen extends StatelessWidget {
         builder: (context, state) {
           return SafeArea(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

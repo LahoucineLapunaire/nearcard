@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void displayError(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Container(
+      content: SizedBox(
         height: 60,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,7 @@ void displayError(BuildContext context, String message) {
 void displayMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Container(
+      content: SizedBox(
         height: 60,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

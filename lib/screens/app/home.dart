@@ -39,12 +39,12 @@ class HomeScreen extends StatelessWidget {
                           QRCodeScreen()), // Navigate to the QR code screen
                 );
               },
-              child: Icon(FontAwesomeIcons
+              child: const Icon(FontAwesomeIcons
                   .qrcode), // Utilisez l'icône QR Code de font_awesome_flutter
             ),
             appBar: AppBar(
-              backgroundColor: Color(0xff001f3f),
-              title: Text("Cartes reçues"),
+              backgroundColor: const Color(0xff001f3f),
+              title: const Text("Cartes reçues"),
             ),
             body: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -57,11 +57,11 @@ class HomeScreen extends StatelessWidget {
                   final List<dynamic>? receivedCards =
                       snapshot.data?.get('cardReceived');
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // Affichez un indicateur de chargement en attendant les données.
+                    return const CircularProgressIndicator(); // Affichez un indicateur de chargement en attendant les données.
                   } else if (snapshot.hasError) {
                     return Text("Erreur : ${snapshot.error}");
                   } else if (receivedCards!.isEmpty) {
-                    return Center(child: Text("Aucune carte reçue."));
+                    return const Center(child: Text("Aucune carte reçue."));
                   } else {
                     return ListView.builder(
                       itemCount: receivedCards.length,
@@ -98,9 +98,6 @@ class BusinessCard extends StatelessWidget {
   });
 
   String formatTimestamp(Timestamp timestamp) {
-    if (timestamp == null) {
-      return "Date inconnue";
-    }
     final dateTime = timestamp.toDate();
     final day = dateTime.day.toString().padLeft(2, '0');
     final month = dateTime.month.toString().padLeft(2, '0');
@@ -129,7 +126,6 @@ class BusinessCard extends StatelessWidget {
         return 'Ville inconnue';
       }
     } catch (e) {
-      print("Erreur lors de la récupération de la ville : $e");
       return null;
     }
   }
@@ -157,7 +153,7 @@ class BusinessCard extends StatelessWidget {
                             )));
               },
               child: Container(
-                margin: EdgeInsets.only(bottom: 15),
+                margin: const EdgeInsets.only(bottom: 15),
                 child: Slidable(
                   // Specify a key if the Slidable is dismissible.
                   key: const ValueKey(0),
@@ -202,7 +198,7 @@ class BusinessCard extends StatelessWidget {
                             ])
                           });
                         },
-                        backgroundColor: Color(0xFFFE4A49),
+                        backgroundColor: const Color(0xFFFE4A49),
                         foregroundColor: Colors.white,
                         icon: Icons.delete,
                         label: 'Delete',
@@ -210,10 +206,10 @@ class BusinessCard extends StatelessWidget {
                       SlidableAction(
                         onPressed: (context) {
                           Share.share(
-                            'https://nearcard.com/users/${visitedUserId}',
+                            'https://nearcard.com/users/$visitedUserId',
                           );
                         },
-                        backgroundColor: Color(0xFF21B7CA),
+                        backgroundColor: const Color(0xFF21B7CA),
                         foregroundColor: Colors.white,
                         icon: Icons.share,
                         label: 'Share',
@@ -227,7 +223,8 @@ class BusinessCard extends StatelessWidget {
                           color: Colors.black.withOpacity(0.5),
                           spreadRadius: 0.1,
                           blurRadius: 2,
-                          offset: Offset(0, 3), // changes position of shadow
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
                         ),
                       ],
                       borderRadius: BorderRadius.circular(10),
@@ -267,7 +264,7 @@ class BusinessCard extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 120,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,7 +314,7 @@ class BusinessCard extends StatelessWidget {
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 8,
                                         ),
                                       ],

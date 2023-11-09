@@ -1,5 +1,4 @@
 import 'package:NearCard/blocs/onboarding/onboarding_bloc.dart';
-import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,7 +37,7 @@ class Onboarding2 extends StatelessWidget {
                             width: 2,
                           ),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Icon(
                             FontAwesomeIcons.qrcode,
                             size: 100,
@@ -58,14 +57,15 @@ class Onboarding2 extends StatelessWidget {
                             .read<OnboardingBloc>()
                             .add(OnboardingEventChange(state.currentPage - 1));
                       },
-                      icon: Icon(Icons.arrow_back, color: Colors.white)),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white)),
                   IconButton(
                       onPressed: () {
                         context
                             .read<OnboardingBloc>()
                             .add(OnboardingEventChange(state.currentPage + 1));
                       },
-                      icon: Icon(Icons.arrow_forward, color: Colors.white)),
+                      icon:
+                          const Icon(Icons.arrow_forward, color: Colors.white)),
                 ],
               ),
               const SizedBox(height: 16),

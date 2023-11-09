@@ -17,7 +17,7 @@ class Onboarding1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               DelayedDisplay(
-                delay: Duration(milliseconds: 500),
+                delay: const Duration(milliseconds: 500),
                 child: SizedBox(
                   width: 250,
                   height: 250,
@@ -37,13 +37,14 @@ class Onboarding1 extends StatelessWidget {
                             .read<OnboardingBloc>()
                             .add(OnboardingEventChange(state.currentPage + 1));
                       },
-                      icon: Icon(Icons.arrow_forward, color: Colors.white)),
+                      icon:
+                          const Icon(Icons.arrow_forward, color: Colors.white)),
                 ],
               ),
               const SizedBox(height: 16),
-              DelayedDisplay(
+              const DelayedDisplay(
                 delay: Duration(milliseconds: 800),
-                child: const Text(
+                child: Text(
                   'NearCard',
                   style: TextStyle(
                     color: Colors.white,
@@ -54,9 +55,9 @@ class Onboarding1 extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              DelayedDisplay(
+              const DelayedDisplay(
                 delay: Duration(milliseconds: 800),
-                child: const Text(
+                child: Text(
                   'Partagez votre carte de visite en un clic',
                   style: TextStyle(
                     color: Colors.white,

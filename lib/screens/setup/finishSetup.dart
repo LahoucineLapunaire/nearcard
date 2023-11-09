@@ -4,7 +4,6 @@ import 'package:NearCard/widgets/alert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +17,7 @@ class FinishSetup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(body: BlocBuilder<SetupBloc, SetupInitial>(
       builder: (context, state) {
-        return SingleChildScrollView(
+        return const SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Column(
@@ -90,7 +89,7 @@ class ButtonSection extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               height: 40,
               child: ElevatedButton(
                   onPressed: () {

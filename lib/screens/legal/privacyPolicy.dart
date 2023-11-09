@@ -7,7 +7,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff001f3f),
+        backgroundColor: const Color(0xff001f3f),
         title: const Text("Mentions Légales"),
       ),
       body: const SingleChildScrollView(
@@ -82,7 +82,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              "Article 4 - Responsabilités de l\'Éditeur et du Responsable de Traitement",
+              "Article 4 - Responsabilités de l'Éditeur et du Responsable de Traitement",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
@@ -117,10 +117,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "Vos données sont collectées par le propriétaire de l\'application. Les données personnelles signifient toute information relative à une personne physique identifiée ou identifiable (personne concernée). Une personne identifiable est une personne qui peut être identifiée, directement ou indirectement, en particulier par référence à un nom, un numéro d\'identification ou un ou plusieurs facteurs spécifiques à son identité physique, physiologique, génétique, mentale, économique, culturelle ou sociale.",
+              "Vos données sont collectées par le propriétaire de l'application. Les données personnelles signifient toute information relative à une personne physique identifiée ou identifiable (personne concernée). Une personne identifiable est une personne qui peut être identifiée, directement ou indirectement, en particulier par référence à un nom, un numéro d'identification ou un ou plusieurs facteurs spécifiques à son identité physique, physiologique, génétique, mentale, économique, culturelle ou sociale.",
             ),
             Text(
-              "Les informations personnelles qui peuvent être collectées sur l\'application sont utilisées par l\'éditeur pour la gestion des relations avec vous, et si nécessaire pour le traitement de vos commandes. Les données personnelles qui peuvent être collectées sont les suivantes :",
+              "Les informations personnelles qui peuvent être collectées sur l'application sont utilisées par l'éditeur pour la gestion des relations avec vous, et si nécessaire pour le traitement de vos commandes. Les données personnelles qui peuvent être collectées sont les suivantes :",
             ),
             Text(
               "Nom et prénom",
@@ -146,28 +146,28 @@ class PrivacyPolicyScreen extends StatelessWidget {
               "Conformément à la réglementation applicable aux données personnelles, les utilisateurs disposent des droits suivants :",
             ),
             Text(
-              "Le droit d\'accès : vous pouvez exercer votre droit d\'accès à vos données personnelles en écrivant à l\'adresse e-mail suivante : moderation.nearcard@gmail.com. Dans ce cas, avant de mettre en œuvre ce droit, le propriétaire de l\'application peut demander une preuve de votre identité afin d'en vérifier l'exactitude.",
+              "Le droit d'accès : vous pouvez exercer votre droit d'accès à vos données personnelles en écrivant à l'adresse e-mail suivante : moderation.nearcard@gmail.com. Dans ce cas, avant de mettre en œuvre ce droit, le propriétaire de l'application peut demander une preuve de votre identité afin d'en vérifier l'exactitude.",
             ),
             Text(
-              "Le droit de rectification : si les données personnelles détenues par le propriétaire de l\'application sont inexactes, vous pouvez demander que les informations soient mises à jour.",
+              "Le droit de rectification : si les données personnelles détenues par le propriétaire de l'application sont inexactes, vous pouvez demander que les informations soient mises à jour.",
             ),
             Text(
               "Le droit de suppression des données : vous pouvez demander la suppression de vos données personnelles conformément aux lois en vigueur sur la protection des données.",
             ),
             Text(
-              "Le droit de limiter le traitement : vous pouvez demander au propriétaire de l\'application de limiter le traitement de vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD).",
+              "Le droit de limiter le traitement : vous pouvez demander au propriétaire de l'application de limiter le traitement de vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD).",
             ),
             Text(
-              "Le droit de s\'opposer au traitement des données : vous pouvez vous opposer au traitement de vos données conformément aux hypothèses énoncées dans le Règlement Général sur la Protection des Données (RGPD) :",
+              "Le droit de s'opposer au traitement des données : vous pouvez vous opposer au traitement de vos données conformément aux hypothèses énoncées dans le Règlement Général sur la Protection des Données (RGPD) :",
             ),
             Text(
-              "Le droit à la portabilité : vous pouvez demander au propriétaire de l\'application de vous fournir les données personnelles que vous avez fournies afin qu\'elles puissent être transférées vers un autre site. Vous pouvez exercer ce droit en nous contactant à l\'adresse e-mail suivante : moderation.nearcard@gmail.com.",
+              "Le droit à la portabilité : vous pouvez demander au propriétaire de l'application de vous fournir les données personnelles que vous avez fournies afin qu'elles puissent être transférées vers un autre site. Vous pouvez exercer ce droit en nous contactant à l'adresse e-mail suivante : moderation.nearcard@gmail.com.",
             ),
             Text(
               "Toute demande doit être accompagnée d'une photocopie d'une pièce d'identité valide, signée, et doit mentionner l'adresse à laquelle l'éditeur de l'application peut contacter le demandeur. La réponse sera envoyée dans un délai d'un mois à compter de la réception de la demande. Ce délai d'un mois peut être prolongé de deux mois si la complexité de la demande et/ou le nombre de demandes le requièrent.",
             ),
             Text(
-              "De plus, et depuis la loi n°2016-1321 du 7 octobre 2016, les personnes qui le souhaitent ont la possibilité d\'organiser le devenir de leurs données après leur décès. Pour en savoir plus sur le sujet, vous pouvez consulter l\'application web de la CNIL : https://www.cnil.fr/. Les utilisateurs peuvent également déposer une réclamation auprès de la CNIL sur l\'application de la CNIL : https://www.cnil.fr/. Nous vous recommandons de nous contacter d\'abord via moderation.nearcard@gmail.com avant de déposer une réclamation auprès de la CNIL, car nous sommes entièrement à votre disposition pour résoudre votre problème.",
+              "De plus, et depuis la loi n°2016-1321 du 7 octobre 2016, les personnes qui le souhaitent ont la possibilité d'organiser le devenir de leurs données après leur décès. Pour en savoir plus sur le sujet, vous pouvez consulter l'application web de la CNIL : https://www.cnil.fr/. Les utilisateurs peuvent également déposer une réclamation auprès de la CNIL sur l'application de la CNIL : https://www.cnil.fr/. Nous vous recommandons de nous contacter d'abord via moderation.nearcard@gmail.com avant de déposer une réclamation auprès de la CNIL, car nous sommes entièrement à votre disposition pour résoudre votre problème.",
             ),
             SizedBox(height: 16),
             Text(
@@ -175,10 +175,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "Les données personnelles collectées auprès des utilisateurs sont utilisées pour fournir et améliorer les services de l\'application et maintenir un environnement sécurisé. Plus spécifiquement, les utilisations sont les suivantes :",
+              "Les données personnelles collectées auprès des utilisateurs sont utilisées pour fournir et améliorer les services de l'application et maintenir un environnement sécurisé. Plus spécifiquement, les utilisations sont les suivantes :",
             ),
             Text(
-              "Accès de l\'utilisateur et utilisation de l\'application",
+              "Accès de l'utilisateur et utilisation de l'application",
             ),
             Text(
               "Gestion du fonctionnement et optimisation de l'application",
@@ -187,7 +187,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               "Mise en place du support utilisateur",
             ),
             Text(
-              "Vérification, identification et authentification des données transmises par l\'utilisateur",
+              "Vérification, identification et authentification des données transmises par l'utilisateur",
             ),
             Text(
               "Personnalisation des services en affichant des publicités basées sur l'historique de navigation de l'utilisateur, selon ses préférences",
@@ -207,7 +207,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "Le propriétaire de l\'application conserve vos données afin de fournir ses services ou de vous apporter une assistance. Cela se fait dans la mesure raisonnablement nécessaire ou requise pour respecter les obligations légales ou réglementaires, résoudre les litiges, prévenir la fraude et les abus, ou faire respecter nos conditions générales. Nous pouvons également conserver certaines de vos informations si nécessaire, même après la fermeture de votre compte. Vos données sont conservées pendant la relation contractuelle et jusqu'à 12 mois après.",
+              "Le propriétaire de l'application conserve vos données afin de fournir ses services ou de vous apporter une assistance. Cela se fait dans la mesure raisonnablement nécessaire ou requise pour respecter les obligations légales ou réglementaires, résoudre les litiges, prévenir la fraude et les abus, ou faire respecter nos conditions générales. Nous pouvons également conserver certaines de vos informations si nécessaire, même après la fermeture de votre compte. Vos données sont conservées pendant la relation contractuelle et jusqu'à 12 mois après.",
             ),
             SizedBox(height: 16),
             Text(
@@ -215,19 +215,19 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "Les données personnelles peuvent être partagées avec des sociétés tierces exclusivement dans l\'Union européenne, dans les cas suivants :",
+              "Les données personnelles peuvent être partagées avec des sociétés tierces exclusivement dans l'Union européenne, dans les cas suivants :",
             ),
             Text(
-              "Lorsque l\'utilisateur publie des informations accessibles au public, dans les espaces de commentaires gratuits de l\'application du propriétaire.",
+              "Lorsque l'utilisateur publie des informations accessibles au public, dans les espaces de commentaires gratuits de l'application du propriétaire.",
             ),
             Text(
               "Lorsque l'utilisateur permet à une application tierce d'accéder à ses données.",
             ),
             Text(
-              "Lorsque le propriétaire de l\'application utilise les services de prestataires de services pour fournir un support utilisateur, des services publicitaires et de paiement. Ces prestataires de services ont un accès limité aux données de l\'utilisateur afin de fournir ces services et sont contractuellement tenus de les utiliser conformément aux dispositions de la réglementation applicable à la protection des données personnelles.",
+              "Lorsque le propriétaire de l'application utilise les services de prestataires de services pour fournir un support utilisateur, des services publicitaires et de paiement. Ces prestataires de services ont un accès limité aux données de l'utilisateur afin de fournir ces services et sont contractuellement tenus de les utiliser conformément aux dispositions de la réglementation applicable à la protection des données personnelles.",
             ),
             Text(
-              "Les données personnelles peuvent être partagées avec des sociétés tierces exclusivement dans l\'Union européenne, dans les cas suivants.",
+              "Les données personnelles peuvent être partagées avec des sociétés tierces exclusivement dans l'Union européenne, dans les cas suivants.",
             ),
             SizedBox(height: 16),
             Text(
@@ -235,10 +235,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "Vous pouvez recevoir des offres commerciales via nos campagnes d'e-mailing. Vous pouvez vous désabonner directement des e-mails en question en cliquant sur le lien \'Se désabonner\'. L'éditeur s'engage à sécuriser vos données.",
+              "Vous pouvez recevoir des offres commerciales via nos campagnes d'e-mailing. Vous pouvez vous désabonner directement des e-mails en question en cliquant sur le lien 'Se désabonner'. L'éditeur s'engage à sécuriser vos données.",
             ),
             Text(
-              "Si, lors de l\'utilisation de l\'application, vous accédez à des données personnelles, vous devez vous abstenir de toute collecte, de toute utilisation non autorisée et de tout acte susceptible de constituer une atteinte à la vie privée ou à la réputation des individus. Vous pouvez signaler tout incident à l\'adresse suivante : moderation.nearcard. Les données sont conservées et utilisées pendant une durée conforme à la législation en vigueur.",
+              "Si, lors de l'utilisation de l'application, vous accédez à des données personnelles, vous devez vous abstenir de toute collecte, de toute utilisation non autorisée et de tout acte susceptible de constituer une atteinte à la vie privée ou à la réputation des individus. Vous pouvez signaler tout incident à l'adresse suivante : moderation.nearcard. Les données sont conservées et utilisées pendant une durée conforme à la législation en vigueur.",
             ),
             SizedBox(height: 16),
             Text(
@@ -246,12 +246,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "Cette Politique de Confidentialité est régie par le droit français et relève de la compétence des tribunaux du siège social de l\'éditeur, sous réserve d'une attribution de compétence spécifique découlant d'un texte légal ou réglementaire particulier. Pour toute question, information sur les produits présentés sur l'application, ou concernant l'application elle-même, vous pouvez laisser un message à l'adresse suivante : moderation.nearcard@gmail.com",
+              "Cette Politique de Confidentialité est régie par le droit français et relève de la compétence des tribunaux du siège social de l'éditeur, sous réserve d'une attribution de compétence spécifique découlant d'un texte légal ou réglementaire particulier. Pour toute question, information sur les produits présentés sur l'application, ou concernant l'application elle-même, vous pouvez laisser un message à l'adresse suivante : moderation.nearcard@gmail.com",
             ),
           ],
         ),
       ),
     );
-    ;
   }
 }

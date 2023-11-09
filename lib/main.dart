@@ -35,7 +35,7 @@ void main() async {
         storageBucket: "nearcard-fa985.appspot.com",
       ),
     );
-    runApp(WebPage());
+    runApp(const WebPage());
   } else {
     await Firebase.initializeApp();
     setSharedPreferences();
@@ -47,15 +47,11 @@ void main() async {
           initNotification();
           FirebaseMessaging.onBackgroundMessage(
               firebaseMessagingBackgroundHandler);
-          print("Verified");
-
           runApp(const Verified());
         } else {
-          print("Not verified");
           runApp(const NotVerified());
         }
       } else {
-        print("Unlogged");
         runApp(const UnLogged());
       }
     });
@@ -63,36 +59,6 @@ void main() async {
 }
 
 Future<void> requestPermission() async {
-  /*
-  final PermissionStatus locationStatus = await Permission.location.request();
-  if (locationStatus == PermissionStatus.granted) {
-    // Permission granted
-  } else if (locationStatus == PermissionStatus.denied) {
-    // Permission denied
-  } else if (locationStatus == PermissionStatus.permanentlyDenied) {
-    // Permission permanently denied
-  }
-
-  final PermissionStatus locationAlwaysStatus =
-      await Permission.locationAlways.request();
-  if (locationAlwaysStatus == PermissionStatus.granted) {
-    // Permission granted
-  } else if (locationAlwaysStatus == PermissionStatus.denied) {
-    // Permission denied
-  } else if (locationAlwaysStatus == PermissionStatus.permanentlyDenied) {
-    // Permission permanently denied
-  }
-
-  final PermissionStatus notificationStatus =
-      await Permission.notification.request();
-  if (notificationStatus == PermissionStatus.granted) {
-    // Permission granted
-  } else if (notificationStatus == PermissionStatus.denied) {
-    // Permission denied
-  } else if (notificationStatus == PermissionStatus.permanentlyDenied) {
-    // Permission permanently denied
-  }
-  */
   final PermissionStatus backgroundStatus =
       await Permission.systemAlertWindow.request();
   if (backgroundStatus == PermissionStatus.granted) {
@@ -106,43 +72,29 @@ Future<void> requestPermission() async {
 
 // Function to initialize Firebase Cloud Messaging (FCM) for notifications
 void initNotification() async {
-  try {
-    // Create an instance of FirebaseMessaging
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // Create an instance of FirebaseMessaging
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // Subscribe to the "general" topic for receiving notifications
-    messaging.subscribeToTopic("general");
-    messaging.subscribeToTopic(auth.currentUser!.uid);
+  // Subscribe to the "general" topic for receiving notifications
+  messaging.subscribeToTopic("general");
+  messaging.subscribeToTopic(auth.currentUser!.uid);
 
-    // Request notification permissions from the user
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true, // Allow displaying alerts
-      announcement: false, // Do not allow announcements
-      badge: true, // Show badges on app icon
-      carPlay: false, // Disable CarPlay notifications
-      criticalAlert: false, // Do not allow critical alerts
-      provisional: false, // Notifications are not provisional
-      sound: true, // Allow playing notification sounds
-    );
+  // Request notification permissions from the user
+  await messaging.requestPermission(
+    alert: true, // Allow displaying alerts
+    announcement: false, // Do not allow announcements
+    badge: true, // Show badges on app icon
+    carPlay: false, // Disable CarPlay notifications
+    criticalAlert: false, // Do not allow critical alerts
+    provisional: false, // Notifications are not provisional
+    sound: true, // Allow playing notification sounds
+  );
 
-    // Print the user's permission status for notifications
-    print("Notification initialization completed");
-
-    // Listen for incoming FCM messages when the app is in the foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("You received a message");
-      print("onMessage: ${message.notification?.body}");
-      print("onMessage: ${message.data}");
-    });
-  } catch (e) {
-    print("error : ${e.toString()}");
-  }
+  // Listen for incoming FCM messages when the app is in the foreground
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("You received a Background message");
-  print("onMessage: ${message.notification?.body}");
-  print("onMessage: ${message.data}");
   return;
 }
 
@@ -154,31 +106,25 @@ void setSharedPreferences() async {
 }
 
 Future<void> getKeysFromRemoteConfig() async {
-  try {
-    // Check if a user is currently authenticated.
-    if (FirebaseAuth.instance.currentUser != null) {
-      // Initialize Firebase Remote Config.
-      final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-      await remoteConfig.fetchAndActivate();
-      // Get the secret keys from Firebase Remote Config.
-      final secretKeyId = remoteConfig.getString('private_key_id');
-      final secretKey = remoteConfig.getString('private_key');
-      final smtpKey = remoteConfig.getString('smtp_key');
-      // Create a SharedPreferences instance to store the keys.
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Check if a user is currently authenticated.
+  if (FirebaseAuth.instance.currentUser != null) {
+    // Initialize Firebase Remote Config.
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+    // Get the secret keys from Firebase Remote Config.
+    final secretKeyId = remoteConfig.getString('private_key_id');
+    final secretKey = remoteConfig.getString('private_key');
+    final smtpKey = remoteConfig.getString('smtp_key');
+    // Create a SharedPreferences instance to store the keys.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      // Save the keys to SharedPreferences for future use.
-      prefs.setString("private_key_id", secretKeyId);
-      prefs.setString("private_key", secretKey);
-      prefs.setString("smtp_key", smtpKey);
-      //prefs.setString("smtp_key", smtpKey);
+    // Save the keys to SharedPreferences for future use.
+    prefs.setString("private_key_id", secretKeyId);
+    prefs.setString("private_key", secretKey);
+    prefs.setString("smtp_key", smtpKey);
+    //prefs.setString("smtp_key", smtpKey);
 
-      // Print a message to confirm that the keys have been saved.
-      print("Keys saved to shared preferences");
-    }
-  } catch (e) {
-    // Handle any errors that occur during the process.
-    print("Error getting keys: ${e.toString()}");
+    // Print a message to confirm that the keys have been saved.
   }
 }
 

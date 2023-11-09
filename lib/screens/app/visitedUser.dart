@@ -1,5 +1,4 @@
 import 'package:NearCard/blocs/current_user/current_user_bloc.dart';
-import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
 import 'package:NearCard/model/user.dart';
 import 'package:NearCard/screens/app/home.dart';
 import 'package:NearCard/widgets/alert.dart';
@@ -36,31 +35,27 @@ Future<bool> isCardAlreadySent() async {
 }
 
 void sendCardToUser(String uid, BuildContext context) async {
-  try {
-    if (await isCardAlreadySent()) {
-      displayError(context, "La carte a déjà été envoyée");
-      return;
-    }
-    await firestore.collection('users').doc(auth.currentUser!.uid).update({
-      'cardReceived': FieldValue.arrayUnion([
-        {
-          'sender': uid,
-          'receiver': auth.currentUser!.uid,
-          'date': DateTime.now(),
-        }
-      ])
-    });
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) => CurrentUserBloc(),
-                  child: HomeScreen(),
-                )));
-    displayMessage(context, "La carte a été scanée avec succès");
-  } catch (e) {
-    print(e);
+  if (await isCardAlreadySent()) {
+    displayError(context, "La carte a déjà été envoyée");
+    return;
   }
+  await firestore.collection('users').doc(auth.currentUser!.uid).update({
+    'cardReceived': FieldValue.arrayUnion([
+      {
+        'sender': uid,
+        'receiver': auth.currentUser!.uid,
+        'date': DateTime.now(),
+      }
+    ])
+  });
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => BlocProvider(
+                create: (context) => CurrentUserBloc(),
+                child: const HomeScreen(),
+              )));
+  displayMessage(context, "La carte a été scanée avec succès");
 }
 
 class VisitedUserScreen extends StatelessWidget {
@@ -92,7 +87,6 @@ class VisitedUserScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: () {
-                    print("Share");
                     Share.share(
                       'https://nearcard.com/users/${visitedUser.uid}',
                     );
@@ -135,7 +129,7 @@ class VisitedUserScreen extends StatelessWidget {
                   child: ContactInfoSection(
                       textColor: visitedUser.textColor,
                       phone: visitedUser.number,
-                      email: visitedUser.email ?? "",
+                      email: visitedUser.email,
                       address: visitedUser.address),
                 ),
                 const SizedBox(
@@ -274,7 +268,7 @@ class ContactInfoSection extends StatelessWidget {
         children: [
           FaIcon(FontAwesomeIcons.solidEnvelope,
               color: Color(int.parse(textColor))),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Text(
@@ -295,7 +289,7 @@ class ContactInfoSection extends StatelessWidget {
             kIsWeb ? MainAxisAlignment.center : MainAxisAlignment.start,
         children: [
           FaIcon(FontAwesomeIcons.phone, color: Color(int.parse(textColor))),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Text(
@@ -317,7 +311,7 @@ class ContactInfoSection extends StatelessWidget {
         children: [
           FaIcon(FontAwesomeIcons.locationDot,
               color: Color(int.parse(textColor))),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Text(
@@ -396,7 +390,7 @@ class QrCodeSection extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           QRCodeModal.show(
-              context, 'https://nearcard.com/users/${visitedUserId}');
+              context, 'https://nearcard.com/users/$visitedUserId');
         },
         child: Center(
           child: Text(

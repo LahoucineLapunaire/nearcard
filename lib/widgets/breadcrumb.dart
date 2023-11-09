@@ -13,13 +13,14 @@ class StepperBreadcrumbs extends StatelessWidget {
   final int currentStep;
 
   StepperBreadcrumbs({
+    super.key,
     required this.currentStep,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       width: double.infinity,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,12 +37,12 @@ class StepperBreadcrumbs extends StatelessWidget {
                 height: 30.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isActive ? Color(0xff001f3f) : Colors.grey,
+                  color: isActive ? const Color(0xff001f3f) : Colors.grey,
                 ),
                 child: Center(
                   child: Text(
                     (index + 1).toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -51,7 +52,7 @@ class StepperBreadcrumbs extends StatelessWidget {
               if (isActive)
                 Text(
                   step,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -9,8 +9,6 @@ CollectionReference<Map<String, dynamic>> usersCollectionRef =
     firestore.collection('users');
 
 Future<VisitedUser> getVisitedUser(String uid) async {
-  print("start getVisitedUser");
-  print(uid);
   Map<String, dynamic>? result = await usersCollectionRef.doc(uid).get().then(
     (value) {
       return value.data();
@@ -18,7 +16,6 @@ Future<VisitedUser> getVisitedUser(String uid) async {
   );
   result!['uid'] = uid;
   result['email'] = await getEmailFromUidWeb(uid) ?? "";
-  print(result);
   return VisitedUser.fromJson(result);
 }
 
@@ -122,11 +119,9 @@ class SearchDelegateWidget extends SearchDelegate {
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(user.profilePicture),
                 ),
-                title: Text(user.name + ' ' + user.prename),
+                title: Text('${user.name} ${user.prename}'),
                 onTap: () async {
-                  print("Tapped");
                   VisitedUser visitedUser = await getVisitedUser(user.userId);
-                  print(visitedUser.name);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

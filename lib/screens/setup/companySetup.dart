@@ -14,27 +14,27 @@ class CompanySetup extends StatelessWidget {
       builder: (context, state) {
         return SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 56,
                 ),
                 StepperBreadcrumbs(currentStep: state.currentPage),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 500), child: TitleSection()),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 700), child: FormSection()),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 500), child: ButtonSection()),
               ],
             ),
@@ -90,7 +90,7 @@ class FormSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SetupBloc, SetupInitial>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           width: 300,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -179,7 +179,7 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               width: 50,
             ),
-            Container(
+            SizedBox(
               height: 40,
               child: ElevatedButton(
                   onPressed: () {

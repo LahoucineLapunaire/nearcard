@@ -1,11 +1,6 @@
 part of 'settings_bloc.dart';
 
-sealed class SettingsEvent extends Equatable {
-  const SettingsEvent();
-
-  @override
-  List<Object> get props => [];
-}
+sealed class SettingsEvent {}
 
 class SettingsEventChangeNotification extends SettingsEvent {
   bool notification;

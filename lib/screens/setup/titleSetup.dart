@@ -15,27 +15,27 @@ class TitleSetup extends StatelessWidget {
       builder: (context, state) {
         return SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 56,
                 ),
                 StepperBreadcrumbs(currentStep: state.currentPage),
-                SizedBox(
+                const SizedBox(
                   height: 32,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 500), child: TitleSection()),
-                SizedBox(
+                const SizedBox(
                   height: 24,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 700), child: FormSection()),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-                DelayedDisplay(
+                const DelayedDisplay(
                     delay: Duration(milliseconds: 500), child: ButtonSection()),
               ],
             ),
@@ -56,12 +56,12 @@ class TitleSection extends StatelessWidget {
       children: [
         Container(
             alignment: Alignment.center,
-            child: FaIcon(FontAwesomeIcons.userTie,
+            child: const FaIcon(FontAwesomeIcons.userTie,
                 size: 60, color: Colors.black)),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Titre',
           style: TextStyle(
             fontSize: 32,
@@ -69,10 +69,10 @@ class TitleSection extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Veuillez saisir votre Titre ou Votre Poste',
           style: TextStyle(
             fontSize: 18,
@@ -92,7 +92,7 @@ class FormSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SetupBloc, SetupInitial>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           width: 300,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -154,7 +154,7 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+                border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
               ),
               child: ElevatedButton(
                   onPressed: () {
@@ -181,7 +181,7 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               width: 50,
             ),
-            Container(
+            SizedBox(
               height: 40,
               child: ElevatedButton(
                   onPressed: () {

@@ -32,15 +32,13 @@ class ChangePictureScreen extends StatelessWidget {
                     ),
                     DelayedDisplay(
                         delay: const Duration(milliseconds: 700),
-                        child: ImageSection(
-                            context: context, state: state as SettingsLoaded)),
+                        child: ImageSection(context: context, state: state)),
                     const SizedBox(
                       height: 24,
                     ),
                     DelayedDisplay(
                         delay: const Duration(milliseconds: 500),
-                        child: ButtonSection(
-                            context: context, state: state as SettingsLoaded)),
+                        child: ButtonSection(context: context, state: state)),
                   ],
                 ),
               ),
@@ -167,7 +165,7 @@ class ButtonSection extends StatelessWidget {
         const SizedBox(
           width: 50,
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: ElevatedButton(
               onPressed: () {

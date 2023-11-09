@@ -43,7 +43,6 @@ class ProfileScreen extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.share),
                         onPressed: () {
-                          print("Share");
                           Share.share(
                             'https://nearcard.com/users/${auth.currentUser!.uid}',
                           );
@@ -73,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                     delegate: SearchSendWidget(),
                   );
                 },
-                child: Icon(Icons.send),
+                child: const Icon(Icons.send),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -247,7 +246,7 @@ class ContactInfoSection extends StatelessWidget {
         children: [
           FaIcon(FontAwesomeIcons.solidEnvelope,
               color: Color(int.parse(textColor))),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Text(
@@ -266,7 +265,7 @@ class ContactInfoSection extends StatelessWidget {
       Row(
         children: [
           FaIcon(FontAwesomeIcons.phone, color: Color(int.parse(textColor))),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Text(
@@ -286,7 +285,7 @@ class ContactInfoSection extends StatelessWidget {
         children: [
           FaIcon(FontAwesomeIcons.locationDot,
               color: Color(int.parse(textColor))),
-          SizedBox(
+          const SizedBox(
             width: 8,
           ),
           Text(

@@ -19,29 +19,27 @@ class ChangeContactScreen extends StatelessWidget {
             return Scaffold(
                 body: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 56,
                     ),
-                    DelayedDisplay(
+                    const DelayedDisplay(
                         delay: Duration(milliseconds: 500),
                         child: TitleSection()),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     DelayedDisplay(
-                        delay: Duration(milliseconds: 700),
-                        child: FormSection(
-                            context: context, state: state as SettingsLoaded)),
-                    SizedBox(
+                        delay: const Duration(milliseconds: 700),
+                        child: FormSection(context: context, state: state)),
+                    const SizedBox(
                       height: 16,
                     ),
                     DelayedDisplay(
-                        delay: Duration(milliseconds: 500),
-                        child: ButtonSection(
-                            context: context, state: state as SettingsLoaded)),
+                        delay: const Duration(milliseconds: 500),
+                        child: ButtonSection(context: context, state: state)),
                   ],
                 ),
               ),
@@ -64,12 +62,12 @@ class TitleSection extends StatelessWidget {
       children: [
         Container(
             alignment: Alignment.center,
-            child: FaIcon(FontAwesomeIcons.solidAddressBook,
+            child: const FaIcon(FontAwesomeIcons.solidAddressBook,
                 size: 60, color: Colors.black)),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Contact',
           style: TextStyle(
             fontSize: 32,
@@ -77,10 +75,10 @@ class TitleSection extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Veuillez saisir votre numéro de téléphone et votre adresse',
           style: TextStyle(
             fontSize: 18,
@@ -106,18 +104,18 @@ TextEditingValue formatEditUpdate(
         if (text.length > 8) {
           buffer.write('${text.substring(6, 8)} ');
           if (text.length > 10) {
-            buffer.write('${text.substring(8, 10)}');
+            buffer.write(text.substring(8, 10));
           } else {
-            buffer.write('${text.substring(8)}');
+            buffer.write(text.substring(8));
           }
         } else {
-          buffer.write('${text.substring(6)}');
+          buffer.write(text.substring(6));
         }
       } else {
-        buffer.write('${text.substring(4)}');
+        buffer.write(text.substring(4));
       }
     } else {
-      buffer.write('${text.substring(2)}');
+      buffer.write(text.substring(2));
     }
   } else {
     buffer.write(text);
@@ -136,7 +134,7 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text(
@@ -195,23 +193,19 @@ class FormSection extends StatelessWidget {
           child: TextField(
             controller: state.addressController,
             onTap: () async {
-              try {
-                final predictions = await PlacesAutocomplete.show(
-                    region: "fr",
-                    offset: 0,
-                    mode: Mode.fullscreen,
-                    hint: "Search",
-                    radius: 1000,
-                    types: [],
-                    strictbounds: false,
-                    context: context,
-                    apiKey: "AIzaSyADw6o3DRaFrF_gdtpEtn_HM6PYhVQnNi8",
-                    language: "fr",
-                    components: [Component(Component.country, "fr")]);
-                state.addressController.text = predictions!.description!;
-              } catch (e) {
-                print(e);
-              }
+              final predictions = await PlacesAutocomplete.show(
+                  region: "fr",
+                  offset: 0,
+                  mode: Mode.fullscreen,
+                  hint: "Search",
+                  radius: 1000,
+                  types: [],
+                  strictbounds: false,
+                  context: context,
+                  apiKey: "AIzaSyADw6o3DRaFrF_gdtpEtn_HM6PYhVQnNi8",
+                  language: "fr",
+                  components: [Component(Component.country, "fr")]);
+              state.addressController.text = predictions!.description!;
             },
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.location_on),
@@ -227,7 +221,6 @@ class FormSection extends StatelessWidget {
         ),
       ]),
     );
-    ;
   }
 }
 
@@ -246,7 +239,7 @@ class ButtonSection extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+            border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
           ),
           child: ElevatedButton(
               onPressed: () {
@@ -271,13 +264,10 @@ class ButtonSection extends StatelessWidget {
         const SizedBox(
           width: 50,
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: ElevatedButton(
               onPressed: () {
-                print("salut");
-                print(state.numberController.text);
-                print(state.addressController.text);
                 if (state.numberController.text.isNotEmpty) {
                   context.read<SettingsBloc>().add(SettingsEventChangeUserinfo(
                       context: context,

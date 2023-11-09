@@ -1,7 +1,5 @@
 import 'package:NearCard/blocs/settings/settings_bloc.dart';
-import 'package:NearCard/blocs/setup/setup_bloc.dart';
 import 'package:NearCard/widgets/alert.dart';
-import 'package:NearCard/widgets/breadcrumb.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,29 +19,27 @@ class ChangePasswordScreen extends StatelessWidget {
           if (state is SettingsLoaded) {
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 56,
                     ),
-                    DelayedDisplay(
+                    const DelayedDisplay(
                         delay: Duration(milliseconds: 500),
                         child: TitleSection()),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     DelayedDisplay(
-                        delay: Duration(milliseconds: 700),
-                        child: FormSection(
-                            context: context, state: state as SettingsLoaded)),
-                    SizedBox(
+                        delay: const Duration(milliseconds: 700),
+                        child: FormSection(context: context, state: state)),
+                    const SizedBox(
                       height: 16,
                     ),
                     DelayedDisplay(
-                        delay: Duration(milliseconds: 500),
-                        child: ButtonSection(
-                            context: context, state: state as SettingsLoaded)),
+                        delay: const Duration(milliseconds: 500),
+                        child: ButtonSection(context: context, state: state)),
                   ],
                 ),
               ),
@@ -101,7 +97,7 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text(
@@ -186,7 +182,7 @@ class ButtonSection extends StatelessWidget {
         const SizedBox(
           width: 50,
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: ElevatedButton(
               onPressed: () {

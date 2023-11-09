@@ -1,6 +1,5 @@
 part of 'router_bloc.dart';
 
-@immutable
 sealed class RouterState {}
 
 final class RouterInitial extends RouterState {

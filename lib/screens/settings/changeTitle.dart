@@ -18,31 +18,27 @@ class ChangeTitleScreen extends StatelessWidget {
             return Scaffold(
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 56,
                       ),
-                      DelayedDisplay(
+                      const DelayedDisplay(
                           delay: Duration(milliseconds: 500),
                           child: TitleSection()),
-                      SizedBox(
+                      const SizedBox(
                         height: 24,
                       ),
                       DelayedDisplay(
-                          delay: Duration(milliseconds: 700),
-                          child: FormSection(
-                              context: context,
-                              state: state as SettingsLoaded)),
-                      SizedBox(
+                          delay: const Duration(milliseconds: 700),
+                          child: FormSection(context: context, state: state)),
+                      const SizedBox(
                         height: 16,
                       ),
                       DelayedDisplay(
-                          delay: Duration(milliseconds: 500),
-                          child: ButtonSection(
-                              context: context,
-                              state: state as SettingsLoaded)),
+                          delay: const Duration(milliseconds: 500),
+                          child: ButtonSection(context: context, state: state)),
                     ],
                   ),
                 ),
@@ -66,12 +62,12 @@ class TitleSection extends StatelessWidget {
       children: [
         Container(
             alignment: Alignment.center,
-            child: FaIcon(FontAwesomeIcons.userTie,
+            child: const FaIcon(FontAwesomeIcons.userTie,
                 size: 60, color: Colors.black)),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Titre',
           style: TextStyle(
             fontSize: 32,
@@ -79,10 +75,10 @@ class TitleSection extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Veuillez saisir votre Titre ou Votre Poste',
           style: TextStyle(
             fontSize: 18,
@@ -103,7 +99,7 @@ class FormSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 300,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const Text(
@@ -163,7 +159,7 @@ class ButtonSection extends StatelessWidget {
           height: 40,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+            border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
           ),
           child: ElevatedButton(
               onPressed: () {
@@ -188,7 +184,7 @@ class ButtonSection extends StatelessWidget {
         const SizedBox(
           width: 50,
         ),
-        Container(
+        SizedBox(
           height: 40,
           child: ElevatedButton(
               onPressed: () {

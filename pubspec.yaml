@@ -44,7 +44,6 @@ dependencies:
   flutter_google_places: ^0.3.0
   image_picker: ^1.0.4
   flutter_colorpicker: ^1.0.3
-  equatable: ^2.0.5
   share_plus: ^7.1.0
   url_launcher: ^6.1.14
   qr_flutter: ^4.1.0

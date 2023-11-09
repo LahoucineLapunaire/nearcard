@@ -1,10 +1,7 @@
 import 'package:NearCard/widgets/alert.dart';
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -93,9 +90,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitial> {
           }
 
           FirebaseAuth auth = FirebaseAuth.instance;
-          FirebaseFirestore firestore = FirebaseFirestore.instance;
-          UserCredential userCredential =
-              await auth.createUserWithEmailAndPassword(
+          await auth.createUserWithEmailAndPassword(
             email: state.signupEmailController.text,
             password: state.signupPasswordController.text,
           );
@@ -103,7 +98,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitial> {
           displayMessage(
               event.context, "Inscription réussie, veuillez patienter");
         } catch (e) {
-          print("Erreur inattendue : $e");
           displayError(event.context, e.toString().split('] ')[1]);
         }
       }
@@ -130,7 +124,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitial> {
             displayError(event.context, "Veuillez saisir un email valide");
           } else {
             // Gérez toutes les autres exceptions ici
-            print("Erreur inattendue : $e");
             displayError(event.context, e.toString().split('] ')[1]);
           }
         }

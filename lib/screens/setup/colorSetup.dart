@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:NearCard/blocs/setup/setup_bloc.dart';
-import 'package:NearCard/widgets/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -33,7 +32,7 @@ class CardSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.6,
       child: Center(
         child: Column(
@@ -66,7 +65,7 @@ class CardSection extends StatelessWidget {
               height: 20,
             ),
             Text(
-              state.nameController.text + " " + state.prenameController.text,
+              "${state.nameController.text} ${state.prenameController.text}",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -139,37 +138,32 @@ class ColorSection extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                try {
-                  showDialog(
-                      context: context,
-                      builder: (contextDialog) {
-                        return AlertDialog(
-                          title: const Text(
-                              'Choisissez la couleur de fond de votre carte !'),
-                          content: SingleChildScrollView(
-                            child: ColorPicker(
-                              pickerColor: Color(int.parse(state.textColor)),
-                              onColorChanged: (value) {
-                                print(value.value.toRadixString(16));
-                                context.read<SetupBloc>().add(
-                                    SetupEventChangeBgColor(
-                                        value.value.toRadixString(16)));
-                              },
-                            ),
+                showDialog(
+                    context: context,
+                    builder: (contextDialog) {
+                      return AlertDialog(
+                        title: const Text(
+                            'Choisissez la couleur de fond de votre carte !'),
+                        content: SingleChildScrollView(
+                          child: ColorPicker(
+                            pickerColor: Color(int.parse(state.textColor)),
+                            onColorChanged: (value) {
+                              context.read<SetupBloc>().add(
+                                  SetupEventChangeBgColor(
+                                      value.value.toRadixString(16)));
+                            },
                           ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: const Text('Sélectionner'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                } catch (e) {
-                  print(e);
-                }
+                        ),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            child: const Text('Sélectionner'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    });
               },
               child: Container(
                 width: 120,
@@ -198,36 +192,32 @@ class ColorSection extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                try {
-                  showDialog(
-                      context: context,
-                      builder: (contextDialog) {
-                        return AlertDialog(
-                          title: const Text(
-                              'Choisissez la couleur de texte de votre carte !'),
-                          content: SingleChildScrollView(
-                            child: ColorPicker(
-                              pickerColor: Color(int.parse(state.textColor)),
-                              onColorChanged: (value) {
-                                context.read<SetupBloc>().add(
-                                    SetupEventChangeTextColor(
-                                        value.value.toRadixString(16)));
-                              },
-                            ),
+                showDialog(
+                    context: context,
+                    builder: (contextDialog) {
+                      return AlertDialog(
+                        title: const Text(
+                            'Choisissez la couleur de texte de votre carte !'),
+                        content: SingleChildScrollView(
+                          child: ColorPicker(
+                            pickerColor: Color(int.parse(state.textColor)),
+                            onColorChanged: (value) {
+                              context.read<SetupBloc>().add(
+                                  SetupEventChangeTextColor(
+                                      value.value.toRadixString(16)));
+                            },
                           ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: const Text('Sélectionner'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                } catch (e) {
-                  print(e);
-                }
+                        ),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            child: const Text('Sélectionner'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    });
               },
               child: Container(
                 width: 120,
@@ -292,7 +282,7 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               width: 50,
             ),
-            Container(
+            SizedBox(
               height: 40,
               child: ElevatedButton(
                   onPressed: () {

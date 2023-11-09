@@ -7,7 +7,7 @@ class TermsOfServicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff001f3f),
+        backgroundColor: const Color(0xff001f3f),
         title: const Text("Conditions d'utilisation"),
       ),
       body: const SingleChildScrollView(
@@ -16,43 +16,43 @@ class TermsOfServicesScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Conditions d\'utilisation de l'application mobile 'NearCard'",
+              "Conditions d'utilisation de l'application mobile 'NearCard'",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
             Text(
-              "ARTICLE 1 - OBJET DES CONDITIONS GÉNÉRALES D\'UTILISATION",
+              "ARTICLE 1 - OBJET DES CONDITIONS GÉNÉRALES D'UTILISATION",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
-              "L\'objet des présentes conditions générales d\'utilisation (ci-après dénommées les 'CGU') est de définir les règles régissant l\'utilisation de l\'application mobile 'NearCard' (ci-après dénommée 'l'Application') publiée par la société individuelle Lahoucine LAPUNAIRE, immatriculée au Registre du Commerce et des Sociétés de Saint-Denis sous le numéro 951388073, dont le siège social est situé au 9 Rue Charles Fourier, 91011 Évry-Courcouronnes. Le directeur de la publication est Lahoucine LAPUNAIRE, Président : lahoucinel.freelance@gmail.com",
+              "L'objet des présentes conditions générales d'utilisation (ci-après dénommées les 'CGU') est de définir les règles régissant l'utilisation de l'application mobile 'NearCard' (ci-après dénommée 'l'Application') publiée par la société individuelle Lahoucine LAPUNAIRE, immatriculée au Registre du Commerce et des Sociétés de Saint-Denis sous le numéro 951388073, dont le siège social est situé au 9 Rue Charles Fourier, 91011 Évry-Courcouronnes. Le directeur de la publication est Lahoucine LAPUNAIRE, Président : lahoucinel.freelance@gmail.com",
             ),
             Text(
-              "En installant l\'Application sur votre terminal et/ou en y accédant, vous acceptez sans réserve l'intégralité de ces CGU et vous vous engagez à respecter les obligations qui vous incombent. Si vous n'acceptez pas les CGU ou si vous avez des réserves, veuillez ne pas utiliser l'Application.",
+              "En installant l'Application sur votre terminal et/ou en y accédant, vous acceptez sans réserve l'intégralité de ces CGU et vous vous engagez à respecter les obligations qui vous incombent. Si vous n'acceptez pas les CGU ou si vous avez des réserves, veuillez ne pas utiliser l'Application.",
             ),
             Text(
               "Les CGU expriment l'accord complet entre vous et NearCard concernant votre utilisation de l'Application. NearCard se réserve le droit de modifier ces CGU en les mettant à jour à tout moment. La version des CGU applicable entre vous et NearCard au moment de votre connexion et de votre utilisation de l'Application. Nous vous recommandons donc de consulter régulièrement cette page.",
             ),
             SizedBox(height: 16),
             Text(
-              "ARTICLE 3 - ACCÈS À L\'APPLICATION",
+              "ARTICLE 3 - ACCÈS À L'APPLICATION",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
               "Pour accéder à l'Application, vous devez disposer d'un appareil mobile et d'une connexion Internet. L'Application peut être téléchargée gratuitement depuis les plates-formes 'Apple Store' et 'Google Play Store' sur les terminaux mobiles suivants :",
             ),
             Text(
-              "Téléphone portable Apple® iPhone® fonctionnant sous le système d'exploitation iOS sous iOS 10.0 ou supérieur - téléphone portable fonctionnant sous le système d\'exploitation iOS sous iOS 10.0 ou supérieur - téléphone portable fonctionnant sous le système d\'exploitation iOS sous iOS 10.0 ou supérieur",
+              "Téléphone portable Apple® iPhone® fonctionnant sous le système d'exploitation iOS sous iOS 10.0 ou supérieur - téléphone portable fonctionnant sous le système d'exploitation iOS sous iOS 10.0 ou supérieur - téléphone portable fonctionnant sous le système d'exploitation iOS sous iOS 10.0 ou supérieur",
             ),
             Text(
-              "Système d\'exploitation Android® Lollipop (API 21) minimum.",
+              "Système d'exploitation Android® Lollipop (API 21) minimum.",
             ),
             Text(
               "La version logicielle de l'Application peut être mise à jour de temps en temps pour ajouter de nouvelles fonctionnalités et services. Une fois l'Application installée sur votre appareil, connectez-vous simplement en utilisant votre adresse e-mail. Si vous êtes membre de NearCard, vous recevrez une notification dans votre boîte aux lettres pour valider votre compte. Si vous n'êtes pas encore membre de la communauté, veuillez nous contacter pour profiter de tous les avantages de NearCard : moderation.nearcard@gmail.com",
             ),
             SizedBox(height: 16),
             Text(
-              "ARTICLE 4 - LICENCE D\'UTILISATEUR",
+              "ARTICLE 4 - LICENCE D'UTILISATEUR",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
@@ -76,7 +76,7 @@ class TermsOfServicesScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              "ARTICLE 7 - DISPONIBILITÉ DE L\'APPLICATION",
+              "ARTICLE 7 - DISPONIBILITÉ DE L'APPLICATION",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(

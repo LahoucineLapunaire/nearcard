@@ -2,7 +2,6 @@ import 'package:NearCard/screens/auth/login.dart';
 import 'package:NearCard/screens/auth/signup.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:NearCard/screens/onboarding/onboarding1.dart';
 import 'package:NearCard/screens/onboarding/onboarding2.dart';
 import 'package:NearCard/screens/onboarding/onboarding3.dart';
@@ -20,7 +19,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingInitial> {
         Navigator.push(
           event.context,
           MaterialPageRoute(
-            builder: (context) => SignupScreen(),
+            builder: (context) => const SignupScreen(),
           ),
         );
       }
@@ -28,7 +27,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingInitial> {
         Navigator.push(
           event.context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
       }

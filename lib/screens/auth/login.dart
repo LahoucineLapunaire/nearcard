@@ -1,9 +1,7 @@
 import 'package:NearCard/blocs/auth/auth_bloc.dart';
 import 'package:NearCard/screens/auth/resetPassword.dart';
 import 'package:NearCard/screens/auth/signup.dart';
-import 'package:NearCard/widgets/alert.dart';
 import 'package:delayed_display/delayed_display.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -87,7 +85,7 @@ class FormSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthInitial>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           width: 300,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -181,7 +179,7 @@ class ButtonSection extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            Container(
+            SizedBox(
               width: 260,
               height: 40,
               child: ElevatedButton(
@@ -205,71 +203,66 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            Container(
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignupScreen()));
-                  },
-                  style: ButtonStyle(
-                    shadowColor:
-                        MaterialStateProperty.all<Color>(Colors.transparent),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.transparent),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Pas de compte ?",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Montserrat',
-                          color: Colors.black,
-                        ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignupScreen()));
+                },
+                style: ButtonStyle(
+                  shadowColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Pas de compte ?",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Montserrat',
+                        color: Colors.black,
                       ),
-                      SizedBox(width: 5),
-                      Text(
-                        "Inscrivez-vous",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Montserrat',
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  )),
-            ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Inscrivez-vous",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Montserrat',
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                )),
             const SizedBox(
               height: 8,
             ),
-            Container(
-              child: ElevatedButton(
-                  onPressed: () {
-                    print("to reset password");
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ResetPasswordScreen()));
-                  },
-                  style: ButtonStyle(
-                    shadowColor:
-                        MaterialStateProperty.all<Color>(Colors.transparent),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.transparent),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ResetPasswordScreen()));
+                },
+                style: ButtonStyle(
+                  shadowColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.transparent),
+                ),
+                child: const Text(
+                  "Mot de passe oublié ?",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontFamily: 'Montserrat',
                   ),
-                  child: const Text(
-                    "Mot de passe oublié ?",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontFamily: 'Montserrat',
-                    ),
-                  )),
-            ),
+                )),
           ],
         );
       },

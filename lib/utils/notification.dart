@@ -45,10 +45,7 @@ Future<void> sendNotificationToTopic(
   );
 
   if (response.statusCode == 200) {
-    print('Notification sent successfully');
-  } else {
-    print('Failed to send notification. Response: ${response.body}');
-  }
+  } else {}
 }
 
 Future<AccessCredentials> obtainCredentials() async {

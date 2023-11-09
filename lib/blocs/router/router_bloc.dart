@@ -3,7 +3,6 @@ import 'package:NearCard/screens/app/profile.dart';
 import 'package:NearCard/screens/app/search.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'router_event.dart';
 part 'router_state.dart';

@@ -54,11 +54,11 @@ class TitleSection extends StatelessWidget {
       children: [
         Container(
             alignment: Alignment.center,
-            child: Icon(Icons.lock, size: 60, color: Colors.black)),
-        SizedBox(
+            child: const Icon(Icons.lock, size: 60, color: Colors.black)),
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Réinitialiser le mot de passe',
           style: TextStyle(
             fontSize: 32,
@@ -66,10 +66,10 @@ class TitleSection extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 16,
         ),
-        Text(
+        const Text(
           'Veuillez saisir votre adresse email pour recevoir un lien de réinitialisation de votre mot de passe.',
           style: TextStyle(
             fontSize: 18,
@@ -89,7 +89,7 @@ class FormSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthInitial>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           width: 300,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -144,7 +144,7 @@ class ButtonSection extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+                border: Border.all(color: const Color.fromARGB(255, 0, 0, 0)),
               ),
               child: ElevatedButton(
                   onPressed: () {
@@ -169,7 +169,7 @@ class ButtonSection extends StatelessWidget {
             const SizedBox(
               width: 50,
             ),
-            Container(
+            SizedBox(
               height: 40,
               child: ElevatedButton(
                   onPressed: () {
