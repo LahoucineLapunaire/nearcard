@@ -74,61 +74,63 @@ class ProfileScreen extends StatelessWidget {
                 },
                 child: const Icon(Icons.send),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 500),
-                        child: ImageSection(
-                            picture: state.currentUser.picture,
-                            textColor: state.currentUser.textColor),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 600),
-                        child: UserInfoSection(
-                            name: state.currentUser.name,
-                            prename: state.currentUser.prename,
-                            title: state.currentUser.title,
-                            textColor: state.currentUser.textColor,
-                            company: state.currentUser.company),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 700),
-                        child: ContactInfoSection(
-                            textColor: state.currentUser.textColor,
-                            phone: state.currentUser.number,
-                            email: auth.currentUser!.email ?? "",
-                            address: state.currentUser.address),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 800),
-                        child: SocialSection(
-                            textColor: state.currentUser.textColor,
-                            linkedin: state.currentUser.linkedin,
-                            website: state.currentUser.website),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      DelayedDisplay(
-                        delay: const Duration(milliseconds: 900),
-                        child: QrCodeSection(
-                          userId: auth.currentUser!.uid,
-                          textColor: state.currentUser.textColor,
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        DelayedDisplay(
+                          delay: const Duration(milliseconds: 500),
+                          child: ImageSection(
+                              picture: state.currentUser.picture,
+                              textColor: state.currentUser.textColor),
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        DelayedDisplay(
+                          delay: const Duration(milliseconds: 600),
+                          child: UserInfoSection(
+                              name: state.currentUser.name,
+                              prename: state.currentUser.prename,
+                              title: state.currentUser.title,
+                              textColor: state.currentUser.textColor,
+                              company: state.currentUser.company),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        DelayedDisplay(
+                          delay: const Duration(milliseconds: 700),
+                          child: ContactInfoSection(
+                              textColor: state.currentUser.textColor,
+                              phone: state.currentUser.number,
+                              email: auth.currentUser!.email ?? "",
+                              address: state.currentUser.address),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        DelayedDisplay(
+                          delay: const Duration(milliseconds: 800),
+                          child: SocialSection(
+                              textColor: state.currentUser.textColor,
+                              linkedin: state.currentUser.linkedin,
+                              website: state.currentUser.website),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        DelayedDisplay(
+                          delay: const Duration(milliseconds: 900),
+                          child: QrCodeSection(
+                            userId: auth.currentUser!.uid,
+                            textColor: state.currentUser.textColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ));

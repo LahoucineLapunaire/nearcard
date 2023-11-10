@@ -47,6 +47,7 @@ class VisitedUserBloc extends Bloc<VisitedUserEvent, VisitedUserState> {
   VisitedUserBloc(this.visitedUserId)
       : super(VisitedUserInitial(visitedUserId)) {
     // Écouter les changements dans le document Firestore de l'utilisateur courant
+
     _subscription = firestore
         .collection("users")
         .doc(visitedUserId)
@@ -54,16 +55,12 @@ class VisitedUserBloc extends Bloc<VisitedUserEvent, VisitedUserState> {
         .listen((event) async {
       if (event.exists) {
         String email = "";
-        if (kIsWeb) {
-          email = await getEmailFromUidWeb(visitedUserId) ?? "";
-        } else {
-          email = await getEmailFromUid(visitedUserId) ?? "";
-        }
+        email = await getEmailFromUidWeb(visitedUserId) ?? "";
         final userData = event.data() as Map<String, dynamic>;
         userData['email'] = email;
         userData['uid'] = visitedUserId;
-        final visitedUser = VisitedUser.fromJson(userData);
 
+        final visitedUser = VisitedUser.fromJson(userData);
         // Émettre un nouvel état avec les données de l'utilisateur courant
         if (!isClosed) {
           emit(VisitedUserLoaded(visitedUser));

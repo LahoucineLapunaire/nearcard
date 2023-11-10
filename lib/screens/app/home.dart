@@ -11,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:share_plus/share_plus.dart';
+import 'package:shimmer/shimmer.dart';
 
 final auth = firebase_auth.FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
@@ -137,7 +138,20 @@ class BusinessCard extends StatelessWidget {
       child: BlocBuilder<VisitedUserBloc, VisitedUserState>(
         builder: (context, state) {
           if (state is VisitedUserInitial) {
-            return const Center(child: CircularProgressIndicator());
+            return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!, // Couleur de fond
+                highlightColor: Colors.grey[100]!, // Couleur des reflets
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 20,
+                  height: 100,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                  ),
+                ) // Remplacez YourShimmeringWidget par le widget que vous souhaitez animer
+                );
           }
           if (state is VisitedUserNotFound) {
             return const Center(child: Text("Utilisateur non trouvé"));
@@ -164,18 +178,23 @@ class BusinessCard extends StatelessWidget {
                     motion: const ScrollMotion(),
                     // A pane can dismiss the Slidable.
                     dismissible: DismissiblePane(
-                      onDismissed: () {
-                        firestore
+                      onDismissed: () async {
+                        Map<String, dynamic> data = {
+                          'sender': auth.currentUser?.uid,
+                          'receiver': visitedUserId,
+                          'date': date,
+                        };
+                        await firestore
                             .collection('users')
                             .doc(auth.currentUser?.uid)
                             .update({
-                          'cardReceived': FieldValue.arrayRemove([
-                            {
-                              'sender': visitedUserId,
-                              'receiver': auth.currentUser?.uid,
-                              'date': date,
-                            }
-                          ])
+                          'cardReceived': FieldValue.arrayRemove([data])
+                        });
+                        await firestore
+                            .collection('users')
+                            .doc(visitedUserId)
+                            .update({
+                          'cardSent': FieldValue.arrayRemove([data])
                         });
                       },
                     ),
@@ -184,18 +203,23 @@ class BusinessCard extends StatelessWidget {
                     children: [
                       // A SlidableAction can have an icon and/or a label.
                       SlidableAction(
-                        onPressed: (context) {
-                          firestore
+                        onPressed: (context) async {
+                          Map<String, dynamic> data = {
+                            'sender': auth.currentUser?.uid,
+                            'receiver': visitedUserId,
+                            'date': date,
+                          };
+                          await firestore
+                              .collection('users')
+                              .doc(visitedUserId)
+                              .update({
+                            'cardSent': FieldValue.arrayRemove([data])
+                          });
+                          await firestore
                               .collection('users')
                               .doc(auth.currentUser?.uid)
                               .update({
-                            'cardReceived': FieldValue.arrayRemove([
-                              {
-                                'sender': visitedUserId,
-                                'receiver': auth.currentUser?.uid,
-                                'date': date,
-                              }
-                            ])
+                            'cardReceived': FieldValue.arrayRemove([data])
                           });
                         },
                         backgroundColor: const Color(0xFFFE4A49),

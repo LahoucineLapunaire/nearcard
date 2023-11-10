@@ -1,5 +1,6 @@
 import 'package:NearCard/blocs/visited_user/visited_user_bloc.dart';
 import 'package:NearCard/model/user.dart';
+import 'package:NearCard/utils/notification.dart';
 import 'package:NearCard/widgets/alert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,17 +29,19 @@ Future<bool> isCardAlreadySent() async {
   return isCardSent;
 }
 
-void sendCardToUser(String uid, BuildContext context) async {
+void sendCardToUser(
+    String uid, CurrentUser currentUser, BuildContext context) async {
   if (await isCardAlreadySent()) {
     displayError(context, "La carte a déjà été envoyée");
     return;
   }
+  DateTime date = DateTime.now();
   await firestore.collection('users').doc(auth.currentUser!.uid).update({
     'cardSent': FieldValue.arrayUnion([
       {
         'sender': auth.currentUser!.uid,
         'receiver': uid,
-        'date': DateTime.now(),
+        'date': date,
       }
     ])
   });
@@ -47,9 +50,19 @@ void sendCardToUser(String uid, BuildContext context) async {
       {
         'sender': auth.currentUser!.uid,
         'receiver': uid,
-        'date': DateTime.now(),
+        'date': date,
       }
     ])
+  });
+  sendNotificationToTopic(
+      uid,
+      "Carte de visite reçue !",
+      "${currentUser.name} ${currentUser.prename} vous a envoyé sa carte de visite !",
+      currentUser.picture, {
+    "sender": auth.currentUser!.uid,
+    "receiver": uid,
+    "type": "card",
+    "click_action": "FLUTTER_card_CLICK",
   });
   Navigator.pop(context);
   displayMessage(context, "La carte a été envoyée avec succès");
@@ -64,6 +77,18 @@ Future<VisitedUser> getVisitedUser(String uid) async {
   result!['uid'] = uid;
   result['email'] = await getEmailFromUidWeb(uid) ?? "";
   return VisitedUser.fromJson(result);
+}
+
+Future<CurrentUser> getCurrentUser() async {
+  String uid = auth.currentUser!.uid;
+  Map<String, dynamic>? result = await usersCollectionRef.doc(uid).get().then(
+    (value) {
+      return value.data();
+    },
+  );
+  result!['uid'] = uid;
+  result['email'] = await getEmailFromUidWeb(uid) ?? "";
+  return CurrentUser.fromJson(result);
 }
 
 class SearchSendWidget extends SearchDelegate {
@@ -113,8 +138,9 @@ class SearchSendWidget extends SearchDelegate {
               final document = searchResults[index];
               return ListTile(
                 title: Text(document['username']),
-                onTap: () {
-                  sendCardToUser(document.id, context);
+                onTap: () async {
+                  CurrentUser user = await getCurrentUser();
+                  sendCardToUser(document.id, user, context);
                 },
               );
             },
@@ -168,7 +194,8 @@ class SearchSendWidget extends SearchDelegate {
                 ),
                 title: Text('${user.name} ${user.prename}'),
                 onTap: () async {
-                  sendCardToUser(user.userId, context);
+                  CurrentUser currentUser = await getCurrentUser();
+                  sendCardToUser(user.userId, currentUser, context);
                 },
               );
             },
